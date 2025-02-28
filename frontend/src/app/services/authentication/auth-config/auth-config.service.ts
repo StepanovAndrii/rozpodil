@@ -11,7 +11,7 @@ export class AuthConfigService {
 
   public constructor() { }
 
-  public getAuthConfig(issuer: string, clientId: string) {
+  public getAuthConfig(issuer: string, clientId: string): AuthConfig {
     return {
       clientId: clientId,
       redirectUri: this._document.location.origin + '/auth/callback',

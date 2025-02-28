@@ -12,7 +12,7 @@ export class AuthService {
   
   constructor() { }
 
-  public loginWithProvider(issuer: string, clientId: string) {
+  public loginWithProvider(issuer: string, clientId: string): void {
     const googleAuthConfig: AuthConfig = this._configuration.getAuthConfig(
       issuer,
       clientId
