@@ -1,5 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/authentication/auth.service';
+import { AuthProvider } from '../../services/authentication/enums/auth-providers.enum';
+import { environment } from '../../../environments/environment'
 
 @Component({
   selector: 'app-login',
@@ -10,10 +12,18 @@ import { AuthService } from '../../services/authentication/auth.service';
 export class LoginComponent {
   private _authService: AuthService = inject(AuthService);
 
-  public loginWithGoogle(){
+  public loginWithGoogle() {
     this._authService.loginWithProvider(
-      "https://accounts.google.com",
-      "936348575223-3tfersreot1291v3o4acu2j3klvag4ho.apps.googleusercontent.com"
+      AuthProvider.Google,
+      environment.clientId
+    );
+  }
+
+  // TODO: Додати параметр clientId
+  public loginWithFacebook() {
+    this._authService.loginWithProvider(
+      AuthProvider.Facebook,
+      ""
     );
   }
 }
