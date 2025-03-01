@@ -1,65 +1,61 @@
-import { inject, Injectable } from '@angular/core';
-import { AuthConfigService } from './auth-config/auth-config.service';
+import { Inject, Injectable } from '@angular/core';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
-import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { AuthProvider } from './enums/auth-providers.enum';
+import { DOCUMENT } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
-  private _authService: OAuthService = inject(OAuthService);
-  private _configuration: AuthConfigService = inject(AuthConfigService);
-  private _http: HttpClient = inject(HttpClient);
-  private _route: ActivatedRoute = inject(ActivatedRoute);
-  private _routeSubscriptions: Subscription[] = [];
-  
-  constructor() { }
+  constructor(
+    private _authService: OAuthService,
+    private _route: ActivatedRoute,
+    @Inject(DOCUMENT) private _document: Document
+  ) { }
 
-  public loginWithProvider(issuer: string, clientId: string): void {
-    const googleAuthConfig: AuthConfig = this._configuration.getAuthConfig(
-      issuer,
-      clientId
-    );
+  // Налаштовує конфігурацію авторизації для вказаного провайдера
+  private configure(provider: AuthProvider, clientId: string): void {
+    const configuration: AuthConfig = {
+      clientId,
+      redirectUri: this._document.location.origin + '/auth/callback',
+      scope: 'email profile',
+      oidc: false,
+      issuer: this.getIssuerLink(provider),
+      clearHashAfterLogin: true,
+      responseType: 'code',
+      strictDiscoveryDocumentValidation: false
+    };
 
-    this._authService.configure(googleAuthConfig);
+    this._authService.configure(configuration);
     this._authService.loadDiscoveryDocument();
+  }
+
+  // Повертає URL для issuer відповідно до обраного провайдера авторизації
+  private getIssuerLink(provider: AuthProvider): string {
+    switch (provider) {
+      case AuthProvider.Google:
+        return 'https://accounts.google.com';
+      case AuthProvider.Facebook:
+        return 'https://www.facebook.com/v11.0/dialog/oauth';
+      default:
+        throw new Error("Провайдер не був знайдений");
+    }
+  }
+
+  // Ініціює процес авторизації через обраного провайдера
+  public loginWithProvider(provider: AuthProvider, clientId: string): void {
+    this.configure(provider, clientId);
     this._authService.initCodeFlow();
   }
 
-  public catchCode(): string | null {
-    this._routeSubscriptions.push( 
-      this._route.queryParamMap.subscribe(params => {
-        const code = params.get('code');
-
-        if(code) {
-          return code;
-        }
-
-        return null;
-      })
+  // Повертає авторизаційний код з параметрів URL як Observable<string | null>
+  public getAuthorizationCode$(): Observable<string | null> {
+    return this._route.queryParamMap.pipe(
+      // Трансформує ParamMap в значення параметра 'code'
+      map(parameters => parameters.get('code'))
     );
-
-    return null;
   }
-
-  public unsubscribe() {
-    this._routeSubscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  public sendCodeToBackend(code: string): void {
-    this._routeSubscriptions.push(
-      this._http.post('http://localhost:3000/api/auth', {code})
-        .subscribe({
-          next: (response: any) => {
-            
-          },
-          error: (error: any) => {
-
-          }
-      })
-    );
-  } 
 }
