@@ -1,5 +1,6 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/authentication/auth.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-callback-page',
@@ -7,18 +8,20 @@ import { AuthService } from '../../services/authentication/auth.service';
   templateUrl: './callback-page.component.html',
   styleUrl: './callback-page.component.scss'
 })
-export class CallbackPageComponent implements OnInit, OnDestroy{
-  private _authService: AuthService = inject(AuthService);
+export class CallbackPageComponent implements OnInit {
+  constructor (
+    private _authService: AuthService
+  ) { }
   
   public ngOnInit(): void {
-    const code: string | null = this._authService.catchCode();
-
-    if(code) {
-      this._authService.sendCodeToBackend(code);
-    }
-  }
-
-  public ngOnDestroy(): void {
-    this._authService.unsubscribe();
+    this._authService.getAuthorizationCode$()
+    .pipe(takeUntilDestroyed())
+    .subscribe({
+      next: (code: string | null): void => {
+        if(code){
+          this._authService.sendAccessCodeToBackend(code);
+        }
+      }
+    });
   }
 }
