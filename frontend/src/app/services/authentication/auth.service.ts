@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { AuthProvider } from './enums/auth-providers.enum';
 import { DOCUMENT } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,7 @@ import { DOCUMENT } from '@angular/common';
 export class AuthService {
   constructor(
     private _authService: OAuthService,
+    private _http: HttpClient,
     private _route: ActivatedRoute,
     @Inject(DOCUMENT) private _document: Document
   ) { }
@@ -57,5 +60,12 @@ export class AuthService {
       // Трансформує ParamMap в значення параметра 'code'
       map(parameters => parameters.get('code'))
     );
+  }
+
+  // Відправляє access code на бекенд через POST-запит
+  public sendAccessCodeToBackend(code: string): void {
+    const accessCodeApiUrl : string = environment.apiUrl + '/api/auth/token';
+
+    this._http.post(accessCodeApiUrl , {code});
   }
 }
