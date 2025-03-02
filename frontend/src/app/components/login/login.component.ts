@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/authentication/auth.service';
-import { AuthProvider } from '../../services/authentication/enums/auth-providers.enum';
+import { AuthProvider } from '../../services/authentication/auth-providers.enum';
 import { environment } from '../../../environments/environment'
 
 @Component({
