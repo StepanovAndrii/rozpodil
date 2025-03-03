@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../../services/authentication/auth.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ApiService } from '../../services/api/api.service';
-import { HeaderTypes } from '../../services/api/header-types.enum';
+import { AuthProvider } from '../../services/authentication/enums/auth-providers.enum';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-callback-page',
@@ -14,19 +13,9 @@ import { HeaderTypes } from '../../services/api/header-types.enum';
 export class CallbackPageComponent {
   constructor (
     private _authService: AuthService,
-    private _apiService: ApiService
   ) {
-    this._authService.getAuthorizationCode$()
-    .pipe(takeUntilDestroyed())
-    .subscribe({
-      next: (code: string | null): void => {
-        if(code){
-          this._apiService.sendAccessCodeToBackend$(code, HeaderTypes.FormFormat)
-          .subscribe({
-            
-          });
-        }
-      }
-    });
+    this._authService.configure(AuthProvider.Google, environment.OAUTH_PROVIDERS.GOOGLE.clientId);
+    this._authService.login();
+    console.log(this._authService.getToken());
   }
 }
