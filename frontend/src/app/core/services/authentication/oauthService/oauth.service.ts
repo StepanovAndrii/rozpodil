@@ -58,7 +58,11 @@ export class OAuthService {
       code_verifier: this._pkceService.codeVerifier!
     });
 
-    this._http.post(backendUrl, params);
+    this._http.post(backendUrl, params).subscribe({
+      next: (response: any) => {
+        
+      }
+    });
     sessionStorage.clear();
   }
 
