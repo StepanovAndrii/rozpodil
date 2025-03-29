@@ -30,7 +30,7 @@ export class OAuthService {
     this._pkceService.generateCodeVerifier();
     const params = new URLSearchParams({
       client_id: environment.OAUTH_PROVIDERS.GOOGLE.clientId,
-      redirect_uri: "http://localhost:4200/auth/callback",
+      redirect_uri: "http://localhost:4200/authentication/callback",
       response_type: "code",
       scope: "openid email profile",
       state: this._stateService.generateState(),
@@ -53,17 +53,21 @@ export class OAuthService {
   public async sendAccessCodeToBackend(backendUrl: string, code: string) {
     this._pkceService.ensureCodeVerifierGenerated();
     
-    const params = new URLSearchParams({
+    const body: Record<string, string> = {
       code: code,
       code_verifier: this._pkceService.codeVerifier!
-    });
+    };
 
-    this._http.post(backendUrl, params).subscribe({
+    this._http.post(backendUrl + "/auth/exchange-code", body, {
+    }).subscribe({
       next: (response: any) => {
         
+      },
+      error: (error) => {
+        console.log(error);
       }
     });
-    sessionStorage.clear();
+    // sessionStorage.clear();
   }
 
   // Returns the URL for the specified authentication provider.

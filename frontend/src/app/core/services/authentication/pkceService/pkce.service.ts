@@ -21,22 +21,39 @@ export class PkceService {
   ) { }
 
   // Generates a random code_verifier, which is a string in base64url format.
-  public generateCodeVerifier(length: number = 128): void {
-    const randomBytesArray: Uint8Array<ArrayBufferLike> = this._cryptoService.generateRandomBytes(length);
-    const base64Code: string = this._cryptoService.bytesToBase64(randomBytesArray);
-    const base64CodeUrl: string = this._cryptoService.base64ToBase64Url(base64Code);
-    sessionStorage.setItem('code_verifier', base64CodeUrl);
+  generateCodeVerifier(length: number = 128): void {
+    const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+    let codeVerifier = '';
+    const randomValues = new Uint8Array(length);
+  
+    window.crypto.getRandomValues(randomValues);
+  
+    randomValues.forEach((value) => {
+      codeVerifier += charset[value % charset.length];
+    });
+  
+    sessionStorage.setItem('code_verifier', codeVerifier);
   }
 
   // Asynchronous method for generating a code_challenge from a provided code_verifier.
-  public async generateCodeChallenge(): Promise<string> {
-    this.ensureCodeVerifierGenerated();
-    const base64CodeVerifier = this._cryptoService.base64UrlToBase64(this.codeVerifier!);
-    const bytesArray: Uint8Array<ArrayBufferLike> = this._cryptoService.base64ToBytes(base64CodeVerifier);
-    const hashArray = await this._cryptoService.hashBytesWithSHA256(bytesArray);
-    const base64Code = this._cryptoService.bytesToBase64(hashArray);
-    return this._cryptoService.base64ToBase64Url(base64Code);
+  async generateCodeChallenge(): Promise<string> {
+    const encoder = new TextEncoder();
+    const codeVerifier = sessionStorage.getItem('code_verifier');
+    const data = encoder.encode(
+      codeVerifier!
+    );
+  
+    return await window.crypto.subtle.digest('SHA-256', data).then((hashBuffer) => {
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const base64Url = btoa(String.fromCharCode.apply(null, hashArray))
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/, '');
+  
+      return base64Url;
+    });
   }
+  
 
   // Ensures the code verifier has been generated before proceeding.
   public ensureCodeVerifierGenerated() {

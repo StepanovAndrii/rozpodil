@@ -41,8 +41,14 @@ export class CryptoService {
   }
 
   // Method for converting a base64 string to a byte array.
-  public base64ToBytes(base64Code: string): Uint8Array<ArrayBufferLike> {
-    const binaryString = atob(base64Code);
-    return Uint8Array.from(binaryString, (char) => char.charCodeAt(0));
-  }
+ // Method for converting a base64Url string to a byte array.
+public base64UrlToBytes(base64UrlCode: string): Uint8Array<ArrayBufferLike> {
+  // Спочатку конвертуємо з Base64URL в Base64
+  const base64Code = this.base64UrlToBase64(base64UrlCode);
+  
+  // Потім декодуємо в байти
+  const binaryString = atob(base64Code);
+  return Uint8Array.from(binaryString, (char) => char.charCodeAt(0));
+}
+
 }
