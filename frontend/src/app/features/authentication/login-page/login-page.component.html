@@ -1,0 +1,14 @@
+<form [formGroup]="loginForm" class="registration-form" (submit)="onSubmit()">
+    <h2>Вхід</h2>
+    <div class="register-with-fields-area">
+        <div class="email-or-phone-field-area">
+            <input formControlName="email" class="input-field" type="text" placeholder="Е-пошта">
+        </div>
+        <div class="input-area">
+            <div class="input-sideeye-area">
+                <input formControlName="password" class="input-field password-field" type="password" placeholder="Пароль">         
+            </div>
+        </div>
+    </div>
+    <button class="register-button" type="submit">Увійти</button>
+</form>
