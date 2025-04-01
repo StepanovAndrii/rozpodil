@@ -1,0 +1,91 @@
+.wrapper {
+    margin: 0 auto;
+    max-width: 460px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+}
+
+.header-2 {
+    font-size: 24px;
+    margin: 0px 40px;
+    text-align: center;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    gap: 8px;
+}
+
+.description-link {
+    text-decoration: underline;
+    text-decoration-thickness: 6%;
+    text-underline-offset: 15%;
+    text-decoration-skip-ink: all;
+    color: #000000;
+    cursor: pointer;
+}
+
+.action-button {
+    background-color: #000000;
+    border: none;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 100%;
+    max-width: 48px;
+    height: 48px;
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-button {
+    background-image: url("/icons/plus-icon.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.enter-button {
+    background-image: url("/icons/arrow-right-icon.svg");
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.button-area {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+}
+
+.button-label {
+    pointer-events: none;
+}
+
+.button {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.site-name {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+}
+
+@media screen and (max-width: 600px ) {
+    .header-2 {
+        font-size: 20px;
+    }
+
+    .description {
+        display: none;
+    }
+}
