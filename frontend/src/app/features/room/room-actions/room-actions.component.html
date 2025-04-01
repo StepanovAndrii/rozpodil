@@ -1,0 +1,18 @@
+<div class="wrapper">
+    <h2 class="header-2">Створіть або приєднайтесь до кімнати</h2>
+    <div class="description">
+        <p><a (click)="allowAccess()" routerLink="/room/create" class="description-link">Створіть кімнату</a> – розподіляйте завдання з нуля.</p>
+        <p><a (click)="allowAccess()" routerLink="/room/join" class="description-link">Приєднайтесь</a> – долучіться та працюйте разом.</p>
+    </div>
+    <div class="button-area">
+        <div class="button">
+            <a (click)="allowAccess()" routerLink="/room/create" id="create-button" class="action-button create-button"></a>
+            <label class="button-label" for="create-button">Створити</label>
+        </div>
+        <div class="button">
+            <a (click)="allowAccess()" routerLink="/room/join" id="enter-button" class="action-button enter-button"></a>
+            <label class="button-label" for="enter-button">Вступити</label>
+        </div>
+    </div>
+</div>
+<small class="site-name">rozpodil.com</small>
