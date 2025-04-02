@@ -6,6 +6,9 @@ export const routes: Routes = [
         redirectTo: 'room',
         pathMatch: 'full'
     },
+    {path: 'home', loadComponent: () => 
+        import('./features/home/home.component').then(component => component.HomeComponent)
+    },
     {path: 'room', loadComponent: () =>
         import('./features/room/room-actions/room-actions.component').then(component => component.RoomActionsComponent)
     },
