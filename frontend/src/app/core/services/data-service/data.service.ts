@@ -1,6 +1,5 @@
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({
@@ -9,23 +8,14 @@ import { firstValueFrom } from 'rxjs';
 
 export class DataService {
   constructor(
-    private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: object
+    private http: HttpClient
   ) { }
 
   public async getTasks() {
-    if(isPlatformServer(this.platformId)){
-      return await firstValueFrom(this.http.get('/api/tasks'));
-    }
-
-    return null;
+    return await firstValueFrom(this.http.get('https://localhost:7297/api/tasks'));
   }
 
   public async getUser() {
-    if(isPlatformServer(this.platformId)) {
-      return await firstValueFrom(this.http.get('/api/users'));
-    }
-
-    return null;
+    return await firstValueFrom(this.http.get('/api/users'));
   }
 }

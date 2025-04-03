@@ -15,6 +15,10 @@ export class RoomCreationComponent {
     private router: Router
   ) { }
 
+  public goToHome(): void {
+    this.router.navigate(['/home'])
+  }
+
   public changeToJoin() : void {
     this.accessControlService.enable();
     this.router.navigate(['/room/join'], { replaceUrl: true })

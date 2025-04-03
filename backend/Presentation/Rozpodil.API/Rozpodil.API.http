@@ -1,6 +1,6 @@
-@Backend.API_HostAddress = http://localhost:5292
+@Rozpodil.API_HostAddress = http://localhost:5247
 
-GET {{Backend.API_HostAddress}}/weatherforecast/
+GET {{Rozpodil.API_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

@@ -16,6 +16,6 @@ export class RoomJoiningComponent {
 
   public changeToCreate() : void {
     this.accessControlService.enable();
-this.router.navigate(['/room/create'], { replaceUrl: true })
+    this.router.navigate(['/room/create'], { replaceUrl: true })
   }
 }
