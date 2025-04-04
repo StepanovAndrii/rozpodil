@@ -1,0 +1,9 @@
+﻿namespace Rozpodil.Domain.Entities
+{
+    public class User
+    {
+        public Guid Id { get; set; }
+        public required string Username { get; set; }
+        public IList<Room> Rooms { get; set; } = new List<Room>();
+    }
+}
