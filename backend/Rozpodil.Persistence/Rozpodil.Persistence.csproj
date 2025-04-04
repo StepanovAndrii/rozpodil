@@ -17,4 +17,8 @@
     <Folder Include="Repository\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Rozpodil.Domain\Rozpodil.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

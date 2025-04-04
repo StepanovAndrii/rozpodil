@@ -3,14 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35818.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rozpodil.Application", "Core\Rozpodil.Application\Rozpodil.Application.csproj", "{12210561-6F77-39A6-2487-E801075D5A0B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rozpodil.Domain", "Core\Rozpodil.Domain\Rozpodil.Domain.csproj", "{6858298E-52CE-A52C-E35F-41D482F3EF85}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rozpodil.Infrastructure", "Infrastructure\Rozpodil.Infrastracture\Rozpodil.Infrastructure.csproj", "{5D366B19-C429-F0B7-460C-4A6B70D8D647}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rozpodil.Persistence", "Infrastructure\Rozpodil.Persistence\Rozpodil.Persistence.csproj", "{E4B48D30-9B44-B60D-16C1-865916D88240}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rozpodil.API", "Presentation\Rozpodil.API\Rozpodil.API.csproj", "{BC98EF25-B2B9-4A17-8AA4-9459F34CD99C}"
 EndProject
 Global
@@ -19,22 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{12210561-6F77-39A6-2487-E801075D5A0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{12210561-6F77-39A6-2487-E801075D5A0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{12210561-6F77-39A6-2487-E801075D5A0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{12210561-6F77-39A6-2487-E801075D5A0B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6858298E-52CE-A52C-E35F-41D482F3EF85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6858298E-52CE-A52C-E35F-41D482F3EF85}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6858298E-52CE-A52C-E35F-41D482F3EF85}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6858298E-52CE-A52C-E35F-41D482F3EF85}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D366B19-C429-F0B7-460C-4A6B70D8D647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D366B19-C429-F0B7-460C-4A6B70D8D647}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D366B19-C429-F0B7-460C-4A6B70D8D647}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D366B19-C429-F0B7-460C-4A6B70D8D647}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4B48D30-9B44-B60D-16C1-865916D88240}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4B48D30-9B44-B60D-16C1-865916D88240}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4B48D30-9B44-B60D-16C1-865916D88240}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4B48D30-9B44-B60D-16C1-865916D88240}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BC98EF25-B2B9-4A17-8AA4-9459F34CD99C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BC98EF25-B2B9-4A17-8AA4-9459F34CD99C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC98EF25-B2B9-4A17-8AA4-9459F34CD99C}.Release|Any CPU.ActiveCfg = Release|Any CPU

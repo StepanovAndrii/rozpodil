@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Rozpodil.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -13,6 +16,10 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+
+builder.Services.AddDbContext<DatabaseContext>(
+    options => options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreConnection"))
+);
 
 var app = builder.Build();
 
