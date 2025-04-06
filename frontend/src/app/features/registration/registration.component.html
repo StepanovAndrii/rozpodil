@@ -1,0 +1,19 @@
+<div class="wrapper">
+    <form class="register-form">
+        <h1 class="register-header">Реєстрація</h1>
+        <input class="nickname-input register-input" type="text" placeholder="Нікнейм">
+        <input class="email-input register-input" type="email" placeholder="Е-пошта">
+        <input class="password-input register-input" type="password" placeholder="Пароль">
+        <input class="password-repetition-input register-input" type="password" placeholder="Повторіть пароль">
+        <div class="inputs">
+            <button class="register-submit-button" aria-label="Зареєструватися">Зареєструватися</button>
+            <div class="input-buttons">
+                <a routerLink="{{registerWithGoogleUrl}}" class="google-button" >Зареєструватися з Google</a>
+            </div>
+        </div>
+        <p class="login-link-area">
+            Вже зареєстровані?
+            <a routerLink="{{loginUrl}}" class="login-link">Увійдіть</a>
+        </p>
+    </form>
+</div>
