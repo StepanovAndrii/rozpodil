@@ -1,0 +1,10 @@
+<button
+    #toggleEyeButton
+    (click)="toggle()"
+    class="eye opened-eye"
+    type="button"
+    [attr.aria-label]="
+        isPasswordInvisible
+        ? 'Подивитись пароль'
+        : 'Сховати пароль'">
+</button>
