@@ -4,8 +4,15 @@ import { taskResolver } from './core/resolvers/task-resolver/task.resolver';
 
 export const routes: Routes = [
     {path: '',
-        redirectTo: 'room',
+        redirectTo: 'login',
         pathMatch: 'full'
+    },
+    {path: 'login', loadComponent: () =>
+        import('./features/login/login.component').then(component => component.LoginComponent),
+        data: { preload: true }
+    },
+    {path: 'register', loadComponent: () =>
+        import('./features/registration/registration.component').then(component => component.RegistrationComponent)
     },
     {path: 'home', loadComponent: () => 
         import('./features/home/home.component').then(component => component.HomeComponent),
@@ -20,11 +27,9 @@ export const routes: Routes = [
     {path: 'room/create', loadComponent: () =>
         import('./features/room/room-creation/room-creation.component').then(component => component.RoomCreationComponent),
         canActivate: [canAccessGuard],
-        data: { preload: true }
     },
     {path: 'room/join', loadComponent: () =>
         import('./features/room/room-joining/room-joining.component').then(component => component.RoomJoiningComponent),
         canActivate: [canAccessGuard],
-        data: { preload: true }
     }
 ];
