@@ -1,10 +1,10 @@
 <div class="wrapper">
     <form class="register-form">
         <h1 class="register-header">Реєстрація</h1>
-        <input class="nickname-input register-input" type="text" placeholder="Нікнейм">
-        <input class="email-input register-input" type="email" placeholder="Е-пошта">
-        <input class="password-input register-input" type="password" placeholder="Пароль">
-        <input class="password-repetition-input register-input" type="password" placeholder="Повторіть пароль">
+        <app-input-field inputFieldId="username">Нікнейм</app-input-field>
+        <app-input-field inputFieldId="email" inputType="email">Е-мейл</app-input-field>
+        <app-password-field inputFieldId="password">Пароль</app-password-field>
+        <app-password-field inputFieldId="passwordRepetition">Повторіть пароль</app-password-field>
         <div class="inputs">
             <button class="register-submit-button" aria-label="Зареєструватися">Зареєструватися</button>
             <div class="input-buttons">
