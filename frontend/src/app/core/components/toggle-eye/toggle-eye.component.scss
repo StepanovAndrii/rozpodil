@@ -1,17 +1,9 @@
-.eye {
-    position: absolute;
-    top: calc(50% - 15px);
-    right: 20px;
-    cursor: pointer;
-    border: none;
-    width: 30px;
-    height: 30px;
+@use 'partials/mixins' as mixins;
+
+.toggle-eye--opened-eye {
+    @include mixins.toggle-button("/optimised-icons/opened-eye.svg");
 }
 
-.opened-eye {
-    background: url("/optimised-icons/toggled-opened-eye-icon.svg") no-repeat center center / 30px auto;
-}
-
-.closed-eye {
-    background: url("/optimised-icons/toggled-opened-eye-icon.svg") no-repeat center center / 30px auto, url("/optimised-icons/crossed-out-toggled-opened-eye-icon.svg") no-repeat center center / 30px auto;
+.toggle-eye--closed-eye {
+    @include mixins.toggle-button("/optimised-icons/closed-eye.svg");
 }

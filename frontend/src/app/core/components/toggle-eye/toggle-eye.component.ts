@@ -1,30 +1,27 @@
 import {
   Component,
-  ElementRef,
-  ViewChild 
+  Input,
+  Output,
+  EventEmitter
 } from '@angular/core';
+
+import {
+  CommonModule
+} from '@angular/common'
 
 @Component({
   selector: 'app-toggle-eye',
-  imports: [],
+  imports: [CommonModule],
+  standalone: true,
   templateUrl: './toggle-eye.component.html',
   styleUrl: './toggle-eye.component.scss'
 })
 
 export class ToggleEyeComponent {
-  @ViewChild('toggleEyeButton') toggleEyeButton!: ElementRef<HTMLButtonElement>
+  @Input() isPasswordVisible: boolean = false;
+  @Output() toggled = new EventEmitter<void>();
 
   public toggle(): void {
-    if(this.isPasswordInvisible) {
-      this.isPasswordInvisible = false;
-      this.passwordInput.nativeElement.type = 'text';
-      this.togglePasswordButton.nativeElement.classList.remove('opened-eye');
-      this.togglePasswordButton.nativeElement.classList.add('closed-eye');
-      return;
-    }
-    this.isPasswordInvisible = true;
-    this.passwordInput.nativeElement.type = 'password';
-    this.togglePasswordButton.nativeElement.classList.remove('closed-eye');
-    this.togglePasswordButton.nativeElement.classList.add('opened-eye');
+    this.toggled.emit();
   }
 }

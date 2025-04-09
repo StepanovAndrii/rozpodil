@@ -1,10 +1,10 @@
-<button
-    #toggleEyeButton
+<button class="toggle-eye"
     (click)="toggle()"
-    class="eye opened-eye"
+    [ngClass]="isPasswordVisible
+        ? 'toggle-eye--closed-eye'
+        : 'toggle-eye--opened-eye'"
     type="button"
-    [attr.aria-label]="
-        isPasswordInvisible
-        ? 'Подивитись пароль'
-        : 'Сховати пароль'">
+    [attr.aria-label]="isPasswordVisible
+        ? 'Сховати пароль'
+        : 'Подивитись пароль'">
 </button>
