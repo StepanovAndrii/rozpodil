@@ -1,10 +1,11 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ToggleEyeComponent } from "../../core/components/toggle-eye/toggle-eye.component";
+import { PasswordFieldComponent } from "../../core/components/password-field/password-field.component";
+import { InputFieldComponent } from "../../core/components/input-field/input-field.component";
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink, ToggleEyeComponent],
+  imports: [RouterLink, PasswordFieldComponent, InputFieldComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -18,14 +19,4 @@ export class LoginComponent {
   @ViewChild('eyeButton') togglePasswordButton!: ElementRef<HTMLButtonElement>;
 
   public isPasswordInvisible: boolean = true;
-
-  public constructor(
-    
-  ) { }
-
-  public preventShortcut(event: KeyboardEvent): void {
-    if((event.ctrlKey) || event.metaKey && ['c', 'x'].includes(event.key.toLowerCase())) {
-      event.preventDefault();
-    }
-  }
 }

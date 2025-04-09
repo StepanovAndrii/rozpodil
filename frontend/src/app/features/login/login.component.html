@@ -1,31 +1,52 @@
-<div class="wrapper">
+<div class="padding-container">
     <form class="login-form">
-        <div class="login-form-content">
-            <h1 class="login-header">Логін</h1>
-            <input class="login login-input" type="email" placeholder="Е-пошта">
-            <div class="password-area">
-                <div class="password-field">
-                    <input 
-                        #passwordInput
-                        class="login-input password"
-                        type="password"
-                        placeholder="Пароль"
-                        (keydown)="preventShortcut($event)"
-                    />
-                    <app-toggle-eye />
-                </div>
-                <a routerLink="{{forgotPasswordUrl}}" class="password-reminder">Забули пароль?</a>
+        <div class="login-form__content">
+            <h1 class="login-form__main-header">Логін</h1>
+            <app-input-field
+                class="login-form__input-field"
+                inputFieldId="login"
+                inputType="email">
+                
+                Е-пошта
+            </app-input-field>
+            <div class="login-form__password-container">
+                <app-password-field
+                    class="login-form__password-field"
+                    inputFieldId="password">
+                    
+                    Пароль
+                </app-password-field>
+                <a
+                    class="login-form__forgot-password-link"
+                    routerLink="{{forgotPasswordUrl}}">
+                    
+                    Забули пароль?
+                </a>
             </div>
-            <div class="inputs">
-                <button class="login-submit-button">Увійти</button>
-                <div class="input-buttons">
-                    <a routerLink="{{loginWithGoogleUrl}}" class="google-button">Увійти з Google</a>
-                </div>
+            <div class="login-form__buttons-container">
+                <button class="login-form__submit-button">Увійти</button>
+                <a 
+                    class="login-form__google-login"
+                    routerLink="{{loginWithGoogleUrl}}">
+                    
+                    <img
+                        class="login-form__google-login-icon"
+                        src="/optimised-icons/google-logotype-icon.svg"
+                        alt="Логотип гугл">
+
+                    Увійти з Google
+                </a>
             </div>
         </div>
-        <p class="register-link-area">
+        <p class="login-form__additional-information">
             Ще не маєте акаунта?
-            <a routerLink="{{registerUrl}}" replaceUrl="true" class="register-link">Зареєструйтесь</a>
+            <a 
+                class="login-form__register-link"
+                routerLink="{{registerUrl}}"
+                replaceUrl="true">
+                
+                Зареєструйтесь
+            </a>
         </p>
     </form>
 </div>
