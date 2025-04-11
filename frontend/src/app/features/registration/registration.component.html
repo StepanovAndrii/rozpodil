@@ -1,19 +1,50 @@
 <div class="wrapper">
-    <form class="register-form">
+    <form [formGroup]="registrationForm" class="register-form">
         <h1 class="register-header">Реєстрація</h1>
-        <app-input-field inputFieldId="username">Нікнейм</app-input-field>
-        <app-input-field inputFieldId="email" inputType="email">Е-мейл</app-input-field>
-        <app-password-field inputFieldId="password">Пароль</app-password-field>
-        <app-password-field inputFieldId="passwordRepetition">Повторіть пароль</app-password-field>
+        <app-input-field
+            inputFieldId="username"
+            formControlName="username">
+
+            Нікнейм
+        </app-input-field>
+        <app-input-field
+            inputFieldId="email"
+            inputType="email"
+            formControlName="email">
+            
+            Е-мейл
+        </app-input-field>
+        <app-password-field
+            inputFieldId="password"
+            formControlName="password">
+
+            Пароль
+        </app-password-field>
+        <app-password-field
+            inputFieldId="passwordRepetition"
+            formControlName="passwordRepetition">
+
+            Повторіть пароль
+        </app-password-field>
         <div class="inputs">
-            <button class="register-submit-button" aria-label="Зареєструватися">Зареєструватися</button>
+            <button
+                class="register-submit-button"
+                aria-label="Зареєструватися">
+
+                Зареєструватися
+            </button>
             <div class="input-buttons">
                 <a routerLink="{{registerWithGoogleUrl}}" class="google-button" >Зареєструватися з Google</a>
             </div>
         </div>
         <p class="login-link-area">
             Вже зареєстровані?
-            <a routerLink="{{loginUrl}}" class="login-link">Увійдіть</a>
+            <a
+                routerLink="{{loginUrl}}"
+                class="login-link">
+
+                Увійдіть
+            </a>
         </p>
     </form>
 </div>
