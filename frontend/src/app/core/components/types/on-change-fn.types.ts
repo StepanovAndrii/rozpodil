@@ -1,0 +1,1 @@
+export type OnChangeFn = (value: string) => void;
