@@ -1,4 +1,9 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  ViewChild
+} from '@angular/core';
+
 import { RouterLink } from '@angular/router';
 import { PasswordFieldComponent } from "../../core/components/password-field/password-field.component";
 import { InputFieldComponent } from "../../core/components/input-field/input-field.component";

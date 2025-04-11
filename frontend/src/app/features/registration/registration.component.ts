@@ -1,6 +1,19 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
+
+import {
+  FormGroup,
+  ReactiveFormsModule,
+  FormBuilder
+} from '@angular/forms';
+
+import {
+  Router,
+  RouterLink
+} from '@angular/router';
+
 import { InputFieldComponent } from "../../core/components/input-field/input-field.component";
 import { PasswordFieldComponent } from "../../core/components/password-field/password-field.component";
 
@@ -16,20 +29,29 @@ import { PasswordFieldComponent } from "../../core/components/password-field/pas
   styleUrl: './registration.component.scss'
 })
 
-export class RegistrationComponent {
+export class RegistrationComponent implements OnInit{
   public registerWithGoogleUrl: string = "";
   public loginUrl: string = "/login";
-
-  public registrationForm = new FormGroup({
-    username: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-    passwordRepetition: new FormControl('')
-  });
   
+  public registrationForm!: FormGroup;
+
   public constructor(
-    private router: Router
+    private router: Router,
+    private formBuilder: FormBuilder
   ) { }
+
+  ngOnInit(): void {
+    this.initForm();
+  }
+
+  private initForm() {
+    this.registrationForm = this.formBuilder.group ({
+      username: [''],
+      email: [''],
+      password: [''],
+      passwordRepetition: ['']
+    });
+  }
 
   public changeToLogin() {
     this.router.navigate(
