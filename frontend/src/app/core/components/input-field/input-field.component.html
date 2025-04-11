@@ -3,6 +3,8 @@
         class="input-field__input"
         [id]="inputFieldId"
         [type]="inputType"
+        [value]="value"
+        (input)="onInputValueChange($event)"
         placeholder="">
     <label
         class="input-field__label"
