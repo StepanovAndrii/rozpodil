@@ -15,6 +15,7 @@ import { InputFieldComponent } from "../../core/components/input-field/input-fie
     PasswordFieldComponent,
     InputFieldComponent
   ],
+  standalone: true,
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

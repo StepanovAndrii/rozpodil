@@ -33,6 +33,7 @@ import { passwordMismatchValidator } from '../../core/validators/password-mismat
     PasswordFieldComponent,
     ReactiveFormsModule
   ],
+  standalone: true,
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss'
 })
