@@ -1,7 +1,7 @@
 // --config svgo.config.mjs 
 
 export default {
-    multipass: false,
+    multipass: true,
     datauri: 'unenc',
     js2svg: {
         indent: 4,

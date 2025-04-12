@@ -10,7 +10,11 @@ import { InputFieldComponent } from "../../core/components/input-field/input-fie
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink, PasswordFieldComponent, InputFieldComponent],
+  imports: [
+    RouterLink,
+    PasswordFieldComponent,
+    InputFieldComponent
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

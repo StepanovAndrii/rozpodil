@@ -45,7 +45,7 @@
 @include media.screen-size(sm) {
     .input-field {
         .input-field__input {
-            padding: 2rem;
+            padding: 1rem 2rem; // TODO
         }
         .input-field__label {
             font-size: 1.2rem;

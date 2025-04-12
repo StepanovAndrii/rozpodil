@@ -11,8 +11,8 @@ import {
   NG_VALUE_ACCESSOR
 } from '@angular/forms';
 
-import { OnChangeFn } from '../types/on-change-fn.types';
-import { OnTouchedFn } from '../types/on-touched-fn.types';
+import { OnChangeFn } from '../../types/on-change-fn.types';
+import { OnTouchedFn } from '../../types/on-touched-fn.types';
 
 @Component({
   selector: 'app-input-field',
