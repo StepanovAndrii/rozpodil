@@ -1,0 +1,28 @@
+.checkmark {
+    position: absolute;
+    top: 50%;
+    left: -2rem;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.checkmark__indicator {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.checkmark__indicator--untoched {
+    display: none;
+}
+
+.checkmark__indicator--valid {
+    background: url('/optimised-icons/check-mark.svg')
+        no-repeat
+        center;
+}
+
+.checkmark__indicator--invalid {
+    background: url('/optimised-icons/criss-cross.svg')
+        no-repeat
+        center;
+}

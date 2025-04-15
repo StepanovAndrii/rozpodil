@@ -1,0 +1,27 @@
+@use 'sass:map';
+@use '../../partials/colors' as *;
+
+.validation-hint {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 0.5rem;
+
+    .validation-hint__indicator {
+        width: 0.8rem;
+        height: 0.8rem;
+        flex-shrink: 0;
+    }
+
+    .validation-hint__indicator--valid {
+        fill: map.get($colors, success-color);
+    }
+
+    .validation-hint__indicator--invalid {
+        fill: map.get($colors, error-color);
+    }
+
+    .validation-hint__valodator-title {
+        font-size: 0.8rem;
+    }
+}

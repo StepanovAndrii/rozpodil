@@ -1,14 +1,16 @@
 import {
-  AfterViewInit,
   Component,
-  OnInit
+  OnDestroy,
+  OnInit,
+  signal,
+  ViewChild
 } from '@angular/core';
 
 import {
   FormGroup,
   ReactiveFormsModule,
   FormBuilder,
-  Validators
+  AbstractControl
 } from '@angular/forms';
 
 import {
@@ -16,14 +18,20 @@ import {
   RouterLink
 } from '@angular/router';
 
+import {
+  Subject,
+  takeUntil
+} from 'rxjs';
+
 import { InputFieldComponent } from "../../core/components/input-field/input-field.component";
 import { PasswordFieldComponent } from "../../core/components/password-field/password-field.component";
-import { lowercaseValidator } from '../../core/validators/lowercase.validator';
-import { uppercaseValidator } from '../../core/validators/uppercase.validator';
-import { noWhitespaceValidator } from '../../core/validators/no-whitespace.validator';
-import { oneDigitValidator } from '../../core/validators/one-digit.validator';
-import { specialSymbolValidator } from '../../core/validators/one-special-symbol.validator';
-import { passwordMismatchValidator } from '../../core/validators/password-mismatch.validator';
+import { CheckmarkComponent } from "../../core/components/checkmark/checkmark.component";
+import { passwordNamedValidators } from './validators/password-named-validators';
+import { emailNamedValidators } from './validators/email-named-validators';
+import { usernameNamedValidators } from './validators/username-named-validators';
+import { passwordRepetitionNamedValidators } from './validators/password-repetition-named-validators';
+import { getValidatorsPair } from '../../core/validators/utils/validator-type-guards';
+import { FieldHintsPopoverComponent } from "../../core/components/field-hints-popover/field-hints-popover.component";
 
 @Component({
   selector: 'app-registration',
@@ -31,30 +39,52 @@ import { passwordMismatchValidator } from '../../core/validators/password-mismat
     RouterLink,
     InputFieldComponent,
     PasswordFieldComponent,
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule,
+    CheckmarkComponent,
+    FieldHintsPopoverComponent
+],
   standalone: true,
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss'
 })
 
-export class RegistrationComponent implements OnInit, AfterViewInit{
+export class RegistrationComponent implements OnInit, OnDestroy {
+  @ViewChild('username') usernameField: InputFieldComponent | undefined;
+  @ViewChild('email') emailField: InputFieldComponent | undefined;
+  @ViewChild('password') passwordField: PasswordFieldComponent | undefined;
+  @ViewChild('passwordRepetition') passwordRepetitionField: PasswordFieldComponent | undefined;
+
+  public focusedDefault = signal(false);
   public registerWithGoogleUrl: string = "";
   public loginUrl: string = "/login";
-  
   public registrationForm!: FormGroup;
+
+  public usernameNamedValidators = usernameNamedValidators;
+  public emailNamedValidators = emailNamedValidators;
+  public passwordNamedValidators = passwordNamedValidators;
+  public get passwordRepetitionNamedValidators() {
+    const passwordControl = this.getControl('password');
+    return passwordRepetitionNamedValidators(passwordControl!);
+  }
+
+  private destroy$ = new Subject<void>();
 
   public constructor(
     private router: Router,
     private formBuilder: FormBuilder
   ) { }
 
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   public ngOnInit(): void {
     this.initForm();
   }
 
-  public ngAfterViewInit(): void {
-    this.runAnimeAnimation();
+  public getControl(name: string): AbstractControl<any, any> | null {
+    return this.registrationForm.get(name);
   }
 
   public changeToLogin() {
@@ -64,49 +94,43 @@ export class RegistrationComponent implements OnInit, AfterViewInit{
     );
   }
 
-  private setPasswordMismatchValidator(): void {
-    const passwordControl = this.registrationForm.get('password');
-    const passwordRepetitionControl = this.registrationForm.get('passwordRepetition');
-
-    if (passwordControl && passwordRepetitionControl) {
-      passwordRepetitionControl.setValidators([
-        passwordMismatchValidator(passwordControl)
-      ]);
-    }
-  }
-
   private initForm() {
+    const [usernameSync, usernameAsync] = getValidatorsPair(usernameNamedValidators);
+    const [passwordSync, passwordAsync] = getValidatorsPair(passwordNamedValidators);
+    const [emailSync, emailAsync] = getValidatorsPair(emailNamedValidators);
+
     this.registrationForm = this.formBuilder.group ({
-      username: ['', [
-        Validators.minLength(3),
-        Validators.maxLength(30),
-        Validators.required
-      ]],
-      email: ['', [
-        Validators.minLength(5),
-        Validators.maxLength(100),
-        Validators.required,
-        Validators.email
-      ]],
-      password: ['', [
-        Validators.minLength(8),
-        Validators.maxLength(64),
-        Validators.required,
-        lowercaseValidator(),
-        uppercaseValidator(),
-        noWhitespaceValidator(),
-        oneDigitValidator(),
-        specialSymbolValidator()
-      ]],
-      passwordRepetition: ['', [
-        Validators.required
-      ]]
+      username: ['', usernameSync, usernameAsync],
+      email: ['', emailSync, emailAsync],
+      password: ['', passwordSync, passwordAsync],
+      passwordRepetition: ['']
     });
 
     this.setPasswordMismatchValidator();
   }
 
-  private runAnimeAnimation(): void {
-    
+  private setPasswordMismatchValidator(): void {
+    const passwordControl = this.getControl('password');
+    const passwordRepetitionControl = this.getControl('passwordRepetition');
+
+    if (passwordControl && passwordRepetitionControl) {
+      const [passwordRepetitionSync, passwordRepetitionAsync] = getValidatorsPair(
+        this.passwordRepetitionNamedValidators
+      );
+
+      passwordRepetitionControl.setValidators(
+        passwordRepetitionSync
+      );
+
+      passwordRepetitionControl.setAsyncValidators(
+        passwordRepetitionAsync
+      );
+
+      passwordControl.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        passwordRepetitionControl.updateValueAndValidity();
+      })
+    }
   }
 }

@@ -4,7 +4,9 @@
         [id]="inputFieldId"
         [type]="inputType"
         [value]="value"
+        (blur)="onBlur()"
         (input)="onInputValueChange($event)"
+        (focus)="onFocus()"
         placeholder="">
     <label
         class="input-field__label"

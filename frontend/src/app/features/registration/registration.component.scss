@@ -1,95 +1,79 @@
-.wrapper {
-    display: flex;
-    align-items: center;
-    margin: 0 auto;
-    max-width: 460px;
-    min-height: 100%;
+@use 'sass:map';
+@use '../../core/partials/colors' as *;
+@use '../../core/partials/media' as media;
+
+@include media.screen-size(xs) {
+    .padding-container {
+        height: 100%;
+        padding: 1rem;
+
+        .registration-form {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .registration-form__content {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+
+                .registration-form__main-header {
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    text-align: center;
+                }
+
+                .registration-form__field-container {
+                    display: flex;
+                    position: relative;
+                }
+
+                .registration-form__buttons-container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+
+                    .registration-form__submit-button {
+                        padding: 1.2rem 0;
+                        border: none;
+                        background-color: map.get($colors, primary-color);
+                        color: map.get($colors, secondary-color);
+                        cursor: pointer;
+                    }
+
+                    .registration-form__google-login {
+                        padding: 1.2rem 0;
+                        text-align: center;
+                        text-decoration: none;
+                        border-radius: 5px;
+                        background-color: map.get($colors, secondary-color);
+                        color: map.get($colors, primary-color);
+                        border: 1px solid map.get($colors, gray-color);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 1rem;
+                    }
+                }
+            }
+        }
+    }
 }
 
-.register-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center ;
-    gap: 20px;
+@include media.screen-size(sm) {
+    
 }
 
-.register-header {
-    font-size: 20px;
+@include media.screen-size(md) {
+    
 }
 
-.register-input {
-    height: 48px;
-    width: 100%;
-    padding: 0 10px;
+@include media.screen-size(lg) {
+    
 }
 
-.password-area {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.password-reminder {
-    font-size: 14px;
-    align-self: flex-end;
-    color: #000000;
-    text-decoration: underline;
-    text-decoration-thickness: 6%;
-    text-underline-offset: 15%;
-    text-decoration-skip-ink: all;
-    cursor: pointer;
-}
-
-.inputs {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.register-submit-button {
-    width: 100%;
-    background-color: #000000;
-    border: none;
-    height: 48px;
-    color: #ffffff;
-    cursor: pointer;
-}
-
-.input-buttons {
-    font-size: 14px;
-    display: flex;
-    width: 100%;
-}
-
-.google-button {
-    width: 100%;
-    border: none;
-    height: 48px;
-    color: #000000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border-radius: 5px;
-    border: 1px solid #747775;
-    background: url("/optimised-icons/google-logotype-icon.svg") no-repeat 20px center;
-}
-
-.login-link-area {
-    font-size: 14px;
-    user-select: none;
-}
-
-.login-link {
-    cursor: pointer;
-    color: #000000;
-    text-decoration: underline;
-    text-decoration-thickness: 6%;
-    text-underline-offset: 15%;
-    text-decoration-skip-ink: all;
+@include media.screen-size(xl) {
+    
 }

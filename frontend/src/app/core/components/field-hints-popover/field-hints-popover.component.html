@@ -1,0 +1,15 @@
+<div 
+    class="field-hints-popover"
+    [class.field-hints-popover--inactive]="!focused()">
+
+
+    <ul class="field-hints-popover__list">
+        @for (validator of validators; track $index) {
+            <li class="field-hints-popover__hint">
+                <app-validation-hint 
+                    [validatorTitle]="validator.description"
+                    [isFieldValid]="!hasError(validator.title)"/>
+            </li>
+        }
+    </ul>
+</div>

@@ -3,7 +3,11 @@ import {
   Component,
   forwardRef,
   Input,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  signal,
+  HostListener,
+  Output,
+  EventEmitter
 } from '@angular/core';
 
 import {
@@ -34,6 +38,22 @@ export class InputFieldComponent implements ControlValueAccessor {
   @Input() inputFieldId!: string;
   @Input() inputType: string = 'text';
   @Input() value: string = '';
+  @Output() touched: EventEmitter<void> = new EventEmitter<void>();;
+
+  @HostListener('focusin') 
+  public onFocus() {
+    this._focused.set(true);
+  }
+  
+  @HostListener('focusout') 
+  public onBlur() {
+    this.onTouched();
+    this.touched.emit();
+    this._focused.set(false);
+  }
+
+  private _focused = signal(false);
+  public readonly focused = this._focused.asReadonly();
 
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
@@ -48,17 +68,17 @@ export class InputFieldComponent implements ControlValueAccessor {
     this.onChange(value);
   }
 
-  writeValue(value: string): void {
+  public writeValue(value: string): void {
     if(value === null) return;
     this.value = value;
     this.changeDetector.detectChanges();
   }
 
-  registerOnChange(fn: OnChangeFn): void {
+  public registerOnChange(fn: OnChangeFn): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: OnTouchedFn): void {
+  public registerOnTouched(fn: OnTouchedFn): void {
     this.onTouched = fn;
   }
 }

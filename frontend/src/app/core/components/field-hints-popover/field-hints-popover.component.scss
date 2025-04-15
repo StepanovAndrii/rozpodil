@@ -1,0 +1,29 @@
+@use 'sass:map';
+@use '../../partials/colors' as *;
+
+.field-hints-popover {
+    position: absolute;
+    top: 50%;
+    left: 105%;
+    transform: translateY(-50%);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    width: max-content;
+
+    .field-hints-popover__list {
+        padding: 0px;
+
+        .field-hints-popover__hint {
+            list-style-type: none;
+        }
+    }
+}
+
+.field-hints-popover--inactive {
+    display: none;
+}

@@ -3,7 +3,14 @@ import {
   Component,
   forwardRef,
   Input,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Output,
+  EventEmitter,
+  HostListener,
+  ViewChild,
+  input,
+  computed,
+  Signal
 } from '@angular/core';
 
 import { ToggleEyeComponent } from "../toggle-eye/toggle-eye.component";
@@ -38,9 +45,14 @@ import { OnTouchedFn } from '../../types/on-touched-fn.types';
 
 export class PasswordFieldComponent implements ControlValueAccessor{
   @Input() inputFieldId!: string;
+  @ViewChild(InputFieldComponent) input!: InputFieldComponent;
 
   public value: string = '';
   public isPasswordVisible: boolean = false;
+
+  public readonly focused: Signal<boolean> = computed(
+    () => this.input?.focused() ?? false
+  );
 
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
@@ -53,6 +65,10 @@ export class PasswordFieldComponent implements ControlValueAccessor{
     const target = event.target as HTMLInputElement;
     const value: string = target.value;
     this.onChange(value);
+  }
+
+  public onBlur() {
+    this.onTouched();
   }
 
   public togglePasswordVisibility() {

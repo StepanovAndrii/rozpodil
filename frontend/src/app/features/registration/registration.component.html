@@ -1,49 +1,129 @@
-<div class="wrapper">
-    <form [formGroup]="registrationForm" class="register-form">
-        <h1 class="register-header">Реєстрація</h1>
-        <app-input-field
-            inputFieldId="username"
-            formControlName="username">
+<div class="padding-container">
+    <form class="registration-form"
+        [formGroup]="registrationForm"
+        autocomplete="off">
+        
+        <div class="registration-form__content">
+            <h1 class="registration-form__main-header">Реєстрація</h1>
 
-            Нікнейм
-        </app-input-field>
-        <app-input-field
-            inputFieldId="email"
-            inputType="email"
-            formControlName="email">
-            
-            Е-мейл
-        </app-input-field>
-        <app-password-field
-            inputFieldId="password"
-            formControlName="password">
+            <div class="
+                registration-form__field-container
+                registration-form__username-field-container">
 
-            Пароль
-        </app-password-field>
-        <app-password-field
-            inputFieldId="passwordRepetition"
-            formControlName="passwordRepetition">
-
-            Підтвердіть пароль
-        </app-password-field>
-        <div class="inputs">
-            <button
-                class="register-submit-button"
-                aria-label="Зареєструватися">
-
-                Зареєструватися
-            </button>
-            <div class="input-buttons">
-                <a routerLink="{{registerWithGoogleUrl}}" class="google-button" >Зареєструватися з Google</a>
+                <app-checkmark
+                    class="registration-form__username-field-checkmark"
+                    [control]="getControl('username')"/>
+    
+                <app-input-field
+                    class="registration-form__username-field"
+                    inputFieldId="username"
+                    formControlName="username"
+                    #username>
+    
+                    Нікнейм
+                </app-input-field>
+                <app-field-hints-popover
+                    [control]="getControl('username')"
+                    [validators]="usernameNamedValidators"
+                    class="registration-form__username-field-hints"
+                    [focused]="usernameField?.focused ?? focusedDefault"/>
             </div>
+            <div class="
+                registration-form__field-container
+                registration-form__email-field-container">
+
+                <app-checkmark 
+                    class="registration-form__email-field-checkmark"
+                    [control]="getControl('email')"/>
+    
+                <app-input-field
+                    class="registration-form__email-field"
+                    inputFieldId="email"
+                    inputType="email"
+                    formControlName="email"
+                    #email>
+                    
+                    Е-мейл
+                </app-input-field>
+                <app-field-hints-popover
+                    [control]="getControl('email')"
+                    [validators]="emailNamedValidators"
+                    class="registration-form__email-field-hints"
+                    [focused]="emailField?.focused ?? focusedDefault"/>
+            </div>
+            <div class="
+                registration-form__field-container
+                registration-form__password-field-container">
+
+                <app-checkmark
+                    class="registration-form__password-field-checkmark"
+                    [control]="getControl('password')"/>
+    
+                <app-password-field
+                    class="registration-form__password-field"
+                    inputFieldId="password"
+                    formControlName="password"
+                    #password>
+    
+                    Пароль
+                </app-password-field>
+                <app-field-hints-popover
+                    [control]="getControl('password')"
+                    [validators]="passwordNamedValidators"
+                    class="registration-form__password-field-hints"
+                    [focused]="passwordField?.focused ?? focusedDefault"/>
+            </div>
+            <div class="
+                registration-form__field-container
+                registration-form__password-repetition-field-container">
+                
+                <app-checkmark
+                    class="registration-form__password-repetition-field-checkmark"
+                    [control]="getControl('passwordRepetition')"/>
+    
+                <app-password-field
+                    class="registration-form__password-repetition-field"
+                    inputFieldId="passwordRepetition"
+                    formControlName="passwordRepetition"
+                    #passwordRepetition>
+    
+                    Підтвердіть пароль
+                </app-password-field>
+                <app-field-hints-popover 
+                    [control]="getControl('passwordRepetition')"
+                    [validators]="passwordRepetitionNamedValidators"
+                    class="registration-form__password-repetition-field-hints"
+                    [focused]="passwordRepetition?.focused ?? focusedDefault"/>
+            </div>
+            <div class="registration-form__buttons-container">
+                <button
+                    class="registration-form__submit-button"
+                    aria-label="Зареєструватися">
+    
+                    Зареєструватися
+                </button>
+                <div class="registration-form__providers-submit-buttons">
+                    <a 
+                        class="registration-form__google-login"
+                        routerLink="{{registerWithGoogleUrl}}">
+                        
+                        <img
+                            class="login-form__google-login-icon"
+                            src="/optimised-icons/google-logotype-icon.svg"
+                            alt="Логотип гугл">
+    
+                        Зареєструватися з Google
+                    </a>
+                </div>
+            </div>
+            <p class="login-link-area">
+                Вже зареєстровані?
+                <a
+                    routerLink="{{loginUrl}}"
+                    class="login-link">
+                    Увійдіть
+                </a>
+            </p>
         </div>
-        <p class="login-link-area">
-            Вже зареєстровані?
-            <a
-                routerLink="{{loginUrl}}"
-                class="login-link">
-                Увійдіть
-            </a>
-        </p>
     </form>
 </div>

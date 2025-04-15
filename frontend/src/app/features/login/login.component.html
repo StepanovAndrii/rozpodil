@@ -1,5 +1,7 @@
 <div class="padding-container">
-    <form class="login-form">
+    <form class="login-form"
+        autocomplete="off">
+        
         <div class="login-form__content">
             <h1 class="login-form__main-header">Логін</h1>
             <app-input-field
@@ -25,17 +27,19 @@
             </div>
             <div class="login-form__buttons-container">
                 <button class="login-form__submit-button">Увійти</button>
-                <a 
-                    class="login-form__google-login"
-                    routerLink="{{loginWithGoogleUrl}}">
-                    
-                    <img
-                        class="login-form__google-login-icon"
-                        src="/optimised-icons/google-logotype-icon.svg"
-                        alt="Логотип гугл">
+                <div class="login-form__providers-submit-buttons">
+                    <a 
+                        class="login-form__google-login"
+                        routerLink="{{loginWithGoogleUrl}}">
+                        
+                        <img
+                            class="login-form__google-login-icon"
+                            src="/optimised-icons/google-logotype-icon.svg"
+                            alt="Логотип гугл">
 
-                    Увійти з Google
-                </a>
+                        Увійти з Google
+                    </a>
+                </div>
             </div>
         </div>
         <p class="login-form__additional-information">
