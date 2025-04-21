@@ -55,11 +55,31 @@ namespace Rozpodil.Persistence.Migrations
                     b.ToTable("Rooms");
                 });
 
+            modelBuilder.Entity("Rozpodil.Domain.Entities.TwoFactorCode", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("HashedCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("TwoFactorCodes");
+                });
+
             modelBuilder.Entity("Rozpodil.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("IsEmailConfirmed")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -68,6 +88,24 @@ namespace Rozpodil.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Rozpodil.Domain.Entities.UserCredentials", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HashedPassword")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UsersCredentials");
                 });
 
             modelBuilder.Entity("RoomUser", b =>
@@ -82,6 +120,34 @@ namespace Rozpodil.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Rozpodil.Domain.Entities.TwoFactorCode", b =>
+                {
+                    b.HasOne("Rozpodil.Domain.Entities.User", "User")
+                        .WithOne()
+                        .HasForeignKey("Rozpodil.Domain.Entities.TwoFactorCode", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Rozpodil.Domain.Entities.UserCredentials", b =>
+                {
+                    b.HasOne("Rozpodil.Domain.Entities.User", "User")
+                        .WithOne("Credentials")
+                        .HasForeignKey("Rozpodil.Domain.Entities.UserCredentials", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Rozpodil.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Credentials")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

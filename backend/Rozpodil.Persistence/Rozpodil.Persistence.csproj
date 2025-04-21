@@ -14,11 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repository\" />
+    <ProjectReference Include="..\Rozpodil.Application\Rozpodil.Application.csproj" />
+    <ProjectReference Include="..\Rozpodil.Domain\Rozpodil.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rozpodil.Domain\Rozpodil.Domain.csproj" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

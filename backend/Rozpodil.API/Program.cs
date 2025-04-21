@@ -1,4 +1,9 @@
+﻿// TODO: приєднати FluentValidation
+
 using Microsoft.EntityFrameworkCore;
+using Rozpodil.API.Extensions;
+using Rozpodil.API.Mappings;
+using Rozpodil.Infrastructure;
 using Rozpodil.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,18 +12,30 @@ builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
 
+builder.Services.AddMappingProfiles();
+
+builder.Services.AddScopedServices();
+
+builder.Services.AddInfrastructure(builder.Configuration);
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins(
+            "http://localhost:4200",
+            "http://localhost:4000")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
 builder.Services.AddDbContext<DatabaseContext>(
-    options => options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreConnection"))
+    options => options.UseNpgsql
+    (
+        builder.Configuration.GetConnectionString("PostgreConnection"),
+        assembly => assembly.MigrationsAssembly("Rozpodil.Persistence")
+    )
 );
 
 var app = builder.Build();

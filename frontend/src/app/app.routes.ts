@@ -14,6 +14,9 @@ export const routes: Routes = [
     {path: 'register', loadComponent: () =>
         import('./features/registration/registration.component').then(component => component.RegistrationComponent)
     },
+    {path: 'verify-email', loadComponent: () =>
+        import('./features/verification-code/verification-code.component').then(component => component.VerificationCodeComponent)
+    },
     {path: 'home', loadComponent: () => 
         import('./features/home/home.component').then(component => component.HomeComponent),
         resolve: {

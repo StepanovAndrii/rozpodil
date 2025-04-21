@@ -12,7 +12,7 @@ namespace Rozpodil.Application.Services
             _repository = repository;
         }
 
-        public async void GetRoomsByUserId(Guid userId)
+        public async Task GetRoomsByUserIdAsync(Guid userId)
         {
             await _repository.GetRoomsByUserIdAsync(userId);
         }

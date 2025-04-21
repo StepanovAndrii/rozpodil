@@ -6,35 +6,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Rozpodil.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class ChangeUserDependency : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Rooms",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Code = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Rooms", x => x.Id);
-                });
+            migrationBuilder.DropForeignKey(
+                name: "FK_Users_Rooms_RoomId",
+                table: "Users");
 
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Username = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                });
+            migrationBuilder.DropIndex(
+                name: "IX_Users_RoomId",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "RoomId",
+                table: "Users");
 
             migrationBuilder.CreateTable(
                 name: "RoomUser",
@@ -72,11 +59,23 @@ namespace Rozpodil.Persistence.Migrations
             migrationBuilder.DropTable(
                 name: "RoomUser");
 
-            migrationBuilder.DropTable(
-                name: "Rooms");
+            migrationBuilder.AddColumn<Guid>(
+                name: "RoomId",
+                table: "Users",
+                type: "uuid",
+                nullable: true);
 
-            migrationBuilder.DropTable(
-                name: "Users");
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_RoomId",
+                table: "Users",
+                column: "RoomId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Users_Rooms_RoomId",
+                table: "Users",
+                column: "RoomId",
+                principalTable: "Rooms",
+                principalColumn: "Id");
         }
     }
 }

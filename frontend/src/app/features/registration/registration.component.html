@@ -1,7 +1,8 @@
 <div class="padding-container">
     <form class="registration-form"
         [formGroup]="registrationForm"
-        autocomplete="off">
+        autocomplete="off"
+        (ngSubmit)="registerWithForm()">
         
         <div class="registration-form__content">
             <h1 class="registration-form__main-header">Реєстрація</h1>
@@ -98,7 +99,8 @@
             <div class="registration-form__buttons-container">
                 <button
                     class="registration-form__submit-button"
-                    aria-label="Зареєструватися">
+                    aria-label="Зареєструватися"
+                    type="submit">
     
                     Зареєструватися
                 </button>

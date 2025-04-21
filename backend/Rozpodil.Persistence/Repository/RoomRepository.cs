@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rozpodil.Domain.Entities;
+using Rozpodil.Domain.Repositories;
 
 namespace Rozpodil.Persistence.Repository
 {
-    public class RoomRepository
+    public class RoomRepository : IRoomRepository
     {
         private readonly DatabaseContext _context;
 
@@ -13,13 +14,12 @@ namespace Rozpodil.Persistence.Repository
             _context = context;
         }
 
-        public async Task CreateRoom(Room room)
+        public async Task CreateRoomAsync(Room room)
         {
-            _context.Rooms.Add(room);
-            await _context.SaveChangesAsync();
+            await _context.Rooms.AddAsync(room);
         }
 
-        public async Task<List<Room>> GetRoomsByUserIdAsync(Guid userId)
+        public async Task<IList<Room>> GetRoomsByUserIdAsync(Guid userId)
         {
             return await _context.Rooms
                 .Where(room => room.Users.Any(user => user.Id == userId))

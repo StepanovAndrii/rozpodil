@@ -32,6 +32,7 @@ import { usernameNamedValidators } from './validators/username-named-validators'
 import { passwordRepetitionNamedValidators } from './validators/password-repetition-named-validators';
 import { getValidatorsPair } from '../../core/validators/utils/validator-type-guards';
 import { FieldHintsPopoverComponent } from "../../core/components/field-hints-popover/field-hints-popover.component";
+import { AuthService } from '../../core/services/auth-service/auth.service';
 
 @Component({
   selector: 'app-registration',
@@ -71,7 +72,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   public constructor(
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private _authService: AuthService
   ) { }
 
   public ngOnDestroy(): void {
@@ -87,6 +89,22 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     return this.registrationForm.get(name);
   }
 
+  public registerWithForm() {
+    if(this.registrationForm.valid) {
+      const { passwordRepetition, ...dataToSend } = this.registrationForm.value;
+      this._authService.registerWithForm(dataToSend)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (result: any) => {
+            this.router.navigate(['verify-email']);
+          },
+          error: (error: any) => {
+
+          }
+        });
+    }
+  }
+
   public changeToLogin() {
     this.router.navigate(
       ['/login'],
@@ -99,7 +117,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     const [passwordSync, passwordAsync] = getValidatorsPair(passwordNamedValidators);
     const [emailSync, emailAsync] = getValidatorsPair(emailNamedValidators);
 
-    this.registrationForm = this.formBuilder.group ({
+    this.registrationForm = this.formBuilder.group({
       username: ['', usernameSync, usernameAsync],
       email: ['', emailSync, emailAsync],
       password: ['', passwordSync, passwordAsync],
@@ -127,10 +145,10 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       );
 
       passwordControl.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        passwordRepetitionControl.updateValueAndValidity();
-      })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          passwordRepetitionControl.updateValueAndValidity();
+        })
     }
   }
 }

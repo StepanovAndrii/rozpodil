@@ -15,9 +15,5 @@ namespace Rozpodil.API.Controllers
         {
 
         }
-        public ActionResult<Room> GetRoomsByUserId(Guid userId)
-        {
-
-        }
     }
 }

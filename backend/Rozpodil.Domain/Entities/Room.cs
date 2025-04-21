@@ -1,4 +1,6 @@
-﻿namespace Rozpodil.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Rozpodil.Domain.Entities
 {
     public class Room
     {

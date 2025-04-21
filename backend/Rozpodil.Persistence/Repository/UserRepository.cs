@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rozpodil.Domain.Entities;
+using Rozpodil.Domain.Repositories;
 
 namespace Rozpodil.Persistence.Repository
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly DatabaseContext _context;
 
@@ -13,11 +14,31 @@ namespace Rozpodil.Persistence.Repository
             _context = context;
         }
 
-        public async Task<User?> GetUserById(Guid id)
+        public async Task CreateUserAsync(User user)
+        {
+            var existingUser = await _context.Users
+                .FirstOrDefaultAsync(eUser => eUser.Id == user.Id);
+            if (existingUser == null)
+            {
+                await _context.Users.AddAsync(user);
+            }
+        }
+
+        public async Task<User?> GetUserByIdAsync(Guid id)
         {
             return await _context.Users
-                .Where(user => user.Id == id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(user => user.Id == id);
+        }
+
+        public async Task MarkEmailAsVerifiedAsync(Guid userId)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(user => user.Id == userId);
+
+            if (user != null)
+            {
+                user.IsEmailConfirmed = true;
+            }
         }
     }
 }
