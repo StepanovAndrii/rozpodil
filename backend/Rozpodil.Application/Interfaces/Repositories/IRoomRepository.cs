@@ -6,5 +6,6 @@ namespace Rozpodil.Domain.Repositories
     {
         Task CreateRoomAsync(Room room);
         Task<IList<Room>> GetRoomsByUserIdAsync(Guid userId);
+        Task DeleteRoomAsync(Room room);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Rozpodil.Domain.Repositories;
+﻿using Rozpodil.Application.Common;
+using Rozpodil.Domain.Repositories;
 
 namespace Rozpodil.Application.Services
 {
@@ -12,9 +13,9 @@ namespace Rozpodil.Application.Services
             _repository = repository;
         }
 
-        public async Task GetRoomsByUserIdAsync(Guid userId)
+        public async Task<Result<ErrorType>> CreateRoom()
         {
-            await _repository.GetRoomsByUserIdAsync(userId);
+
         }
     }
 }

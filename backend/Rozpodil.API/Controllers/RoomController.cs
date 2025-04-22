@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rozpodil.API.Dtos.Requests;
 using Rozpodil.Application.Services;
-using Rozpodil.Domain.Entities;
 
 namespace Rozpodil.API.Controllers
 {
@@ -14,6 +14,12 @@ namespace Rozpodil.API.Controllers
             )
         {
 
+        }
+
+        [HttpPost("create")]
+        public ActionResult CreateRoom([FromBody] CreateRoomRequest createRoomRequest)
+        {
+            _roomService.CreateRoom();
         }
     }
 }

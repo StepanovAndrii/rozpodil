@@ -6,6 +6,7 @@ namespace Rozpodil.Persistence
 {
     public class DatabaseContext : DbContext
     {
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<TwoFactorCode> TwoFactorCodes { get; set; }

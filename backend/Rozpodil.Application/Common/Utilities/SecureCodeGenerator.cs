@@ -1,14 +1,13 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace Rozpodil.Application.Common.Utilities
 {
-    public static class TwoFactorCodeGenerator
+    public static class SecureCodeGenerator
     {
         private static readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
 
-        public static string GenerateCode(int length)
+        public static string GenerateSecureCode(int length = 64)
         {
             byte[] randomBytes = new byte[length];
             _rng.GetBytes(randomBytes);
@@ -23,5 +22,5 @@ namespace Rozpodil.Application.Common.Utilities
 
             return stringBuilder.ToString();
         }
-    }
+    } 
 }

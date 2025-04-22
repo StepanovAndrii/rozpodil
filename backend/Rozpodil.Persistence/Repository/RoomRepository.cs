@@ -19,6 +19,12 @@ namespace Rozpodil.Persistence.Repository
             await _context.Rooms.AddAsync(room);
         }
 
+        public Task DeleteRoomAsync(Room room)
+        {
+           _context.Rooms.Remove(room);
+           return Task.CompletedTask;
+        }
+
         public async Task<IList<Room>> GetRoomsByUserIdAsync(Guid userId)
         {
             return await _context.Rooms

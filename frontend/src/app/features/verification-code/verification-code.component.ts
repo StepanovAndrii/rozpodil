@@ -16,6 +16,7 @@ import {
 
 import { requiredValidator } from '../../core/validators/built-in-validators/required.validator';
 import { Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-verification-code',
@@ -33,6 +34,7 @@ export class VerificationCodeComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
+    private _router: Router,
     private _authService: AuthService,
     private _formBuilder: FormBuilder
   ) { }
@@ -55,7 +57,12 @@ export class VerificationCodeComponent implements OnInit, OnDestroy {
         this._authService.verifyCode(code)
           .pipe(takeUntil(this.destroy$))
           .subscribe({
-            
+            next: (result: any) => {
+              this._router.navigate(['room']);
+            },
+            error: (error: any) => {
+
+            }
           });
       } 
     }

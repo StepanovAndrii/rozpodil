@@ -101,7 +101,7 @@ namespace Rozpodil.Application.Services
 
             do
             {
-                code = TwoFactorCodeGenerator.GenerateCode(length);
+                code = SecureCodeGenerator.GenerateSecureCode(length);
                 hash = BCrypt.Net.BCrypt.HashPassword(code);
             } while (
                 await _unitOfWork.TwoFactorCodeRepository.TwoFactorCodeExistsAsync(hash)
