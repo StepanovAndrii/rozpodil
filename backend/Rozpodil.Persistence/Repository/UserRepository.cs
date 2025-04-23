@@ -14,14 +14,17 @@ namespace Rozpodil.Persistence.Repository
             _context = context;
         }
 
-        public async Task CreateUserAsync(User user)
+        public async Task<User> CreateUserAsync(User user)
         {
             var existingUser = await _context.Users
                 .FirstOrDefaultAsync(eUser => eUser.Id == user.Id);
             if (existingUser == null)
             {
                 await _context.Users.AddAsync(user);
+                return user;
             }
+
+            return existingUser;
         }
 
         public async Task<User?> GetUserByIdAsync(Guid id)

@@ -23,8 +23,4 @@
     <ProjectReference Include="..\Rozpodil.Persistence\Rozpodil.Persistence.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dtos\Responses\" />
-  </ItemGroup>
-
 </Project>

@@ -14,9 +14,10 @@ namespace Rozpodil.Persistence.Repository
             _context = context;
         }
 
-        public async Task SaveTwoFactorCodeAsync(TwoFactorCode twoFactorCode)
+        public async Task<TwoFactorCode> CreateTwoFactorCodeAsync(TwoFactorCode twoFactorCode)
         {
             await _context.TwoFactorCodes.AddAsync(twoFactorCode);
+            return twoFactorCode;
         }
 
         public async Task<bool> TwoFactorCodeExistsAsync(string hashedCode)

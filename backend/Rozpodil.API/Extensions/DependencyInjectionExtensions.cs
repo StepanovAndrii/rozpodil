@@ -3,6 +3,7 @@ using Rozpodil.Application.Interfaces;
 using Rozpodil.Application.Services;
 using Rozpodil.Application.Services.Interfaces;
 using Rozpodil.Domain.Repositories;
+using Rozpodil.Infrastructure.Services;
 using Rozpodil.Persistence;
 using Rozpodil.Persistence.Repository;
 
@@ -19,6 +20,8 @@ namespace Rozpodil.API.Extensions
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<ITransactionManager, TransactionManager>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddScoped<ITokenGenerator, SecureTokenGenerator>();
 
             return services;
         }

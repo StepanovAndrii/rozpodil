@@ -13,9 +13,9 @@ namespace Rozpodil.Application.Services
             _repository = repository;
         }
 
-        public async Task<Result<ErrorType>> CreateRoom()
-        {
+        //public async Task<Result<ErrorType>> CreateRoom()
+        //{
 
-        }
+        //}
     }
 }

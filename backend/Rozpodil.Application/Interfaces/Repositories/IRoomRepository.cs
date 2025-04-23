@@ -4,7 +4,7 @@ namespace Rozpodil.Domain.Repositories
 {
     public interface IRoomRepository
     {
-        Task CreateRoomAsync(Room room);
+        Task<Room> CreateRoomAsync(Room room);
         Task<IList<Room>> GetRoomsByUserIdAsync(Guid userId);
         Task DeleteRoomAsync(Room room);
     }

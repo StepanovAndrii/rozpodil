@@ -4,7 +4,7 @@ namespace Rozpodil.Domain.Repositories
 {
     public interface IUserRepository
     {
-        Task CreateUserAsync(User user);
+        Task<User> CreateUserAsync(User user);
         Task<User?> GetUserByIdAsync(Guid id);
         Task MarkEmailAsVerifiedAsync(Guid userId);
     }

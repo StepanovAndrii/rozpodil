@@ -9,11 +9,19 @@ namespace Rozpodil.Application.Mappings
         public UserModelMappingProfile()
         {
             CreateMap<UserModel, User>()
-                .ForMember(destination => destination.Id,
-                    options => options.MapFrom(
-                        source => Guid.NewGuid()
-                    ));
-            CreateMap<UserCredentialsModel, UserCredentials>();
+                .ForMember(
+                    destination => destination.Credentials,
+                    options => options.Ignore()
+                )
+                .ForMember(
+                    destination => destination.Rooms,
+                    options => options.Ignore()
+                );
+            CreateMap<UserCredentialsModel, UserCredentials>()
+                .ForMember(
+                    destination => destination.User,
+                    options => options.Ignore()
+                );
         }
     }
 }

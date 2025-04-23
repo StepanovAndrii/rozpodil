@@ -30,7 +30,10 @@ namespace Rozpodil.Application.Services
             _emailVerificationService = emailVerificationService;
         }
 
-        public async Task<Result<ErrorType>> RegisterUser(UserModel userModel, UserCredentialsModel userCredentialsModel)
+        public async Task<Result<ErrorType>> RegisterUser(
+                UserModel userModel,
+                UserCredentialsModel userCredentialsModel
+            )
         {
             bool userExists = await _unitOfWork.UserCredentialsRepository.ExistsByEmailAsync(userCredentialsModel.Email);
 
@@ -51,6 +54,7 @@ namespace Rozpodil.Application.Services
 
                     var generationCodeResult = await GenerateUniqueCodeAsync();
 
+                    // TODO: створити Domain-фабрику
                     TwoFactorCode twoFactorCode = new TwoFactorCode
                     {
                         HashedCode = generationCodeResult.Hash,
@@ -68,9 +72,8 @@ namespace Rozpodil.Application.Services
             return Result<ErrorType>.Ok();
         }
 
-        public async Task<Result<ErrorType>> VerifyEmailAsync(EmailVerificationModel emailVerificationModel)
+        public async Task<Result<Guid, ErrorType>> VerifyEmailAsync(EmailVerificationModel emailVerificationModel)
         {
-            Console.WriteLine("зайшов в метод верифікації емейлу");
             var codeFromUser = emailVerificationModel.Code;
             var activeCodes = await _unitOfWork.TwoFactorCodeRepository.GetActiveCodesAsync();
             var matchedCode = activeCodes.FirstOrDefault(
@@ -88,10 +91,10 @@ namespace Rozpodil.Application.Services
                     }
                 );
 
-                return Result<ErrorType>.Ok();
+                return Result<Guid, ErrorType>.Ok(matchedCode.UserId);
             }
             
-            return Result<ErrorType>.Fail(ErrorType.BadRequest);
+            return Result<Guid, ErrorType>.Fail(ErrorType.BadRequest);
         }
 
         private async Task<(string Code, string Hash)> GenerateUniqueCodeAsync(int length = 6)

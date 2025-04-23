@@ -14,9 +14,10 @@ namespace Rozpodil.Persistence.Repository
             _context = context;
         }
 
-        public async Task CreateRoomAsync(Room room)
+        public async Task<Room> CreateRoomAsync(Room room)
         {
             await _context.Rooms.AddAsync(room);
+            return room;
         }
 
         public Task DeleteRoomAsync(Room room)

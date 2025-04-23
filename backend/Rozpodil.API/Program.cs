@@ -3,7 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 using Rozpodil.API.Extensions;
 using Rozpodil.API.Mappings;
-using Rozpodil.Infrastructure;
+using Rozpodil.Infrastructure.DependencyInjectionExtention;
 using Rozpodil.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +16,11 @@ builder.Services.AddMappingProfiles();
 
 builder.Services.AddScopedServices();
 
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddFluentEmail(builder.Configuration);
+
+builder.Services.AddJwtAuthentication(builder.Configuration);
+
+builder.Services.AddHasherServices(builder.Configuration);
 
 builder.Services.AddCors(options =>
 {

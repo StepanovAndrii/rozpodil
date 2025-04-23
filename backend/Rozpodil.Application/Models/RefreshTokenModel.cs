@@ -1,6 +1,4 @@
-﻿using Rozpodil.Domain.Entities;
-
-namespace Rozpodil.Application.Models
+﻿namespace Rozpodil.Application.Models
 {
     public class RefreshTokenModel
     {

@@ -1,4 +1,5 @@
 ﻿using Rozpodil.Application.Interfaces;
+using Rozpodil.Application.Interfaces.Repositories;
 using Rozpodil.Domain.Repositories;
 using Rozpodil.Persistence.Repository;
 
@@ -10,6 +11,7 @@ namespace Rozpodil.Persistence
         public IUserRepository UserRepository { get; }
         public ITwoFactorCodeRepository TwoFactorCodeRepository { get; }
         public IRoomRepository RoomRepository { get; }
+        public IRefreshTokenRepository RefreshTokenRepository { get; }
 
         private readonly DatabaseContext _context;
 
@@ -18,6 +20,7 @@ namespace Rozpodil.Persistence
                 IUserRepository userRepository,
                 ITwoFactorCodeRepository twoFactorCodeRepository,
                 IRoomRepository roomRepository,
+                IRefreshTokenRepository refreshTokenRepository,
                 DatabaseContext context
             )
         {
@@ -25,6 +28,7 @@ namespace Rozpodil.Persistence
             UserRepository = userRepository;
             TwoFactorCodeRepository = twoFactorCodeRepository;
             RoomRepository = roomRepository;
+            RefreshTokenRepository = refreshTokenRepository;
             _context = context;
         }
 

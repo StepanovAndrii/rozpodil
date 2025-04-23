@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Rozpodil.API.Dtos.Requests;
 using Rozpodil.Application.Common;
+using Rozpodil.Application.Common.Utilities;
+using Rozpodil.Application.Interfaces;
 using Rozpodil.Application.Models;
-using Rozpodil.Application.Services;
 using Rozpodil.Application.Services.Interfaces;
 
 namespace Rozpodil.API.Controllers
@@ -14,21 +15,32 @@ namespace Rozpodil.API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
+        private readonly IJwtTokenService _jwtTokenService;
 
         public AuthController(
             IMapper mapper,
-            IAuthService authService
+            IAuthService authService,
+            IJwtTokenService jwtTokenService
             )
         {
             _mapper = mapper;
             _authService = authService;
+            _jwtTokenService = jwtTokenService;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterUserRequest registerUserRequest)
         {
-            UserModel userModel = _mapper.Map<UserModel>(registerUserRequest);
-            UserCredentialsModel userCredentialsModel = _mapper.Map<UserCredentialsModel>(registerUserRequest);
+            Guid userId = GuidGenerator.Generate();
+
+            UserModel userModel = _mapper.Map<UserModel>(registerUserRequest, options =>
+            {
+                options.Items["UserId"] = userId;
+            });
+            UserCredentialsModel userCredentialsModel = _mapper.Map<UserCredentialsModel>(registerUserRequest, options =>
+            {
+                options.Items["UserId"] = userId;
+            });
 
             Result<ErrorType> result = await _authService.RegisterUser(userModel, userCredentialsModel);
 
@@ -45,10 +57,12 @@ namespace Rozpodil.API.Controllers
         {
             EmailVerificationModel emailVerificationModel = _mapper.Map<EmailVerificationModel>(emailConfirmationRequest);
 
-            Result<ErrorType> result = await _authService.VerifyEmailAsync(emailVerificationModel);
+            Result<Guid, ErrorType> result = await _authService.VerifyEmailAsync(emailVerificationModel);
 
             if (result.Success)
             {
+                var accessToken = _jwtTokenService.GenerateToken(result.Data);
+                var refreshToken = 
                 return Ok();
             }
             

@@ -16,10 +16,11 @@ namespace Rozpodil.API.Controllers
 
         }
 
-        [HttpPost("create")]
-        public ActionResult CreateRoom([FromBody] CreateRoomRequest createRoomRequest)
-        {
-            _roomService.CreateRoom();
-        }
+        //[HttpPost("create")]
+        //public ActionResult CreateRoom([FromBody] CreateRoomRequest createRoomRequest)
+        //{
+
+        //    _roomService.CreateRoom();
+        //}
     }
 }

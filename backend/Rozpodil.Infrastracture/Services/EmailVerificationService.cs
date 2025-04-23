@@ -1,7 +1,7 @@
 ﻿using FluentEmail.Core;
 using Rozpodil.Application.Abstracts;
 
-namespace Rozpodil.Infrastructure.Services.EmailVerification
+namespace Rozpodil.Infrastructure.Services
 {
     public class FluentEmailVerificationService : IEmailVerificationService
     {

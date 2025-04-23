@@ -2,6 +2,7 @@
 {
     public record UserCredentialsModel
     {
+        public Guid UserId { get; set; }
         public required string Email { get; set; }
         public required string HashedPassword { get; set; }
     }

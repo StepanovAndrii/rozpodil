@@ -18,7 +18,7 @@
             Error = error;
         }
 
-        public static Result<TError> Ok() => new(true, default);
+        public static new Result<TError> Ok() => new(true, default);
         public static Result<TError> Fail(TError error) => new(false, error);
     }
 
@@ -33,6 +33,6 @@
         }
 
         public static Result<TData, TError> Ok(TData data) => new(true, data, default);
-        public static Result<TData, TError> Fail(TError error) => new(false, default, error);
+        public static new Result<TData, TError> Fail(TError error) => new(false, default, error);
     }
 }

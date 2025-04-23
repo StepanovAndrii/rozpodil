@@ -2,15 +2,16 @@
 using Microsoft.Extensions.DependencyInjection;
 using Rozpodil.Application.Abstracts;
 using Rozpodil.Infrastructure.Configurations;
-using Rozpodil.Infrastructure.Services.EmailVerification;
+using Rozpodil.Infrastructure.DependencyInjectionExtention;
+using Rozpodil.Infrastructure.Services;
 using System.Net;
 using System.Net.Mail;
 
-namespace Rozpodil.Infrastructure
+namespace Rozpodil.Infrastructure.DependencyInjectionExtention
 {
-    public static class DependencyInjection
+    public static class FluentEmailExtention
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddFluentEmail(this IServiceCollection services, IConfiguration configuration)
         {
             var emailVerificationSettings = configuration.GetSection("EmailOptions").Get<EmailSettings>();
 
