@@ -26,6 +26,7 @@ namespace Rozpodil.API.Extensions
             services.AddScoped<IRefreshTokenService, RefreshTokenService>();
             services.AddScoped<ITokenGenerator, SecureTokenGenerator>();
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+            services.AddScoped<ICookieService, CookieService>();
 
             return services;
         }
