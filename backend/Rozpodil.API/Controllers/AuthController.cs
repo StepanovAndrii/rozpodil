@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Rozpodil.API.Dtos.Requests;
+using Rozpodil.API.Dtos.Responses;
+using Rozpodil.Application.Commands;
 using Rozpodil.Application.Common;
-using Rozpodil.Application.Common.Utilities;
+using Rozpodil.Application.Common.Interfaces;
 using Rozpodil.Application.Interfaces;
 using Rozpodil.Application.Models;
-using Rozpodil.Application.Services.Interfaces;
 
 namespace Rozpodil.API.Controllers
 {
@@ -16,33 +17,27 @@ namespace Rozpodil.API.Controllers
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
         private readonly IJwtTokenService _jwtTokenService;
+        private readonly IRefreshTokenService _refreshTokenService;
+
 
         public AuthController(
-            IMapper mapper,
-            IAuthService authService,
-            IJwtTokenService jwtTokenService
+                IMapper mapper,
+                IAuthService authService,
+                IJwtTokenService jwtTokenService,
+                IRefreshTokenService refreshTokenService
             )
         {
             _mapper = mapper;
             _authService = authService;
             _jwtTokenService = jwtTokenService;
+            _refreshTokenService = refreshTokenService;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterUserRequest registerUserRequest)
         {
-            Guid userId = GuidGenerator.Generate();
-
-            UserModel userModel = _mapper.Map<UserModel>(registerUserRequest, options =>
-            {
-                options.Items["UserId"] = userId;
-            });
-            UserCredentialsModel userCredentialsModel = _mapper.Map<UserCredentialsModel>(registerUserRequest, options =>
-            {
-                options.Items["UserId"] = userId;
-            });
-
-            Result<ErrorType> result = await _authService.RegisterUser(userModel, userCredentialsModel);
+            var registerUserCommand = _mapper.Map<RegisterUserCommand>(registerUserRequest);
+            Result<ErrorType> result = await _authService.RegisterUser(registerUserCommand);
 
             if (result.Success)
             {
@@ -53,7 +48,7 @@ namespace Rozpodil.API.Controllers
         }
 
         [HttpPost("verify-code")]
-        public async Task<ActionResult> VerifyEmail([FromBody] EmailConfirmationRequest emailConfirmationRequest)
+        public async Task<ActionResult<TokensResponse>> VerifyEmail([FromBody] EmailConfirmationRequest emailConfirmationRequest)
         {
             EmailVerificationModel emailVerificationModel = _mapper.Map<EmailVerificationModel>(emailConfirmationRequest);
 
@@ -62,8 +57,15 @@ namespace Rozpodil.API.Controllers
             if (result.Success)
             {
                 var accessToken = _jwtTokenService.GenerateToken(result.Data);
-                var refreshToken = 
-                return Ok();
+
+                var refreshToken = await _refreshTokenService.GenerateAsync(result.Data, 7);
+
+                var tokensResponse = new TokensResponse(
+                    accessToken,
+                    refreshToken
+                );
+
+                return Ok(tokensResponse);
             }
             
             return BadRequest();

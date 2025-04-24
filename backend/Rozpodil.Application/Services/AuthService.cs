@@ -4,9 +4,11 @@ using Rozpodil.Application.Common;
 using Rozpodil.Application.Common.Interfaces;
 using Rozpodil.Application.Common.Utilities;
 using Rozpodil.Application.Interfaces;
+using Rozpodil.Application.Interfaces.IHasher;
 using Rozpodil.Application.Models;
-using Rozpodil.Application.Services.Interfaces;
 using Rozpodil.Domain.Entities;
+using Rozpodil.Application.Common.Enums;
+using Rozpodil.Application.Commands;
 
 namespace Rozpodil.Application.Services
 {
@@ -15,32 +17,49 @@ namespace Rozpodil.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITransactionManager _transactionManager;
         private readonly IMapper _mapper;
-        IEmailVerificationService _emailVerificationService;
+        private readonly IEmailVerificationService _emailVerificationService;
+        private readonly IHasherService _hasherService;
+        private readonly IVerificationCodeGeneratorService _verificationCodeGeneratorService;
 
         public AuthService(
             IUnitOfWork unitOfWork,
             ITransactionManager transactionManager,
             IMapper mapper,
-            IEmailVerificationService emailVerificationService
+            IEmailVerificationService emailVerificationService,
+            IHasherFactory hasherFactory,
+            IVerificationCodeGeneratorService verificationCodeGeneratorService
             )
         {
             _unitOfWork = unitOfWork;
             _transactionManager = transactionManager;
             _mapper = mapper;
             _emailVerificationService = emailVerificationService;
+            _hasherService = hasherFactory.GetHasher(HasherType.Bcrypt);
+            _verificationCodeGeneratorService = verificationCodeGeneratorService;
         }
 
         public async Task<Result<ErrorType>> RegisterUser(
-                UserModel userModel,
-                UserCredentialsModel userCredentialsModel
+                RegisterUserCommand registerUserCommand
             )
         {
+            var userCredentialsModel = _mapper.Map<UserCredentialsModel>(registerUserCommand);
+
             bool userExists = await _unitOfWork.UserCredentialsRepository.ExistsByEmailAsync(userCredentialsModel.Email);
 
             if (userExists)
             {
                 return Result<ErrorType>.Fail(ErrorType.Conflict);
             }
+
+            var userModel = _mapper.Map<UserModel>(registerUserCommand);
+
+            var userId = GuidGenerator.Generate();
+            
+            userModel.Id = userId;
+            userModel.IsEmailConfirmed = false;
+
+            userCredentialsModel.UserId = userId;
+            userCredentialsModel.HashedPassword = _hasherService.Hash(registerUserCommand.Password);
 
             await _transactionManager.ExecuteInTransactionAsync(
                 async () =>
@@ -62,7 +81,7 @@ namespace Rozpodil.Application.Services
                         User = user
                     };
 
-                    await _unitOfWork.TwoFactorCodeRepository.SaveTwoFactorCodeAsync(twoFactorCode);
+                    await _unitOfWork.TwoFactorCodeRepository.CreateTwoFactorCodeAsync(twoFactorCode);
                     await _unitOfWork.SaveChangesAsync();
 
                     await _emailVerificationService.SendVerificationCodeAsync(userCredentials.Email, generationCodeResult.Code);
@@ -77,7 +96,7 @@ namespace Rozpodil.Application.Services
             var codeFromUser = emailVerificationModel.Code;
             var activeCodes = await _unitOfWork.TwoFactorCodeRepository.GetActiveCodesAsync();
             var matchedCode = activeCodes.FirstOrDefault(
-                code => BCrypt.Net.BCrypt.Verify(codeFromUser, code.HashedCode)
+                code => _hasherService.Verify(codeFromUser, code.HashedCode)
             );
 
             if (matchedCode != null)
@@ -104,8 +123,8 @@ namespace Rozpodil.Application.Services
 
             do
             {
-                code = SecureCodeGenerator.GenerateSecureCode(length);
-                hash = BCrypt.Net.BCrypt.HashPassword(code);
+                code = _verificationCodeGeneratorService.GenerateCode(length);
+                hash = _hasherService.Hash(code);
             } while (
                 await _unitOfWork.TwoFactorCodeRepository.TwoFactorCodeExistsAsync(hash)
             );

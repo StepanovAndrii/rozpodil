@@ -2,7 +2,7 @@
 using Rozpodil.Application.Models;
 using Rozpodil.Domain.Entities;
 
-namespace Rozpodil.Application.Mappings
+namespace Rozpodil.Application.Mappings.ModelsEntities
 {
     public class UserModelMappingProfile: Profile
     {

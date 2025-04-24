@@ -2,11 +2,11 @@
 using Rozpodil.Application.Models;
 using Rozpodil.Domain.Entities;
 
-namespace Rozpodil.Application.Mappings
+namespace Rozpodil.Application.Mappings.ModelsEntities
 {
-    public class RefreshTokenMappingProfile: Profile
+    public class RefreshTokenModelMappingProfile: Profile
     {
-        public RefreshTokenMappingProfile()
+        public RefreshTokenModelMappingProfile()
         {
             CreateMap<RefreshTokenModel, RefreshToken>()
                 .ForMember(

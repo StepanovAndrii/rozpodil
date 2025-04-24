@@ -1,30 +1,34 @@
 ﻿using AutoMapper;
+using Rozpodil.Application.Common.Enums;
 using Rozpodil.Application.Common.Interfaces;
 using Rozpodil.Application.Interfaces;
+using Rozpodil.Application.Interfaces.IHasher;
 using Rozpodil.Application.Models;
 using Rozpodil.Domain.Entities;
-using Rozpodil.Domain.Repositories;
 
 namespace Rozpodil.Infrastructure.Services
 {
-    public class RefreshTokenService
+    public class RefreshTokenService: IRefreshTokenService
     {
-        IUnitOfWork _unitOfWork;
-        IDateTimeProvider _dateTimeProvider;
-        ITokenGenerator _tokenGenerator;
-        IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly ITokenGenerator _tokenGenerator;
+        private readonly IMapper _mapper;
+        private readonly IHasherService _hasherService;
 
         public RefreshTokenService(
                 IUnitOfWork unitOfWork,
                 IDateTimeProvider dateTimeProvider,
                 ITokenGenerator tokenGenerator,
-                IMapper mapper
+                IMapper mapper,
+                IHasherFactory hasherFactory
             )
         {
             _unitOfWork = unitOfWork;
             _dateTimeProvider = dateTimeProvider;
             _tokenGenerator = tokenGenerator;
             _mapper = mapper;
+            _hasherService = hasherFactory.GetHasher(HasherType.Sha256);
         }
 
         public async Task<string> GenerateAsync(
@@ -34,18 +38,19 @@ namespace Rozpodil.Infrastructure.Services
             )
         {
             // TODO: розібратись з CancellationToken
-            var user = await _unitOfWork.RefreshTokenRepository.GetByUserId(userId);
+            var user = await _unitOfWork.UserRepository.GetUserByIdAsync(userId);
             if (user == null) {
                 throw new UnauthorizedAccessException("User is not active or does not exist.");
             }
 
             var refreshToken = _tokenGenerator.Generate();
+            var hashedRefreshToken = _hasherService.Hash(refreshToken);
             var expires = _dateTimeProvider.UtcNow.AddDays(expirationDays);
 
             var refreshTokenModel = new RefreshTokenModel
             {
                 UserId = userId,
-                Token = refreshToken,
+                HashedToken = hashedRefreshToken,
                 ExpiresAt = expires
             };
 
@@ -54,7 +59,7 @@ namespace Rozpodil.Infrastructure.Services
             await _unitOfWork.RefreshTokenRepository.CreateAsync(refreshTokenEntity);
             await _unitOfWork.SaveChangesAsync();
 
-            return 
+            return refreshToken;
         }
     }
 }

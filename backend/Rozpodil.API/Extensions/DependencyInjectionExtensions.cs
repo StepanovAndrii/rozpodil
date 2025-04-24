@@ -1,7 +1,7 @@
 ﻿using Rozpodil.Application.Common.Interfaces;
 using Rozpodil.Application.Interfaces;
+using Rozpodil.Application.Interfaces.Repositories;
 using Rozpodil.Application.Services;
-using Rozpodil.Application.Services.Interfaces;
 using Rozpodil.Domain.Repositories;
 using Rozpodil.Infrastructure.Services;
 using Rozpodil.Persistence;
@@ -18,10 +18,14 @@ namespace Rozpodil.API.Extensions
             services.AddScoped<IUserCredentialsRepository, UserCredentialsRepository>();
             services.AddScoped<ITwoFactorCodeRepository, TwoFactorCodeRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<ITransactionManager, TransactionManager>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddScoped<IVerificationCodeGeneratorService, VerificationCodeGeneratorService>();
+            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
             services.AddScoped<ITokenGenerator, SecureTokenGenerator>();
+            services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
             return services;
         }

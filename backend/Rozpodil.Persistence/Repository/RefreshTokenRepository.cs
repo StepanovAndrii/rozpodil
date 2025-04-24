@@ -26,12 +26,5 @@ namespace Rozpodil.Persistence.Repository
                 refreshToken => refreshToken.HashedToken == hashedToken
             );
         }
-
-        public async Task<RefreshToken?> GetByUserId(Guid userId)
-        {
-            return await _context.RefreshTokens.FirstOrDefaultAsync(
-                refreshToken => refreshToken.UserId == userId
-            );
-        }
     }
 }
