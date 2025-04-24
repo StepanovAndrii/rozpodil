@@ -9,6 +9,7 @@ using Rozpodil.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddOpenApi();
 
@@ -30,7 +31,8 @@ builder.Services.AddCors(options =>
             "http://localhost:4200",
             "http://localhost:4000")
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 

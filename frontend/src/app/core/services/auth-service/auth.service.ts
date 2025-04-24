@@ -16,6 +16,8 @@ export class AuthService {
   }
 
   public verifyCode(code: string): Observable<Object> {
-    return this._http.post('https://localhost:7297/api/auth/verify-code', { code })
+    return this._http.post('https://localhost:7297/api/auth/verify-code', { code }, {
+      withCredentials: true
+    })
   }
 }
