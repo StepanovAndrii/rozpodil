@@ -6,6 +6,8 @@ namespace Rozpodil.Domain.Repositories
     {
         Task<User> CreateUserAsync(User user);
         Task<User?> GetUserByIdAsync(Guid id);
-        Task MarkEmailAsVerifiedAsync(Guid userId);
+        Task MarkEmailAsVerifiedAsync(Guid id);
+        Task DeleteUserByIdAsync (Guid id);
+        Task<List<User>> GetUnverifiedUsersWithExpiredCodesAsync(CancellationToken cancellationToken);
     }
 }

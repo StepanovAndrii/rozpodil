@@ -18,6 +18,7 @@ namespace Rozpodil.Persistence.Repository
         {
             var existingUser = await _context.Users
                 .FirstOrDefaultAsync(eUser => eUser.Id == user.Id);
+            
             if (existingUser == null)
             {
                 await _context.Users.AddAsync(user);
@@ -27,21 +28,41 @@ namespace Rozpodil.Persistence.Repository
             return existingUser;
         }
 
+        public async Task DeleteUserByIdAsync(Guid id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+            }
+        }
+
         public async Task<User?> GetUserByIdAsync(Guid id)
         {
             return await _context.Users
-                .FirstOrDefaultAsync(user => user.Id == id);
+                .FindAsync(id);
         }
 
-        public async Task MarkEmailAsVerifiedAsync(Guid userId)
+        public async Task MarkEmailAsVerifiedAsync(Guid id)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(user => user.Id == userId);
+                .FindAsync(id);
 
             if (user != null)
             {
                 user.IsEmailConfirmed = true;
             }
+        }
+
+        public async Task<List<User>> GetUnverifiedUsersWithExpiredCodesAsync(CancellationToken cancellationToken)
+        {
+            return await _context.Users
+                .Where(user => !user.IsEmailConfirmed &&
+                    (!_context.TwoFactorCodes.Any(code => code.UserId == user.Id) ||
+                    _context.TwoFactorCodes.Any(code => 
+                        code.UserId == user.Id &&
+                        code.ExpiresAt < DateTime.UtcNow)))
+                .ToListAsync(cancellationToken);
         }
     }
 }

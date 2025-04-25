@@ -104,7 +104,7 @@ namespace Rozpodil.Application.Services
                 await _transactionManager.ExecuteInTransactionAsync(
                     async () =>
                     {
-                        await _unitOfWork.TwoFactorCodeRepository.RemoveTwoFactorCodeAsync(matchedCode);
+                        await _unitOfWork.TwoFactorCodeRepository.DeleteTwoFactorCodeAsync(matchedCode);
                         await _unitOfWork.UserRepository.MarkEmailAsVerifiedAsync(matchedCode.UserId);
                         await _unitOfWork.SaveChangesAsync();
                     }

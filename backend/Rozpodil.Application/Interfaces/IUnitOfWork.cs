@@ -1,4 +1,5 @@
 ﻿using Rozpodil.Application.Interfaces.Repositories;
+using Rozpodil.Domain.Entities;
 using Rozpodil.Domain.Repositories;
 using Rozpodil.Persistence.Repository;
 

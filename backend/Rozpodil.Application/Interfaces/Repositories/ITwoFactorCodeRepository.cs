@@ -6,7 +6,8 @@ namespace Rozpodil.Persistence.Repository
     {
         Task<TwoFactorCode> CreateTwoFactorCodeAsync(TwoFactorCode twoFactorCode);
         Task<bool> TwoFactorCodeExistsAsync(string code);
-        Task RemoveTwoFactorCodeAsync(TwoFactorCode twoFactorCode);
-        Task<IList<TwoFactorCode>> GetActiveCodesAsync(); 
+        Task DeleteTwoFactorCodeAsync(TwoFactorCode twoFactorCode);
+        Task<IList<TwoFactorCode>> GetActiveCodesAsync();
+        Task DeleteExpiredCodeAsync(CancellationToken cancellationToken);
     }
 }

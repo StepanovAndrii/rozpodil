@@ -27,6 +27,15 @@ namespace Rozpodil.API.Extensions
             services.AddScoped<ITokenGenerator, SecureTokenGenerator>();
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             services.AddScoped<ICookieService, CookieService>();
+            services.AddScoped<IAccountCleanupService, AccountCleanupService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddHostedServices(this IServiceCollection services)
+        {
+            services.AddHostedService<ExpiredCodeCleanupService>();
+            services.AddHostedService<UnverifiedUserCleanupService>();
 
             return services;
         }

@@ -27,7 +27,7 @@ namespace Rozpodil.Persistence.Repository
             );
         }
 
-        public Task RemoveTwoFactorCodeAsync(TwoFactorCode twoFactorCode)
+        public Task DeleteTwoFactorCodeAsync(TwoFactorCode twoFactorCode)
         {
             _context.TwoFactorCodes.Remove(twoFactorCode);
             return Task.CompletedTask;
@@ -38,6 +38,16 @@ namespace Rozpodil.Persistence.Repository
             return await _context.TwoFactorCodes.Where(
                 code => code.ExpiresAt > DateTime.UtcNow
             ).ToListAsync();
+        }
+
+        public Task DeleteExpiredCodeAsync(CancellationToken cancellationToken)
+        {
+            var expiredCodes = _context.TwoFactorCodes.Where(twoFactorCode =>
+                twoFactorCode.ExpiresAt < DateTime.UtcNow
+            );
+            _context.TwoFactorCodes.RemoveRange(expiredCodes);
+
+            return Task.CompletedTask;
         }
     }
 }

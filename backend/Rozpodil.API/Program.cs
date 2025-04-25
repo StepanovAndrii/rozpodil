@@ -10,17 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddOpenApi();
-
 builder.Services.AddMappingProfiles();
-
 builder.Services.AddScopedServices();
-
+builder.Services.AddHostedServices();
 builder.Services.AddFluentEmail(builder.Configuration);
-
 builder.Services.AddJwtAuthentication(builder.Configuration);
-
 builder.Services.AddHasherServices(builder.Configuration);
 
 builder.Services.AddCors(options =>
@@ -52,11 +47,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowSpecificOrigins");
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

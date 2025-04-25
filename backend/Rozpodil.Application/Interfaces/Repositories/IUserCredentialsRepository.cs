@@ -1,6 +1,4 @@
-﻿using Rozpodil.Domain.Entities;
-
-namespace Rozpodil.Domain.Repositories
+﻿namespace Rozpodil.Domain.Repositories
 {
     public interface IUserCredentialsRepository
     {
