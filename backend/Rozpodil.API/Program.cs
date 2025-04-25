@@ -1,5 +1,6 @@
 ﻿// TODO: приєднати FluentValidation
 
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Rozpodil.API.Extensions;
 using Rozpodil.API.Mappings;
@@ -10,18 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddOpenApi();
-
 builder.Services.AddMappingProfiles();
-
 builder.Services.AddScopedServices();
-
 builder.Services.AddFluentEmail(builder.Configuration);
-
 builder.Services.AddJwtAuthentication(builder.Configuration);
-
 builder.Services.AddHasherServices(builder.Configuration);
+builder.Services.AddHangfire(builder.Configuration);
 
 builder.Services.AddCors(options =>
 {
@@ -48,15 +44,16 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseHangfireDashboard("/hangfire");
+}
+
+if (app.Environment.IsDevelopment())
+{
     app.MapOpenApi();
 }
 
 app.UseCors("AllowSpecificOrigins");
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

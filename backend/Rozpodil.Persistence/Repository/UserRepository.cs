@@ -30,13 +30,13 @@ namespace Rozpodil.Persistence.Repository
         public async Task<User?> GetUserByIdAsync(Guid id)
         {
             return await _context.Users
-                .FirstOrDefaultAsync(user => user.Id == id);
+                .FindAsync(id);
         }
 
-        public async Task MarkEmailAsVerifiedAsync(Guid userId)
+        public async Task MarkEmailAsVerifiedAsync(Guid id)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(user => user.Id == userId);
+                .FindAsync(id);
 
             if (user != null)
             {
