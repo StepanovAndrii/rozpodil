@@ -1,5 +1,5 @@
 import { Validators } from "@angular/forms";
-import { CombinedValidator } from "../../types/interfaces/named-combined-validator";
+import { CombinedValidator } from "../../types/named-combined-validator";
 
 export const minLengthValidator = (min: number): CombinedValidator => ({
     title: 'minlength',

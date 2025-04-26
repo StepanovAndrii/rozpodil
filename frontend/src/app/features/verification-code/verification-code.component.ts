@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 
 import { InputFieldComponent } from "../../core/components/input-field/input-field.component";
-import { AuthService } from '../../core/services/auth-service/auth.service';
+import { AuthService } from '../../core/services/authentication/auth-service/auth.service';
 
 import {
   AbstractControl,

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { VerificationStateService } from './verification-state.service';
+import { EmailStorageService } from './email-storage.service';
 
 describe('VerificationStateService', () => {
-  let service: VerificationStateService;
+  let service: EmailStorageService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(VerificationStateService);
+    service = TestBed.inject(EmailStorageService);
   });
 
   it('should be created', () => {

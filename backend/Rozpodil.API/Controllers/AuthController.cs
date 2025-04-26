@@ -38,6 +38,12 @@ namespace Rozpodil.API.Controllers
             return BadRequest();
         }
 
+        [HttpPost("google/register")]
+        public async Task<ActionResult> ResisterWithGoogle()
+        {
+
+        }
+
         [HttpPost("verify-code")]
         public async Task<ActionResult<AccessTokenResponse>> VerifyEmail([FromBody] EmailConfirmationRequest emailConfirmationRequest)
         {

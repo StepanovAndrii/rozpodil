@@ -6,7 +6,7 @@ import { noWhitespaceValidator } from "../../../core/validators/custom-validator
 import { oneDigitValidator } from "../../../core/validators/custom-validators/one-digit.validator";
 import { specialSymbolValidator } from "../../../core/validators/custom-validators/one-special-symbol.validator";
 import { uppercaseValidator } from "../../../core/validators/custom-validators/uppercase.validator";
-import { CombinedValidator } from "../../../core/types/interfaces/named-combined-validator";
+import { CombinedValidator } from "../../../core/types/named-combined-validator";
 
 export const passwordNamedValidators: CombinedValidator[] = [
     minLengthValidator(8),

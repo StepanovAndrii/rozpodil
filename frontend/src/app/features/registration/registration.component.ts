@@ -32,8 +32,9 @@ import { usernameNamedValidators } from './validators/username-named-validators'
 import { passwordRepetitionNamedValidators } from './validators/password-repetition-named-validators';
 import { getValidatorsPair } from '../../core/validators/utils/validator-type-guards';
 import { FieldHintsPopoverComponent } from "../../core/components/field-hints-popover/field-hints-popover.component";
-import { AuthService } from '../../core/services/auth-service/auth.service';
-import { VerificationStateService } from '../../core/services/verification-state-service/verification-state.service';
+import { AuthService } from '../../core/services/authentication/auth-service/auth.service';
+import { EmailStorageService } from '../../core/services/storages/email-storage-service/email-storage.service';
+import { GoogleAuthActionButtonComponent } from "../../core/components/google-auth-action-button/google-auth-action-button.component";
 
 @Component({
   selector: 'app-registration',
@@ -43,7 +44,8 @@ import { VerificationStateService } from '../../core/services/verification-state
     PasswordFieldComponent,
     ReactiveFormsModule,
     CheckmarkComponent,
-    FieldHintsPopoverComponent
+    FieldHintsPopoverComponent,
+    GoogleAuthActionButtonComponent
 ],
   standalone: true,
   templateUrl: './registration.component.html',
@@ -75,7 +77,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     private router: Router,
     private formBuilder: FormBuilder,
     private _authService: AuthService,
-    private _verificationStateService: VerificationStateService
+    private _emailStorageService: EmailStorageService
   ) { }
 
   public ngOnDestroy(): void {
@@ -99,7 +101,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         .subscribe({
           next: () => {
             const email = this.registrationForm.get('email')!.value;
-            this._verificationStateService.setEmail(email);
+            this._emailStorageService.setEmail(email);
             this.router.navigate(['verify-email']);
           },
           error: () => {
@@ -108,7 +110,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         });
     }
   }
-
+  
   public changeToLogin() {
     this.router.navigate(
       ['/login'],

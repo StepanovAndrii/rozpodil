@@ -95,6 +95,8 @@ namespace Rozpodil.Application.Services
             return Result<ErrorType>.Ok();
         }
 
+
+
         public async Task<Result<ErrorType>> ResendEmailVerificationCode(ResendEmailConfirmationCodeCommand resendEmailConfirmationCodeCommand)
         {
             var resendEmailVerificationModel = _mapper.Map<ResendEmailVerificationCodeModel>(resendEmailConfirmationCodeCommand);

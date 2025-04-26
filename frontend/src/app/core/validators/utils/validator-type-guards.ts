@@ -1,7 +1,7 @@
 import { AsyncValidatorFn, ValidatorFn } from "@angular/forms";
-import { CombinedValidator } from "../../types/interfaces/named-combined-validator";
-import { NamedValidator } from "../../types/interfaces/named-validator.interface";
-import { NamedAsyncValidator } from "../../types/interfaces/named-async-validator.interface";
+import { CombinedValidator } from "../../types/named-combined-validator";
+import { NamedValidator } from "../../types/interfaces/validators/named-validator.interface";
+import { NamedAsyncValidator } from "../../types/interfaces/validators/named-async-validator.interface";
 
 export function getValidatorsPair(validators: CombinedValidator[]): [ValidatorFn[], AsyncValidatorFn[]] {
     const sync = validators

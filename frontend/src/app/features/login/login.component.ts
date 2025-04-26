@@ -7,14 +7,16 @@ import {
 import { RouterLink } from '@angular/router';
 import { PasswordFieldComponent } from "../../core/components/password-field/password-field.component";
 import { InputFieldComponent } from "../../core/components/input-field/input-field.component";
+import { GoogleAuthActionButtonComponent } from "../../core/components/google-auth-action-button/google-auth-action-button.component";
 
 @Component({
   selector: 'app-login',
   imports: [
     RouterLink,
     PasswordFieldComponent,
-    InputFieldComponent
-  ],
+    InputFieldComponent,
+    GoogleAuthActionButtonComponent
+],
   standalone: true,
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
