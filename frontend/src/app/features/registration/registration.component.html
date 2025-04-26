@@ -105,17 +105,11 @@
                     Зареєструватися
                 </button>
                 <div class="registration-form__providers-submit-buttons">
-                    <a 
-                        class="registration-form__google-login"
-                        routerLink="{{registerWithGoogleUrl}}">
-                        
-                        <img
-                            class="login-form__google-login-icon"
-                            src="/optimised-icons/google-logotype-icon.svg"
-                            alt="Логотип гугл">
-    
+                    <app-google-auth-action-button
+                        (action)="registerWithGoogle()">
+
                         Зареєструватися з Google
-                    </a>
+                    </app-google-auth-action-button>
                 </div>
             </div>
             <p class="login-link-area">

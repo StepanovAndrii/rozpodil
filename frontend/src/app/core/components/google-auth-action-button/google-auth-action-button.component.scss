@@ -1,0 +1,30 @@
+@use 'sass:map';
+@use '../../../core/partials/colors' as *;
+@use '../google-auth-action-button/partials/variables' as *;
+
+.google-auth-action-button__button {
+    padding: 1.2rem 0;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    background: map.get($colors, secondary-color);
+    color: map.get($colors, primary-color);
+    border: 1px solid map.get($colors, gray-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    cursor: pointer;
+
+    .google-auth-action-button__logotype {
+        width: $icon-size;
+        height: $icon-size;
+        background: url($google-icon-path)
+            no-repeat
+            center / contain;
+    }
+
+    .google-auth-action-button__text-content {
+        margin: 0;
+    }
+}
