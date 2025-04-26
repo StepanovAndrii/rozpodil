@@ -5,17 +5,19 @@
         [formGroup]="verifyCodeForm"
         (ngSubmit)="verify()">
         
-        <div
-            class="verification-code-form__content">
+        <div class="verification-code-form__content">
 
             <h1 class="verification-code-form__main-header">Підтвердження пошти</h1>
             <p class="verification-code-form__description">Введіть код підтвердження з електронної пошти</p>
-            <app-input-field
-                class="verification-code-form__input-field"
-                formControlName="code">
-                
-                Код підтвердження
-            </app-input-field>
+            <div class="verification-code-form__input-container">
+                <app-input-field
+                    class="verification-code-form__input-field"
+                    formControlName="code">
+                    
+                    Код підтвердження
+                </app-input-field>
+                <app-resend-code-button class="verification-code-form__resend-button"/>
+            </div>
             <button
                 class="verification-code-form__submit-button"
                 type="submit">

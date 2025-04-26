@@ -1,7 +1,10 @@
-﻿namespace Rozpodil.Domain.Repositories
+﻿using Rozpodil.Domain.Entities;
+
+namespace Rozpodil.Domain.Repositories
 {
     public interface IUserCredentialsRepository
     {
         Task<bool> ExistsByEmailAsync(string email);
+        Task<User?> GetUserByEmailAsync(string email);
     }
 }

@@ -20,14 +20,20 @@ namespace Rozpodil.Application.Services
         private readonly IEmailVerificationService _emailVerificationService;
         private readonly IHasherService _hasherService;
         private readonly IVerificationCodeGeneratorService _verificationCodeGeneratorService;
+        private readonly IJwtTokenService _jwtTokenService;
+        private readonly IRefreshTokenService _refreshTokenService;
+        private readonly ICookieService _cookieService;
 
         public AuthService(
-            IUnitOfWork unitOfWork,
-            ITransactionManager transactionManager,
-            IMapper mapper,
-            IEmailVerificationService emailVerificationService,
-            IHasherFactory hasherFactory,
-            IVerificationCodeGeneratorService verificationCodeGeneratorService
+                IUnitOfWork unitOfWork,
+                ITransactionManager transactionManager,
+                IMapper mapper,
+                IEmailVerificationService emailVerificationService,
+                IHasherFactory hasherFactory,
+                IVerificationCodeGeneratorService verificationCodeGeneratorService,
+                IJwtTokenService jwtTokenService,
+                IRefreshTokenService refreshTokenService,
+                ICookieService cookieService
             )
         {
             _unitOfWork = unitOfWork;
@@ -36,6 +42,9 @@ namespace Rozpodil.Application.Services
             _emailVerificationService = emailVerificationService;
             _hasherService = hasherFactory.GetHasher(HasherType.Bcrypt);
             _verificationCodeGeneratorService = verificationCodeGeneratorService;
+            _jwtTokenService = jwtTokenService;
+            _refreshTokenService = refreshTokenService;
+            _cookieService = cookieService;
         }
 
         public async Task<Result<ErrorType>> RegisterUser(
@@ -61,59 +70,110 @@ namespace Rozpodil.Application.Services
             userCredentialsModel.UserId = userId;
             userCredentialsModel.HashedPassword = _hasherService.Hash(registerUserCommand.Password);
 
-            await _transactionManager.ExecuteInTransactionAsync(
-                async () =>
-                {
-                    User user = _mapper.Map<User>(userModel);
-                    UserCredentials userCredentials = _mapper.Map<UserCredentials>(userCredentialsModel);
-
-                    user.Credentials = userCredentials;
-
-                    await _unitOfWork.UserRepository.CreateUserAsync(user);
-
-                    var generationCodeResult = await GenerateUniqueCodeAsync();
-
-                    // TODO: створити Domain-фабрику
-                    TwoFactorCode twoFactorCode = new TwoFactorCode
+            try
+            {
+                await _transactionManager.ExecuteInTransactionAsync(
+                    async () =>
                     {
-                        HashedCode = generationCodeResult.Hash,
-                        ExpiresAt = DateTime.UtcNow.AddMinutes(5),
-                        User = user
-                    };
+                        User user = _mapper.Map<User>(userModel);
+                        UserCredentials userCredentials = _mapper.Map<UserCredentials>(userCredentialsModel);
 
-                    await _unitOfWork.TwoFactorCodeRepository.CreateTwoFactorCodeAsync(twoFactorCode);
-                    await _unitOfWork.SaveChangesAsync();
+                        user.Credentials = userCredentials;
 
-                    await _emailVerificationService.SendVerificationCodeAsync(userCredentials.Email, generationCodeResult.Code);
-                }
-            );
+                        await _unitOfWork.UserRepository.CreateUserAsync(user);
+
+                        await GenerateAndSendVerificationCodeAsync(user);
+                        await _unitOfWork.SaveChangesAsync();
+                    }
+                );
+            }
+            catch (Exception)
+            {
+                return Result<ErrorType>.Fail(ErrorType.Internal);
+            }
 
             return Result<ErrorType>.Ok();
         }
 
-        public async Task<Result<Guid, ErrorType>> VerifyEmailAsync(EmailVerificationModel emailVerificationModel)
+        public async Task<Result<ErrorType>> ResendEmailVerificationCode(ResendEmailConfirmationCodeCommand resendEmailConfirmationCodeCommand)
         {
+            var resendEmailVerificationModel = _mapper.Map<ResendEmailVerificationCodeModel>(resendEmailConfirmationCodeCommand);
+
+            var user = await _unitOfWork.UserCredentialsRepository
+                .GetUserByEmailAsync(resendEmailVerificationModel.Email);
+
+            if (user != null)
+            {
+                try
+                {
+                    await _transactionManager.ExecuteInTransactionAsync(
+                        async () =>
+                        {
+                            await _unitOfWork.TwoFactorCodeRepository.DeleteTwoFactorCodeByIdAsync(user.Id);
+                            await GenerateAndSendVerificationCodeAsync(user);
+                            await _unitOfWork.SaveChangesAsync();
+                        }
+                    );
+                }
+                catch (Exception)
+                {
+                    return Result<ErrorType>.Fail(ErrorType.Internal);
+                }
+            }
+
+            return Result<ErrorType>.Ok();
+        }
+
+        public async Task<Result<AccessTokenModel, ErrorType>> VerifyEmailAndLoginAsync(
+                EmailConfirmationCommand emailVerificationCommand,
+                int refreshTokenLifetimeDays
+            )
+        {
+            var emailVerificationModel = _mapper.Map<EmailVerificationModel>(emailVerificationCommand);
             var codeFromUser = emailVerificationModel.Code;
             var activeCodes = await _unitOfWork.TwoFactorCodeRepository.GetActiveCodesAsync();
             var matchedCode = activeCodes.FirstOrDefault(
                 code => _hasherService.Verify(codeFromUser, code.HashedCode)
             );
 
-            if (matchedCode != null)
-            {
-                await _transactionManager.ExecuteInTransactionAsync(
-                    async () =>
-                    {
-                        await _unitOfWork.TwoFactorCodeRepository.DeleteTwoFactorCodeAsync(matchedCode);
-                        await _unitOfWork.UserRepository.MarkEmailAsVerifiedAsync(matchedCode.UserId);
-                        await _unitOfWork.SaveChangesAsync();
-                    }
-                );
+            if (matchedCode == null)
+                return Result<AccessTokenModel, ErrorType>.Fail(ErrorType.BadRequest);
 
-                return Result<Guid, ErrorType>.Ok(matchedCode.UserId);
-            }
-            
-            return Result<Guid, ErrorType>.Fail(ErrorType.BadRequest);
+            await _transactionManager.ExecuteInTransactionAsync(async () =>
+            {
+                await _unitOfWork.TwoFactorCodeRepository.DeleteTwoFactorCodeAsync(matchedCode);
+                await _unitOfWork.UserRepository.MarkEmailAsVerifiedAsync(matchedCode.UserId);
+                await _unitOfWork.SaveChangesAsync();
+            });
+
+            var accessToken = _jwtTokenService.GenerateToken(matchedCode.UserId);
+            var refreshToken = await _refreshTokenService.GenerateAsync(matchedCode.UserId, refreshTokenLifetimeDays);
+
+            _cookieService.SetRefreshToken(refreshToken, refreshTokenLifetimeDays);
+
+            return Result<AccessTokenModel, ErrorType>.Ok(
+                new AccessTokenModel
+                {
+                    AccessToken = accessToken,
+                });
+        }
+        
+        private async Task GenerateAndSendVerificationCodeAsync(User user)
+        {
+            var generationCodeResult = await GenerateUniqueCodeAsync();
+
+            // TODO: створити Domain-фабрику
+            TwoFactorCode twoFactorCode = new TwoFactorCode
+            {
+                HashedCode = generationCodeResult.Hash,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(5),
+                User = user
+            };
+
+            await _unitOfWork.TwoFactorCodeRepository.CreateTwoFactorCodeAsync(twoFactorCode);
+            Console.WriteLine(user.ToString());
+            Console.WriteLine(user.Credentials.ToString());
+            await _emailVerificationService.SendVerificationCodeAsync(user.Credentials.Email, generationCodeResult.Code);
         }
 
         private async Task<(string Code, string Hash)> GenerateUniqueCodeAsync(int length = 6)

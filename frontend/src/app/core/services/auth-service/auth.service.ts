@@ -20,4 +20,8 @@ export class AuthService {
       withCredentials: true
     })
   }
+
+  public resendCode(email: string): Observable<Object> {
+    return this._http.post('https://localhost:7297/api/auth/resend-email', { email });
+  }
 }

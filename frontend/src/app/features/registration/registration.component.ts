@@ -33,6 +33,7 @@ import { passwordRepetitionNamedValidators } from './validators/password-repetit
 import { getValidatorsPair } from '../../core/validators/utils/validator-type-guards';
 import { FieldHintsPopoverComponent } from "../../core/components/field-hints-popover/field-hints-popover.component";
 import { AuthService } from '../../core/services/auth-service/auth.service';
+import { VerificationStateService } from '../../core/services/verification-state-service/verification-state.service';
 
 @Component({
   selector: 'app-registration',
@@ -73,7 +74,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   public constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _verificationStateService: VerificationStateService
   ) { }
 
   public ngOnDestroy(): void {
@@ -95,10 +97,12 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       this._authService.registerWithForm(dataToSend)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-          next: (result: any) => {
+          next: () => {
+            const email = this.registrationForm.get('email')!.value;
+            this._verificationStateService.setEmail(email);
             this.router.navigate(['verify-email']);
           },
-          error: (error: any) => {
+          error: () => {
 
           }
         });

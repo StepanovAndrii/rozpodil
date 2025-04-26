@@ -40,14 +40,27 @@ namespace Rozpodil.Persistence.Repository
             ).ToListAsync();
         }
 
-        public Task DeleteExpiredCodeAsync(CancellationToken cancellationToken)
+        public async Task DeleteExpiredCodeAsync(CancellationToken cancellationToken)
         {
-            var expiredCodes = _context.TwoFactorCodes.Where(twoFactorCode =>
-                twoFactorCode.ExpiresAt < DateTime.UtcNow
-            );
-            _context.TwoFactorCodes.RemoveRange(expiredCodes);
+            var expiredCodes = await _context.TwoFactorCodes
+                .Where(twoFactorCode => twoFactorCode.ExpiresAt < DateTime.UtcNow)
+                .ToListAsync();
 
-            return Task.CompletedTask;
+            if (expiredCodes.Any())
+            {
+                _context.TwoFactorCodes.RemoveRange(expiredCodes);
+            }
+        }
+
+        public async Task DeleteTwoFactorCodeByIdAsync(Guid userId)
+        {
+            var twoFactorCode = await _context.TwoFactorCodes
+                .FindAsync(userId);
+
+            if(twoFactorCode != null)
+            {
+                _context.TwoFactorCodes.Remove(twoFactorCode);
+            }
         }
     }
 }

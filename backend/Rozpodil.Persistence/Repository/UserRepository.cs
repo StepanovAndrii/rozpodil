@@ -37,6 +37,13 @@ namespace Rozpodil.Persistence.Repository
             }
         }
 
+        public Task DeleteUserAsync(User user)
+        {
+            _context.Users.Remove(user);
+
+            return Task.CompletedTask;
+        }
+
         public async Task<User?> GetUserByIdAsync(Guid id)
         {
             return await _context.Users

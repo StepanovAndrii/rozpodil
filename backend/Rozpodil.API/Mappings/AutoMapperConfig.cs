@@ -1,6 +1,5 @@
-﻿using Rozpodil.API.Mappings.Profiles;
-using Rozpodil.Application.Mappings.CommandsModels;
-using Rozpodil.Application.Mappings.ModelsEntities;
+﻿using Rozpodil.Application.Mappings.CommandsModels;
+using System.Reflection;
 
 namespace Rozpodil.API.Mappings
 {
@@ -8,13 +7,10 @@ namespace Rozpodil.API.Mappings
     {
         public static IServiceCollection AddMappingProfiles(this IServiceCollection services)
         {
-            services.AddAutoMapper(configuration =>
-            {
-                configuration.AddProfile<UserDtoMappingProfile>();
-                configuration.AddProfile<RegisterUserCommandProfile>();
-                configuration.AddProfile<RefreshTokenModelMappingProfile>();
-                configuration.AddProfile<UserModelMappingProfile>();
-            });
+            services.AddAutoMapper(configuration => { },
+                Assembly.GetExecutingAssembly(),
+                typeof(RegisterUserCommandProfile).Assembly
+            );
 
             return services;
         }

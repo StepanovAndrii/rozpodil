@@ -4,6 +4,7 @@ using Rozpodil.Application.Interfaces.Repositories;
 using Rozpodil.Application.Services;
 using Rozpodil.Domain.Repositories;
 using Rozpodil.Infrastructure.Services;
+using Rozpodil.Infrastructure.Services.HostedServices;
 using Rozpodil.Persistence;
 using Rozpodil.Persistence.Repository;
 

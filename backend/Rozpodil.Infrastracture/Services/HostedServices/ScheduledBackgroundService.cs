@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Rozpodil.Infrastructure.Services
+namespace Rozpodil.Infrastructure.Services.HostedServices
 {
     public abstract class ScheduledBackgroundService : BackgroundService
     {

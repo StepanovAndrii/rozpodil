@@ -17,13 +17,15 @@ import {
 import { requiredValidator } from '../../core/validators/built-in-validators/required.validator';
 import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
+import { ResendCodeButtonComponent } from "../../core/components/resend-code-button/resend-code-button.component";
 
 @Component({
   selector: 'app-verification-code',
   imports: [
     InputFieldComponent,
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule,
+    ResendCodeButtonComponent
+],
   templateUrl: './verification-code.component.html',
   styleUrl: './verification-code.component.scss'
 })
