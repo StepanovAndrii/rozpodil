@@ -19,6 +19,7 @@ import {
 } from '@angular/router';
 
 import {
+  firstValueFrom,
   Subject,
   takeUntil
 } from 'rxjs';
@@ -33,7 +34,7 @@ import { passwordRepetitionNamedValidators } from './validators/password-repetit
 import { getValidatorsPair } from '../../core/validators/utils/validator-type-guards';
 import { FieldHintsPopoverComponent } from "../../core/components/field-hints-popover/field-hints-popover.component";
 import { AuthService } from '../../core/services/authentication/auth-service/auth.service';
-import { EmailStorageService } from '../../core/services/storages/email-storage-service/email-storage.service';
+import { StorageService } from '../../core/services/storage-service/storage.service';
 import { GoogleAuthActionButtonComponent } from "../../core/components/google-auth-action-button/google-auth-action-button.component";
 
 @Component({
@@ -77,9 +78,9 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     private router: Router,
     private formBuilder: FormBuilder,
     private _authService: AuthService,
-    private _emailStorageService: EmailStorageService
+    private _stringStorage: StorageService<string>
   ) { }
-
+  
   public ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -96,18 +97,10 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   public registerWithForm() {
     if(this.registrationForm.valid) {
       const { passwordRepetition, ...dataToSend } = this.registrationForm.value;
-      this._authService.registerWithForm(dataToSend)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: () => {
-            const email = this.registrationForm.get('email')!.value;
-            this._emailStorageService.setEmail(email);
-            this.router.navigate(['verify-email']);
-          },
-          error: () => {
-
-          }
-        });
+      this._authService.registerWithFormAsync(dataToSend)
+      const email = this.registrationForm.get('email')!.value;
+      this._stringStorage.setItem('email', email);
+      this.router.navigate(['verify-email']);
     }
   }
   

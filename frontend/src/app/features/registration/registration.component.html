@@ -105,7 +105,8 @@
                     Зареєструватися
                 </button>
                 <div class="registration-form__providers-submit-buttons">
-                    <app-google-auth-action-button />
+                    <app-google-auth-action-button 
+                        (action)="registerWithGoogleAsync()"/>
                 </div>
             </div>
             <p class="registration-form__login-link-area">

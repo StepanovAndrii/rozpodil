@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { firstValueFrom, Observable, of } from 'rxjs';
+import { UrlService } from '../../url-service/url.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,20 +9,29 @@ import { Observable, of } from 'rxjs';
 
 export class AuthService {
   constructor(
-    private _http: HttpClient
+    private _http: HttpClient,
+    private _urlService: UrlService
    ) { }
   
-  public registerWithForm<T extends Record<string, any>>(dataToSend: T): Observable<Object> {
-    return this._http.post('https://localhost:7297/api/auth/register', dataToSend);
+  public async registerWithFormAsync<T extends Record<string, any>>(dataToSend: T): Promise<Object> {
+    return await firstValueFrom (
+      this._http.post(`${this._urlService.getApiUrl()}/auth/register`, dataToSend)
+    );
   }
 
-  public verifyCode(code: string): Observable<Object> {
-    return this._http.post('https://localhost:7297/api/auth/verify-code', { code }, {
-      withCredentials: true
-    })
+  public async verifyCodeAsync(code: string): Promise<Object> {
+    return await firstValueFrom(
+      this._http.post(
+        `${this._urlService.getApiUrl()}/auth/verify-code`,
+        { code }, 
+        { withCredentials: true }
+      )
+    );
   }
 
-  public resendCode(email: string): Observable<Object> {
-    return this._http.post('https://localhost:7297/api/auth/resend-email', { email });
+  public async resendCodeAsync(email: string): Promise<Object> {
+    return await firstValueFrom(
+      this._http.post(`${this._urlService.getApiUrl()}/auth/resend-email`, { email })
+    );
   }
 }

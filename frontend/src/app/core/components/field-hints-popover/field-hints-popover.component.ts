@@ -9,7 +9,7 @@ import {
 import { AbstractControl } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
-import { CombinedValidator } from '../../types/named-combined-validator';
+import { CombinedValidator } from '../../validators/named-combined-validator';
 import { ValidationHintComponent } from "../validation-hint/validation-hint.component";
 
 @Component({

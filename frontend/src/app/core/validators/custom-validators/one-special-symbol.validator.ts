@@ -3,7 +3,7 @@ import {
     ValidationErrors
 } from "@angular/forms";
 
-import { CombinedValidator } from "../../types/named-combined-validator";
+import { CombinedValidator } from "../named-combined-validator";
 
 export const specialSymbolValidator: CombinedValidator = {
     title: 'specialSymbol',

@@ -1,6 +1,5 @@
 import {
   Component,
-  OnDestroy,
   OnInit
 } from '@angular/core';
 
@@ -15,7 +14,6 @@ import {
 } from '@angular/forms';
 
 import { requiredValidator } from '../../core/validators/built-in-validators/required.validator';
-import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { ResendCodeButtonComponent } from "../../core/components/resend-code-button/resend-code-button.component";
 
@@ -30,10 +28,8 @@ import { ResendCodeButtonComponent } from "../../core/components/resend-code-but
   styleUrl: './verification-code.component.scss'
 })
 
-export class VerificationCodeComponent implements OnInit, OnDestroy {
+export class VerificationCodeComponent implements OnInit {
   public verifyCodeForm!: FormGroup;
-  
-  private destroy$ = new Subject<void>();
 
   constructor(
     private _router: Router,
@@ -41,31 +37,18 @@ export class VerificationCodeComponent implements OnInit, OnDestroy {
     private _formBuilder: FormBuilder
   ) { }
 
-  public ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   public ngOnInit(): void {
     this.initForm();
   }
 
-  public verify() {
+  public async verifyAsync() {
     if(this.verifyCodeForm.valid) {
       const codeControl: AbstractControl<any, any> | null = this.verifyCodeForm.get('code');
 
       if(codeControl) {
         const code: string = codeControl.value;
-        this._authService.verifyCode(code)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: (result: any) => {
-              this._router.navigate(['room']);
-            },
-            error: (error: any) => {
-
-            }
-          });
+        await this._authService.verifyCodeAsync(code)
+        this._router.navigate(['room']);
       } 
     }
   }

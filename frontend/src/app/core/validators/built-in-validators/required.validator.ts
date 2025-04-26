@@ -1,5 +1,5 @@
 import { Validators } from "@angular/forms";
-import { CombinedValidator } from "../../types/named-combined-validator";
+import { CombinedValidator } from "../named-combined-validator";
 
 export const requiredValidator: CombinedValidator = {
     title: 'required',

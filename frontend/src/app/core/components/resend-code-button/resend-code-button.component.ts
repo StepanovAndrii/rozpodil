@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, PLATFORM_ID, signal } from '@angular/core';
 import { interval, map, takeWhile } from 'rxjs';
 import { AuthService } from '../../services/authentication/auth-service/auth.service';
-import { EmailStorageService } from '../../services/storages/email-storage-service/email-storage.service';
+import { StorageService } from '../../services/storage-service/storage.service';
 
 @Component({
   selector: 'app-resend-code-button',
@@ -21,7 +21,7 @@ export class ResendCodeButtonComponent {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private _authService: AuthService,
-    private _emailStorageService: EmailStorageService
+    private _stringStorage: StorageService<string>
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
@@ -43,14 +43,9 @@ export class ResendCodeButtonComponent {
     sessionStorage.setItem(this.storageKey, Date.now().toString());
     this.startCountdown(this.cooldownSeconds);
     
-    const userEmail = this._emailStorageService.getEmail();
+    const userEmail = this._stringStorage.getItem<string>('email');
     if(userEmail != null) {
-      this._authService.resendCode(userEmail)
-        .pipe()
-        .subscribe({
-          next: () => { },
-          error: () => { }
-        });
+      this._authService.resendCodeAsync(userEmail)
     }
     //TODO: зробити винятки
   }
