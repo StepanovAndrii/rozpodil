@@ -16,6 +16,5 @@ export class HomeComponent {
     this.route.data.subscribe(data => {
         this.tasks = Object.entries(data['taskData']);
     });
-    console.log(this.tasks)
   }
 }

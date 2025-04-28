@@ -11,9 +11,7 @@ export class PkceService {
 
   public generateCodeVerifier(length: number = 128): string {
     const randomBytesArray: Uint8Array = this._cryptoService.generateRandomBytes(length);
-    const base64String: string = this._cryptoService.convertBytesToBase64(randomBytesArray);
-    const base64UrlString: string = this._cryptoService.convertBase64ToBase64Url(base64String);
-    return base64UrlString;
+    return this._cryptoService.convertBytesToBase64(randomBytesArray);
   }
 
   public async generateCodeChallengeAsync(codeVerifier: string): Promise<string> {

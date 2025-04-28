@@ -2,7 +2,7 @@
     <form class="registration-form"
         [formGroup]="registrationForm"
         autocomplete="off"
-        (ngSubmit)="registerWithForm()">
+        (ngSubmit)="registerWithFormAsync()">
         
         <div class="registration-form__content">
             <h1 class="registration-form__main-header">Реєстрація</h1>
@@ -105,8 +105,7 @@
                     Зареєструватися
                 </button>
                 <div class="registration-form__providers-submit-buttons">
-                    <app-google-auth-action-button 
-                        (action)="registerWithGoogleAsync()"/>
+                    <app-google-auth-action-button />
                 </div>
             </div>
             <p class="registration-form__login-link-area">

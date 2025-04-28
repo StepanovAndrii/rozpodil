@@ -94,10 +94,10 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     return this.registrationForm.get(name);
   }
 
-  public registerWithForm() {
+  public async registerWithFormAsync() {
     if(this.registrationForm.valid) {
       const { passwordRepetition, ...dataToSend } = this.registrationForm.value;
-      this._authService.registerWithFormAsync(dataToSend)
+      await this._authService.registerWithFormAsync(dataToSend)
       const email = this.registrationForm.get('email')!.value;
       this._stringStorage.setItem('email', email);
       this.router.navigate(['verify-email']);

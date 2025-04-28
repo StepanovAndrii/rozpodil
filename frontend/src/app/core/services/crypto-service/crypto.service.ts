@@ -18,6 +18,12 @@ export class CryptoService {
     );
   }
 
+  public convertBase64ToString(base64String: string): string {
+    return atob(
+      base64String
+    );
+  }
+
   public convertBase64ToBase64Url(base64String: string): string {
     return base64String
       .replace(/\+/g, '-')
@@ -25,13 +31,26 @@ export class CryptoService {
       .replace(/=+$/, '');
   }
 
+  public convertBase64UrlToBase64(base64UrlString: string): string {
+    const padding: string = '='.repeat((4 - base64UrlString.length % 4) % 4);
+
+    return base64UrlString
+      .replace(/-/g, '+')
+      .replace(/_/g, '/')
+      + padding;
+  }
+
   public async convertToSha256Async(input: string): Promise<string> {
-    const encoder: TextEncoder = new TextEncoder();
-    const data: Uint8Array = encoder.encode(input);
+    const data: Uint8Array = this.convertStringToBytes(input);
     const hashBuffer: ArrayBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashArray: Uint8Array = new Uint8Array(hashBuffer);
     const base64String: string = this.convertBytesToBase64(hashArray);
     const base64Url: string = this.convertBase64ToBase64Url(base64String);
     return base64Url;
+  }
+
+  public convertStringToBytes(input: string): Uint8Array {
+    const encoder: TextEncoder = new TextEncoder();
+    return encoder.encode(input);
   }
 }

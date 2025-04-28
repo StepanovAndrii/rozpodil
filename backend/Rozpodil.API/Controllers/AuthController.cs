@@ -14,14 +14,17 @@ namespace Rozpodil.API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
+        //private readonly IOAuthService _oauthService;
 
         public AuthController(
                 IMapper mapper,
                 IAuthService authService
+        //        IOAuthService oAuthService
             )
         {
             _mapper = mapper;
             _authService = authService;
+         //   _oauthService = oAuthService;
         }
 
         [HttpPost("register")]
@@ -38,14 +41,24 @@ namespace Rozpodil.API.Controllers
             return BadRequest();
         }
 
-        [HttpPost("google/register")]
-        public async Task<ActionResult> ResisterWithGoogle()
+        [HttpPost("oauth")]
+        public async Task<ActionResult<AccessTokenResponse>> AuthenticateWithProvider (
+                [FromBody] ExternalAuthenticationRequest externalAuthenticationRequest
+            )
         {
+            var externalAuthenticationCommand = _mapper.Map<ExternalAuthenticationCommand>(externalAuthenticationRequest);
+           // var result = await _oauthService.AuthenticateExternalUserAsync(externalAuthenticationCommand);
 
+            //if(result.Success)
+            //{
+            //    return _mapper.Map<AccessTokenResponse>(result.Data);
+            //}
+
+            return Ok(externalAuthenticationCommand.Provider);
         }
 
         [HttpPost("verify-code")]
-        public async Task<ActionResult<AccessTokenResponse>> VerifyEmail([FromBody] EmailConfirmationRequest emailConfirmationRequest)
+        public async Task<ActionResult<AccessTokenResponse>> VerifyEmailAndLogin ([FromBody] EmailConfirmationRequest emailConfirmationRequest)
         {
             var emailVerificationCommand = _mapper.Map<EmailConfirmationCommand>(emailConfirmationRequest);
             var result = await _authService.VerifyEmailAndLoginAsync(emailVerificationCommand, 7);

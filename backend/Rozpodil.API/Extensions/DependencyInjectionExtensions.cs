@@ -40,5 +40,12 @@ namespace Rozpodil.API.Extensions
 
             return services;
         }
+
+        public static IServiceCollection AddHttpClients(this IServiceCollection services)
+        {
+           // services.AddHttpClient<IOAuthService, OAuthService>();
+
+            return services;
+        }
     }
 }
