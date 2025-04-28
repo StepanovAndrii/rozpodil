@@ -1,7 +1,6 @@
 ﻿using Rozpodil.Infrastructure.DataConversion.Converters;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
 
 namespace Rozpodil.Infrastructure.DataConversion.Deserialization
 {
@@ -14,7 +13,7 @@ namespace Rozpodil.Infrastructure.DataConversion.Deserialization
 
         public override JsonConverter? CreateConverter(Type typeToConvert, JsonSerializerOptions options)
         {
-            var converterType = typeof(SnakeCaseConverter<>).MakeGenericType(typeToConvert);
+            var converterType = typeof(DynamicNamingConverter<>).MakeGenericType(typeToConvert);
             
             if (converterType == null)
             {

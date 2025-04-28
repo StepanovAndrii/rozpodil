@@ -10,59 +10,64 @@ using Rozpodil.Application.Models;
 
 namespace Rozpodil.Infrastructure.Services
 {
-    //public class OAuthService: IOAuthService
-    //{
-    //    private readonly HttpClient _httpClient;
-    //    private readonly IMapper _mapper;
-    //    private readonly IConfiguration _configuration;
+    public class OAuthService : IOAuthService
+    {
+        private readonly HttpClient _httpClient;
+        private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
 
-    //    public OAuthService(
-    //            HttpClient httpClient,
-    //            IMapper mapper,
-    //            IConfiguration configuration
-    //        )
-    //    {
-    //        _httpClient = httpClient;
-    //        _mapper = mapper;
-    //        _configuration = configuration;
-    //    }
+        public OAuthService(
+                HttpClient httpClient,
+                IMapper mapper,
+                IConfiguration configuration
+            )
+        {
+            _httpClient = httpClient;
+            _mapper = mapper;
+            _configuration = configuration;
+        }
 
-    //    public Task<Result<AccessTokenModel, ErrorType>> AuthenticateExternalUserAsync(ExternalAuthenticationCommand externalAuthenticationCommand)
-    //    {
-    //        var externalAuthenticationModel = _mapper.Map<ExternalAuthenticationModel>(externalAuthenticationCommand);
-            
-    //        OAuthProvider oauthProvider = GetOAuthProvider(externalAuthenticationModel.Provider);
-    //        var discoveryDocumentUrl = OAuthProviderUrls.GetDiscoveryUrl(oauthProvider);
-    //        // отримати discovery документ
-    //        // отримати клієнт айді
-    //        // отримати клієнт секрет
-    //        // ...
-    //        // скласти тіло запиту
-    //        // відправити запит на обмін токена
-    //        // перевірити токен на подліність
-    //        // отримати дані з токену
-    //        // перевірити користувача в бд
-    //        // згенерувати access токен
-    //        // згенерувати refresh токен
-    //        // повернути access та refresh
-    //    }
+        public Task<Result<AccessTokenModel, ErrorType>> AuthenticateExternalUserAsync(ExternalAuthenticationCommand externalAuthenticationCommand)
+        {
+            var externalAuthenticationModel = _mapper.Map<ExternalAuthenticationModel>(externalAuthenticationCommand);
 
-    //    private OAuthProvider GetOAuthProvider(string provider)
-    //    {
-    //        if(!Enum.TryParse(
-    //            provider,
-    //            ignoreCase: true,
-    //            out OAuthProvider parsedProvider))
-    //        {
-    //            throw new ArgumentOutOfRangeException($"Непідтримуваний OAuth провайдер: {provider}");
-    //        }
+            OAuthProvider oauthProvider = GetOAuthProvider(externalAuthenticationModel.Provider);
+            var discoveryDocumentUrl = OAuthProviderUrls.GetDiscoveryUrl(oauthProvider);
+            // отримати discovery документ
+            // отримати клієнт айді
+            // отримати клієнт секрет
+            // ...
+            // скласти тіло запиту
+            // відправити запит на обмін токена
+            // перевірити токен на подліність
+            // отримати дані з токену
+            // перевірити користувача в бд
+            // згенерувати access токен
+            // згенерувати refresh токен
+            // повернути access та refresh
+        }
 
-    //        return parsedProvider;
-    //    }
+        private BackendDiscoveryDocument FetchDiscoveryDocument()
+        {
 
-    //    private async BackendDiscoveryDocument FetchDiscoveryDocumentAsync(string discoveryDocumentUrl)
-    //    {
-    //        await _httpClient.PostAsync();
-    //    }
-    //}
+        }
+
+        private OAuthProvider GetOAuthProvider(string provider)
+        {
+            if (!Enum.TryParse(
+                provider,
+                ignoreCase: true,
+                out OAuthProvider parsedProvider))
+            {
+                throw new ArgumentOutOfRangeException($"Непідтримуваний OAuth провайдер: {provider}");
+            }
+
+            return parsedProvider;
+        }
+
+        private async BackendDiscoveryDocument FetchDiscoveryDocumentAsync(string discoveryDocumentUrl)
+        {
+            await _httpClient.PostAsync();
+        }
+    }
 }

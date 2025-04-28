@@ -14,17 +14,17 @@ namespace Rozpodil.API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
-        //private readonly IOAuthService _oauthService;
+        private readonly IOAuthService _oauthService;
 
         public AuthController(
                 IMapper mapper,
-                IAuthService authService
-        //        IOAuthService oAuthService
+                IAuthService authService,
+                IOAuthService oAuthService
             )
         {
             _mapper = mapper;
             _authService = authService;
-         //   _oauthService = oAuthService;
+            _oauthService = oAuthService;
         }
 
         [HttpPost("register")]
@@ -47,12 +47,12 @@ namespace Rozpodil.API.Controllers
             )
         {
             var externalAuthenticationCommand = _mapper.Map<ExternalAuthenticationCommand>(externalAuthenticationRequest);
-           // var result = await _oauthService.AuthenticateExternalUserAsync(externalAuthenticationCommand);
+            var result = await _oauthService.AuthenticateExternalUserAsync(externalAuthenticationCommand);
 
-            //if(result.Success)
-            //{
-            //    return _mapper.Map<AccessTokenResponse>(result.Data);
-            //}
+            if (result.Success)
+            {
+                return _mapper.Map<AccessTokenResponse>(result.Data);
+            }
 
             return Ok(externalAuthenticationCommand.Provider);
         }

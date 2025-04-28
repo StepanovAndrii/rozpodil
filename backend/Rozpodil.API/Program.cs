@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.Converters.Add(new SnakeCaseConverterFactory());
+        options.JsonSerializerOptions.Converters.Add(new DynamicNamingConverterFactory());
     });
 
 builder.Services.AddHttpContextAccessor();

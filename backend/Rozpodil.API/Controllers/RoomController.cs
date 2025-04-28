@@ -9,18 +9,11 @@ namespace Rozpodil.API.Controllers
     public class RoomController : ControllerBase
     {
         private RoomService _roomService;
-        public RoomController(
-            
+        public RoomController (
+                
             )
         {
 
         }
-
-        //[HttpPost("create")]
-        //public ActionResult CreateRoom([FromBody] CreateRoomRequest createRoomRequest)
-        //{
-
-        //    _roomService.CreateRoom();
-        //}
     }
 }

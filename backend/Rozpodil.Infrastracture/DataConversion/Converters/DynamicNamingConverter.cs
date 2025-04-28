@@ -22,8 +22,9 @@ namespace Rozpodil.Infrastructure.DataConversion.Converters
 
                 foreach (var property in root.EnumerateObject())
                 {
-                    var pascalCaseProperty = ConvertSnakeCaseToPascalCase(property.Name);
-                    dictionary[pascalCaseProperty] = property.Value!;
+                    var dynamicCaseProperty = ConvertPropertyName(property.Name);
+
+                    dictionary[dynamicCaseProperty] = property.Value;
                 }
 
                 return ConvertToObject<T>(dictionary);
@@ -44,16 +45,37 @@ namespace Rozpodil.Infrastructure.DataConversion.Converters
             JsonSerializer.Serialize(writer, dictionary, options);
         }
 
+        private string ConvertPropertyName(string propertyName)
+        {
+            JsonNamingPolicy namingPolicy = DetermineNamingPolicy(propertyName);
+
+            if (namingPolicy == JsonNamingPolicy.SnakeCaseLower)
+                return ConvertSnakeCaseToPascalCase(propertyName);
+            
+            return ConvertCamelCaseToPascalCase(propertyName);
+        }
+
         private JsonNamingPolicy DetermineNamingPolicy(string propertyName)
         {
-            if (propertyName.Contains('_'))
+            if (IsSnakeCase(propertyName))
             {
                 return JsonNamingPolicy.SnakeCaseLower;
             }
-            else if ()
+            else if (IsCamelCase(propertyName))
             {
-                // ...
+                return JsonNamingPolicy.CamelCase;
             }
+            throw new Exception("Політика для назви не підтримується");
+        }
+
+        private bool IsSnakeCase(string value)
+        {
+            return Regex.IsMatch(value, @"^[a-z]+(_[a-z]+)*$");
+        }
+
+        private bool IsCamelCase(string value)
+        {
+            return Regex.IsMatch(value, @"^[a-z]+([A-Z][a-z]*)*$");
         }
 
         private T ConvertToObject<T>(Dictionary<string, JsonElement> dictionary)
