@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Options;
 using Rozpodil.Application.Commands;
 using Rozpodil.Application.Common;
@@ -10,6 +11,7 @@ using Rozpodil.Application.Models;
 using Rozpodil.Application.Models.OAuth;
 using Rozpodil.Domain.Entities;
 using Rozpodil.Infrastructure.Options;
+using System.Net.Http.Headers;
 
 namespace Rozpodil.Infrastructure.Services
 {
@@ -132,6 +134,7 @@ namespace Rozpodil.Infrastructure.Services
             )
         {
             var keyValues = ObjectToKeyValueConverter.ToKeyValuePairCollection(tokenRequestBody);
+
             var content = new FormUrlEncodedContent(
                 keyValues
             );
@@ -142,7 +145,10 @@ namespace Rozpodil.Infrastructure.Services
             );
 
             if (!response.IsSuccessStatusCode)
-                throw new Exception("Запит не вдалий. Статус: " + response.StatusCode);
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Запит не вдалий. Статус: {response.StatusCode}. Відповідь: {errorContent}");
+            }
 
             var responseContent = await response.Content.ReadAsStringAsync();
 

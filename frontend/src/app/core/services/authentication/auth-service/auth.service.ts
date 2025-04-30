@@ -16,14 +16,14 @@ export class AuthService {
   
   public async registerWithFormAsync<T extends Record<string, any>>(dataToSend: T): Promise<void> {
     await firstValueFrom (
-      this._http.post(`${this._urlService.getApiUrl()}/auth/register`, dataToSend)
+      this._http.post('/api/auth/register', dataToSend)
     );
   }
 
   public async verifyCodeAsync(code: string): Promise<AccessToken> {
     return await firstValueFrom(
       this._http.post(
-        `${this._urlService.getApiUrl()}/auth/verify-code`,
+        '/api/auth/verify-code',
         { code }, 
         { withCredentials: true }
       )
@@ -32,7 +32,7 @@ export class AuthService {
 
   public async resendCodeAsync(email: string): Promise<Object> {
     return await firstValueFrom(
-      this._http.post(`${this._urlService.getApiUrl()}/auth/resend-email`, { email })
+      this._http.post('/api/auth/resend-email', { email })
     );
   }
 }

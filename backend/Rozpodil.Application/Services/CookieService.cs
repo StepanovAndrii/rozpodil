@@ -28,9 +28,9 @@ namespace Rozpodil.Application.Services
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false,
+                Secure = true,
                 SameSite = SameSiteMode.Lax, // TODO: змінити
-                Expires = DateTime.UtcNow.AddDays(7), //expiresAtDays
+                Expires = DateTime.UtcNow.AddDays(expiresAtDays), //expiresAtDays
                 IsEssential = true
             };
 

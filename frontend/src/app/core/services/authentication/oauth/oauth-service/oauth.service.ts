@@ -91,7 +91,7 @@ export class OAuthService {
   {
     return await firstValueFrom(
       this._http.post<AccessToken>(
-        `${this._urlService.getApiUrl()}/auth/oauth`,
+        '/api/auth/oauth',
         {
           provider,
           code,

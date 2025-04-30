@@ -19,6 +19,11 @@ builder.Services
         );
     });
 
+builder.WebHost.ConfigureKestrel((context, options) =>
+{
+    options.Configure(context.Configuration.GetSection("Kestrel"));
+});
+
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 builder.Services.AddHttpContextAccessor();
