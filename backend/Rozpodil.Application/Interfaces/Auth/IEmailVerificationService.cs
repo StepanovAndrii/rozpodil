@@ -1,4 +1,4 @@
-﻿namespace Rozpodil.Application.Abstracts
+﻿namespace Rozpodil.Application.Interfaces.Auth
 {
     public interface IEmailVerificationService
     {

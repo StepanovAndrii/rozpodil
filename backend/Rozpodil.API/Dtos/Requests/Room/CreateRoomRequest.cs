@@ -1,4 +1,4 @@
-﻿namespace Rozpodil.API.Dtos.Requests
+﻿namespace Rozpodil.API.Dtos.Requests.Room
 {
     public class CreateRoomRequest
     {

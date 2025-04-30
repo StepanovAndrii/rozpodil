@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Rozpodil.Application.Interfaces;
+using Rozpodil.Application.Interfaces.Auth.AuthContext;
 
 namespace Rozpodil.Application.Services
 {

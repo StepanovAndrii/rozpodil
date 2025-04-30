@@ -1,4 +1,4 @@
-﻿namespace Rozpodil.Application.Interfaces
+﻿namespace Rozpodil.Application.Interfaces.Auth
 {
     public interface IVerificationCodeGeneratorService
     {

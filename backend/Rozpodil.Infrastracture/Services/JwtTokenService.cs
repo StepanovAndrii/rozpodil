@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Rozpodil.Application.Interfaces;
+using Rozpodil.Application.Interfaces.Auth.AuthContext;
 using Rozpodil.Infrastructure.Configurations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

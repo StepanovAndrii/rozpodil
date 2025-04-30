@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Rozpodil.Application.Interfaces.IHasher;
+using Rozpodil.Application.Interfaces.Security;
 using Rozpodil.Infrastructure.Configurations;
 using Rozpodil.Infrastructure.Services.Hashers;
 

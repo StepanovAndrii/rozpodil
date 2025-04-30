@@ -4,11 +4,13 @@ using Rozpodil.Application.Common;
 using Rozpodil.Application.Common.Interfaces;
 using Rozpodil.Application.Common.Utilities;
 using Rozpodil.Application.Interfaces;
-using Rozpodil.Application.Interfaces.IHasher;
+using Rozpodil.Application.Interfaces.Security;
 using Rozpodil.Application.Models;
 using Rozpodil.Domain.Entities;
 using Rozpodil.Application.Common.Enums;
 using Rozpodil.Application.Commands;
+using Rozpodil.Application.Interfaces.Auth.AuthContext;
+using Rozpodil.Application.Interfaces.Auth;
 
 namespace Rozpodil.Application.Services
 {

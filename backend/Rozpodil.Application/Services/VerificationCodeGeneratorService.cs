@@ -1,4 +1,4 @@
-﻿using Rozpodil.Application.Interfaces;
+﻿using Rozpodil.Application.Interfaces.Auth;
 using System.Security.Cryptography;
 using System.Text;
 

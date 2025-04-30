@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.Extensions.DependencyInjection;
-using Rozpodil.Application.Interfaces;
+using Rozpodil.Application.Interfaces.Services;
 
 namespace Rozpodil.Infrastructure.Services.HostedServices
 {

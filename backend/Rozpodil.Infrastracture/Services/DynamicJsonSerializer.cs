@@ -1,4 +1,4 @@
-﻿using Rozpodil.Application.Interfaces;
+﻿using Rozpodil.Application.Interfaces.Services;
 using Rozpodil.Infrastructure.DataConversion.Deserialization;
 using System.Text.Json;
 

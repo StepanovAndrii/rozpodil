@@ -1,4 +1,5 @@
 ﻿using Rozpodil.Application.Interfaces;
+using Rozpodil.Application.Interfaces.Services;
 
 namespace Rozpodil.Application.Services
 {

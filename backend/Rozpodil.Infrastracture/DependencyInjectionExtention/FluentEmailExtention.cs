@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Rozpodil.Application.Abstracts;
+using Rozpodil.Application.Interfaces.Auth;
 using Rozpodil.Infrastructure.Configurations;
 using Rozpodil.Infrastructure.DependencyInjectionExtention;
 using Rozpodil.Infrastructure.Services;

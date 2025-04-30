@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Rozpodil.Application.Interfaces
+namespace Rozpodil.Application.Interfaces.Auth
 {
     public interface ITokenValidationService
     {

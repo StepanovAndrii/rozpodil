@@ -2,7 +2,8 @@
 using Rozpodil.Application.Common.Enums;
 using Rozpodil.Application.Common.Interfaces;
 using Rozpodil.Application.Interfaces;
-using Rozpodil.Application.Interfaces.IHasher;
+using Rozpodil.Application.Interfaces.Auth.AuthContext;
+using Rozpodil.Application.Interfaces.Security;
 using Rozpodil.Application.Models;
 using Rozpodil.Domain.Entities;
 

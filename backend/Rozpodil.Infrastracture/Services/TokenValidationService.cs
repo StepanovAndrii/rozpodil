@@ -1,5 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Rozpodil.Application.Interfaces;
+using Rozpodil.Application.Interfaces.Auth;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 

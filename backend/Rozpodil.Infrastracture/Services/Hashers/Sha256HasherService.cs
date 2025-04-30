@@ -1,4 +1,4 @@
-﻿using Rozpodil.Application.Interfaces.IHasher;
+﻿using Rozpodil.Application.Interfaces.Security;
 using System.Security.Cryptography;
 using System.Text;
 

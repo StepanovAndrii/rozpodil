@@ -1,4 +1,4 @@
-﻿namespace Rozpodil.Application.Interfaces.IHasher
+﻿namespace Rozpodil.Application.Interfaces.Security
 {
     public interface IHasherService
     {

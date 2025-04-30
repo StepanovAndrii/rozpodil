@@ -2,7 +2,7 @@
 using Rozpodil.Application.Common;
 using Rozpodil.Application.Models;
 
-namespace Rozpodil.Application.Interfaces
+namespace Rozpodil.Application.Interfaces.Auth
 {
     public interface IOAuthService
     {

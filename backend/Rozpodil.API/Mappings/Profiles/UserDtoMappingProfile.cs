@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Rozpodil.API.Dtos.Requests;
+using Rozpodil.API.Dtos.Requests.Auth;
 using Rozpodil.API.Dtos.Responses;
 using Rozpodil.Application.Commands;
 using Rozpodil.Application.Models;

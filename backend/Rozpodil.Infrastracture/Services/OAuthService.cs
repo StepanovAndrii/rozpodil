@@ -7,6 +7,8 @@ using Rozpodil.Application.Common.Enums;
 using Rozpodil.Application.Common.Models;
 using Rozpodil.Application.Common.Utilities;
 using Rozpodil.Application.Interfaces;
+using Rozpodil.Application.Interfaces.Auth;
+using Rozpodil.Application.Interfaces.Auth.AuthContext;
 using Rozpodil.Application.Models;
 using Rozpodil.Application.Models.OAuth;
 using Rozpodil.Domain.Entities;

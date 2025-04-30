@@ -1,5 +1,5 @@
 ﻿using FluentEmail.Core;
-using Rozpodil.Application.Abstracts;
+using Rozpodil.Application.Interfaces.Auth;
 
 namespace Rozpodil.Infrastructure.Services
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Rozpodil.Application.Common.Enums;
-using Rozpodil.Application.Interfaces.IHasher;
+using Rozpodil.Application.Interfaces.Security;
 using Rozpodil.Infrastructure.Configurations;
 
 namespace Rozpodil.Infrastructure.Services.Hashers
