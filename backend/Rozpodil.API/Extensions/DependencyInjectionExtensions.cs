@@ -29,6 +29,7 @@ namespace Rozpodil.API.Extensions
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             services.AddScoped<ICookieService, CookieService>();
             services.AddScoped<IAccountCleanupService, AccountCleanupService>();
+            services.AddScoped<IDynamicJsonSerializer, DynamicJsonSerializer>();
 
             return services;
         }
@@ -43,7 +44,8 @@ namespace Rozpodil.API.Extensions
 
         public static IServiceCollection AddHttpClients(this IServiceCollection services)
         {
-           // services.AddHttpClient<IOAuthService, OAuthService>();
+            services.AddHttpClient<IOAuthService, OAuthService>();
+            services.AddHttpClient<ITokenValidationService, TokenValidationService>();
 
             return services;
         }

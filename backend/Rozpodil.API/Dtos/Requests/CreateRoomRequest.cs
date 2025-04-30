@@ -1,6 +1,8 @@
 ﻿namespace Rozpodil.API.Dtos.Requests
 {
-    public record CreateRoomRequest(
-        string Name    
-    );
+    public class CreateRoomRequest
+    {
+        public required string Name { get; set; }
+    }
+
 }

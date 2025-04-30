@@ -4,7 +4,7 @@
     {
         public Guid UserId { get; set; }
         public required string Email { get; set; }
-        public required string HashedPassword { get; set; }
+        public string? HashedPassword { get; set; }
         public required User User { get; set; }
     }
 }

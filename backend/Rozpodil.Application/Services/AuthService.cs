@@ -173,8 +173,6 @@ namespace Rozpodil.Application.Services
             };
 
             await _unitOfWork.TwoFactorCodeRepository.CreateTwoFactorCodeAsync(twoFactorCode);
-            Console.WriteLine(user.ToString());
-            Console.WriteLine(user.Credentials.ToString());
             await _emailVerificationService.SendVerificationCodeAsync(user.Credentials.Email, generationCodeResult.Code);
         }
 

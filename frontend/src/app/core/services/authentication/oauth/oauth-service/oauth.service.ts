@@ -10,6 +10,7 @@ import { UrlService } from '../../../url-service/url.service';
 import { isPlatformBrowser } from '@angular/common';
 import { AccessToken } from '../../../../types/interfaces/access-token';
 import { State } from '../../../../types/interfaces/state';
+import { StorageService } from '../../../storage-service/storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class OAuthService {
   constructor(
     @Inject(PLATFORM_ID) private _platformId: Object,
     private _pkceService: PkceService,
+    private _storage: StorageService<string>,
     private _stateService: StateService,
     private _urlService: UrlService,
     private _http: HttpClient
@@ -66,40 +68,42 @@ export class OAuthService {
 
     const provider = this.getProvider(actualState);
 
-    await this.sendCodeToServerAsync(
+    const accessToken: AccessToken = await this.sendCodeToServerAsync(
       provider,
       code,
       codeVerifier
-    )
-      .then(() => {
-        sessionStorage.removeItem('codeVerifier');
-        sessionStorage.removeItem('state');
-      });
+    );
+
+    sessionStorage.removeItem('codeVerifier');
+    sessionStorage.removeItem('state');
+
+    this._storage.setItem(
+      "token",
+      accessToken.token
+    );
   }
 
   private async sendCodeToServerAsync(
       provider: string,
       code: string,
       codeVerifier: string
-    ): Promise<void>
+    ): Promise<AccessToken>
   {
-    await firstValueFrom(
+    return await firstValueFrom(
       this._http.post<AccessToken>(
         `${this._urlService.getApiUrl()}/auth/oauth`,
         {
           provider,
           code,
           code_verifier: codeVerifier
-        }
+        },
+        { withCredentials: true }
       )
     );
   }
 
   private areStatesEqual(actualState: string, expectedState: string): boolean {
-    if (actualState == expectedState)
-      return true;
-    
-    return false;
+      return actualState == expectedState;
   }
 
   private async fetchDiscoveryDocumentAsync(provider: OAuthProviders): Promise<FrontendDiscoveryDocument> {

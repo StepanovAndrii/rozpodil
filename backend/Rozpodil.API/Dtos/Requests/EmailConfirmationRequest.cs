@@ -1,6 +1,7 @@
 ﻿namespace Rozpodil.API.Dtos.Requests
 {
-    public record EmailConfirmationRequest (
-        string Code
-    );
+    public class EmailConfirmationRequest
+    {
+        public required string Code { get; set; }
+    }
 }

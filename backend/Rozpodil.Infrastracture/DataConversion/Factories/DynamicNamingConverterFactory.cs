@@ -4,17 +4,16 @@ using System.Text.Json.Serialization;
 
 namespace Rozpodil.Infrastructure.DataConversion.Deserialization
 {
-    public class DynamicNamingConverterFactory: JsonConverterFactory
+    public class DynamicNamingConverterFactory : JsonConverterFactory
     {
-        public override bool CanConvert(Type typeToConvert)
-        {
+        public override bool CanConvert(Type typeToConvert) {
             return true;
         }
 
         public override JsonConverter? CreateConverter(Type typeToConvert, JsonSerializerOptions options)
         {
             var converterType = typeof(DynamicNamingConverter<>).MakeGenericType(typeToConvert);
-            
+
             if (converterType == null)
             {
                 throw new ArgumentNullException($"Не вдалось отримати {nameof(converterType)}");

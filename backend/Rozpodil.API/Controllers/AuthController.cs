@@ -51,10 +51,14 @@ namespace Rozpodil.API.Controllers
 
             if (result.Success)
             {
-                return _mapper.Map<AccessTokenResponse>(result.Data);
+                var newResult = result.Data;
+
+                return Ok(
+                    newResult
+                );
             }
 
-            return Ok(externalAuthenticationCommand.Provider);
+            return BadRequest(result.Error);
         }
 
         [HttpPost("verify-code")]

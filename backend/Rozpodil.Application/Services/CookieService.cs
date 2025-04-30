@@ -29,8 +29,9 @@ namespace Rozpodil.Application.Services
             {
                 HttpOnly = true,
                 Secure = false,
-                SameSite = SameSiteMode.None, // TODO: змінити
-                Expires = DateTime.UtcNow.AddDays(expiresAtDays)
+                SameSite = SameSiteMode.Lax, // TODO: змінити
+                Expires = DateTime.UtcNow.AddDays(7), //expiresAtDays
+                IsEssential = true
             };
 
             _httpContextAccessor.HttpContext?.Response.Cookies.Append("RefreshToken", refreshToken, cookieOptions);

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Rozpodil.Application.Commands;
 using Rozpodil.Application.Models;
 
 namespace Rozpodil.Application.Mappings.CommandsModels
@@ -7,7 +8,7 @@ namespace Rozpodil.Application.Mappings.CommandsModels
     {
         public ExternalAuthenticationCommandProfile()
         {
-            CreateMap<ExternalAuthenticationCommandProfile, ExternalAuthenticationModel>();
+            CreateMap<ExternalAuthenticationCommand, ExternalAuthenticationModel>();
         }
     }
 }

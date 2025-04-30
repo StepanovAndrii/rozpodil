@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Rozpodil.Application.Common.Utilities;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
@@ -23,7 +24,6 @@ namespace Rozpodil.Infrastructure.DataConversion.Converters
                 foreach (var property in root.EnumerateObject())
                 {
                     var dynamicCaseProperty = ConvertPropertyName(property.Name);
-
                     dictionary[dynamicCaseProperty] = property.Value;
                 }
 
@@ -33,16 +33,38 @@ namespace Rozpodil.Infrastructure.DataConversion.Converters
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
-            var dictionary = new Dictionary<string, object>();
-            var properties = typeof(T).GetProperties();
+            writer.WriteStartObject();
 
-            foreach (var property in properties)
+            foreach (var property in typeof(T).GetProperties())
             {
-                var snakeCaseProperty = ConvertToSnakeCase(property.Name);
-                dictionary[snakeCaseProperty] = property.GetValue(value)!;
+                var name = CaseConverter.ConvertToSnakeCase(property.Name);
+                var val = property.GetValue(value);
+
+                writer.WritePropertyName(name);
+
+                if (val == null)
+                {
+                    writer.WriteNullValue();
+                }
+                else if (val is int or long or float or double or decimal)
+                {
+                    writer.WriteNumberValue(Convert.ToDouble(val));
+                }
+                else if (val is bool boolean)
+                {
+                    writer.WriteBooleanValue(boolean);
+                }
+                else if (val is string stringValue)
+                {
+                    writer.WriteStringValue(stringValue);
+                }
+                else
+                {
+                    JsonSerializer.Serialize(writer, val, options);
+                }
             }
 
-            JsonSerializer.Serialize(writer, dictionary, options);
+            writer.WriteEndObject();
         }
 
         private string ConvertPropertyName(string propertyName)
@@ -83,19 +105,15 @@ namespace Rozpodil.Infrastructure.DataConversion.Converters
             var json = JsonSerializer.Serialize(dictionary);
             return JsonSerializer.Deserialize<T>(json)!;
         }
-
-        private string ConvertToSnakeCase(string name)
-        {
-            return Regex.Replace(name, @"([a-z])([A-Z])", "$1_$2").ToLower();
-        }
-
+        // TODO: винести в CaseConverter
         private string ConvertSnakeCaseToPascalCase(string snakeCase)
         {
-            string value = Regex.Replace(snakeCase, @"_([a-z])", match =>
-                match.Groups[1].Value.ToUpper());
-
-            return char.ToUpper(value[0]) + value.Substring(1);
+            return string.Join("",
+                snakeCase
+                    .Split('_', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(part => char.ToUpper(part[0]) + part.Substring(1)));
         }
+
 
         private string ConvertCamelCaseToPascalCase(string camelCase)
         {

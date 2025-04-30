@@ -1,8 +1,9 @@
 ﻿namespace Rozpodil.API.Dtos.Requests
 {
-    public record ExternalAuthenticationRequest(
-        string Code,
-        string CodeVerifier,
-        string Provider
-    );
+    public class ExternalAuthenticationRequest
+    {
+        public required string Code { get; set; }
+        public required string CodeVerifier { get; set; }
+        public required string Provider { get; set; }
+    }
 }

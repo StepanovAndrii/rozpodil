@@ -6,14 +6,20 @@ using Rozpodil.API.Mappings;
 using Rozpodil.Infrastructure.DataConversion.Deserialization;
 using Rozpodil.Infrastructure.DependencyInjectionExtention;
 using Rozpodil.Persistence;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers()
+builder.Services
+    .AddControllers()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.Converters.Add(new DynamicNamingConverterFactory());
+        options.JsonSerializerOptions.Converters.Add(
+            new DynamicNamingConverterFactory()
+        );
     });
+
+JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddOpenApi();
@@ -25,6 +31,8 @@ builder.Services.AddFluentEmail(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddHasherServices(builder.Configuration);
 
+builder.Configuration.AddEnvironmentVariables();
+builder.Services.AddOAuthOptions(builder.Configuration);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", policy =>
@@ -45,8 +53,6 @@ builder.Services.AddDbContext<DatabaseContext>(
         assembly => assembly.MigrationsAssembly("Rozpodil.Persistence")
     )
 );
-
-builder.Configuration.AddEnvironmentVariables();
 
 var app = builder.Build();
 
