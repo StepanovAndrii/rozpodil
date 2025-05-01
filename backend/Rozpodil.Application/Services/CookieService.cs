@@ -29,7 +29,7 @@ namespace Rozpodil.Application.Services
             {
                 HttpOnly = true,
                 Secure = true,
-                SameSite = SameSiteMode.Lax, // TODO: змінити
+                SameSite = SameSiteMode.Strict,
                 Expires = DateTime.UtcNow.AddDays(expiresAtDays), //expiresAtDays
                 IsEssential = true
             };

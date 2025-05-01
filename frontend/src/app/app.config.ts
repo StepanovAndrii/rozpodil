@@ -4,7 +4,8 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { SelectivePreloadingStrategy } from './core/preloading-strategies/selective-preloading.strategy';
-import { loadingInterceptor } from './core/interceptors/loading-interceptor/loading.interceptor';
+import { authInterceptor } from './core/interceptors/auth-interceptor/auth.interceptor';
+import { camelCaseInterceptor } from './core/interceptors/camel-case-interceptor/camel-case.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,7 +16,8 @@ export const appConfig: ApplicationConfig = {
     ),
     provideHttpClient(
       withInterceptors([
-        loadingInterceptor
+        camelCaseInterceptor,
+        authInterceptor
       ])
     ), 
     provideClientHydration(withEventReplay())

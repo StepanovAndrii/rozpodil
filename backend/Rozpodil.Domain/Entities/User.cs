@@ -7,6 +7,6 @@
         public bool IsEmailConfirmed { get; set; }
 
         public required UserCredentials Credentials { get; set; }
-        public IList<Room> Rooms { get; set; } = new List<Room>();
+        public ICollection<RoomUser> RoomUsers { get; set; } = new List<RoomUser>();
     }
 }

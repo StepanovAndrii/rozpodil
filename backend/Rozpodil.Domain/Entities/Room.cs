@@ -6,7 +6,7 @@ namespace Rozpodil.Domain.Entities
     {
         public Guid Id { get; set; }
         public required string Name { get; set; }
-        public int Code { get; set; }
-        public IList<User> Users { get; set; } = new List<User>();
+        public required string Code { get; set; }
+        public ICollection<RoomUser> RoomUsers { get; set; } = new List<RoomUser>();
     }
 }

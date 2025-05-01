@@ -27,7 +27,7 @@ namespace Rozpodil.Persistence.Repository
             );
         }
 
-        public Task DeleteTwoFactorCodeAsync(TwoFactorCode twoFactorCode)
+        public Task DeleteTwoFactorCode(TwoFactorCode twoFactorCode)
         {
             _context.TwoFactorCodes.Remove(twoFactorCode);
             return Task.CompletedTask;

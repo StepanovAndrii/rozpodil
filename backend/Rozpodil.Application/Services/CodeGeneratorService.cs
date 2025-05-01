@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Rozpodil.Application.Services
 {
-    public class VerificationCodeGeneratorService: IVerificationCodeGeneratorService
+    public class CodeGeneratorService: ICodeGeneratorService
     {
         private readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
 

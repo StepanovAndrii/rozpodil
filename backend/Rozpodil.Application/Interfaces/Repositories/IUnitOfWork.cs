@@ -11,6 +11,7 @@ namespace Rozpodil.Application.Interfaces.Repositories
         ITwoFactorCodeRepository TwoFactorCodeRepository { get; }
         IRoomRepository RoomRepository { get; }
         IRefreshTokenRepository RefreshTokenRepository { get; }
+        IRoomUserRepository RoomUserRepository { get; }
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

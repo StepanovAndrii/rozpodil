@@ -3,6 +3,7 @@ using Rozpodil.Application.Interfaces;
 using Rozpodil.Application.Interfaces.Auth;
 using Rozpodil.Application.Interfaces.Auth.AuthContext;
 using Rozpodil.Application.Interfaces.Repositories;
+using Rozpodil.Application.Interfaces.Services;
 using Rozpodil.Application.Services;
 using Rozpodil.Domain.Repositories;
 using Rozpodil.Infrastructure.Services;
@@ -14,24 +15,28 @@ namespace Rozpodil.API.Extensions
 {
     public static class DependencyInjectionExtensions
     {
+        // TODO: розбити на секції
         public static IServiceCollection AddScopedServices(this IServiceCollection services)
         {
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserCredentialsRepository, UserCredentialsRepository>();
             services.AddScoped<ITwoFactorCodeRepository, TwoFactorCodeRepository>();
+            services.AddScoped<IRoomUserRepository, RoomUserRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<ITransactionManager, TransactionManager>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
-            services.AddScoped<IVerificationCodeGeneratorService, VerificationCodeGeneratorService>();
+            services.AddScoped<ICodeGeneratorService, CodeGeneratorService>();
             services.AddScoped<IRefreshTokenService, RefreshTokenService>();
             services.AddScoped<ITokenGenerator, SecureTokenGenerator>();
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             services.AddScoped<ICookieService, CookieService>();
             services.AddScoped<IAccountCleanupService, AccountCleanupService>();
             services.AddScoped<IDynamicJsonSerializer, DynamicJsonSerializer>();
+            services.AddScoped<ITokenManager, TokenManager>();
+            services.AddScoped<IRoomService, RoomService>();
 
             return services;
         }

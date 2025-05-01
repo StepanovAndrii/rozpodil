@@ -10,10 +10,12 @@ export class StorageService<T> {
   constructor() { }
 
   public setItem<T>(key: string, value: T): void {
+    console.log(key + " " + value);
     this.storage[key] = value;
   }
 
   public getItem<T>(key: string): T | null {
+    console.log(this.storage);
     return this.storage[key] || null;
   }
 

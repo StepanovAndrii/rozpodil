@@ -6,5 +6,7 @@ namespace Rozpodil.Application.Interfaces.Repositories
     {
         Task<RefreshToken> CreateAsync(RefreshToken refreshToken);
         Task<RefreshToken?> GetByHashedTokenAsync(string hashedToken);
+        Task<User?> GetUserByHashedTokenAsync(string hashedToken);
+        Task DeleteRefreshToken(RefreshToken refreshToken);
     }
 }

@@ -22,9 +22,26 @@ namespace Rozpodil.Persistence.Repository
 
         public async Task<RefreshToken?> GetByHashedTokenAsync(string hashedToken)
         {
-            return await _context.RefreshTokens.FirstOrDefaultAsync(
-                refreshToken => refreshToken.HashedToken == hashedToken
+            return await _context.RefreshTokens
+                .Include(refreshToken => refreshToken.User)
+                .FirstOrDefaultAsync(
+                    refreshToken => refreshToken.HashedToken == hashedToken
             );
+        }
+
+        public async Task<User?> GetUserByHashedTokenAsync(string hashedToken)
+        {
+            return await _context.RefreshTokens
+                .Where(refreshToken => refreshToken.HashedToken == hashedToken)
+                .Select(refreshToken => refreshToken.User)
+                .FirstOrDefaultAsync();
+        }
+
+        public Task DeleteRefreshToken(RefreshToken refreshToken)
+        {
+            _context.RefreshTokens.Remove(refreshToken);
+
+            return Task.CompletedTask;
         }
     }
 }

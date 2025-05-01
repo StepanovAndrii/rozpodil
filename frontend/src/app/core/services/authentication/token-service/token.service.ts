@@ -1,47 +1,36 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, filter, Observable, of, shareReplay, Subject, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, throwError, shareReplay, EMPTY } from 'rxjs';
 import { AccessToken } from '../../../types/interfaces/access-token';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class TokenService {
-  private refreshTokenInProgress: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private refreshTokenSubject: Subject<AccessToken | null> = new Subject<AccessToken | null>();
-  private apiUrl = '/api/token';
+  private apiUrl = '/api/token/refresh';
 
   constructor(
-    private _http: HttpClient
-  ) { }
+    private _http: HttpClient,
+    private _router: Router
+  ) {}
 
+  // TODO: доробити обробку помилок
   public refreshToken(): Observable<AccessToken> {
-    if (this.refreshTokenInProgress.value) {
-      return this.refreshTokenSubject
-        .pipe(
-          filter(token => token !== null),
-          take(1)
-        );
-    }
-    
-    this.refreshTokenInProgress.next(true);
+    return this._http.post<AccessToken>(this.apiUrl, {}).pipe(
+      catchError((error: unknown) => {
+        if (error instanceof HttpErrorResponse) {
+          if (error.status == 401) {
+            this._router.navigate(['/login']);
+            return throwError(() => {});
+          }
+            return throwError(() => {});
+        }
 
-    return this._http.post<AccessToken>(this.apiUrl, {})
-      .pipe(
-        switchMap((token) => {
-          this.refreshTokenInProgress.next(false);
-          this.refreshTokenSubject.next(token);
-          return of(token);
-        }),
-        catchError(error => {
-          this.refreshTokenInProgress.next(false);
-          return throwError(() => error);
-        }),
-        shareReplay({
-          bufferSize: 1,
-          refCount: true
-        })
-      );
+        return throwError(() => {});
+      }),
+      shareReplay({ bufferSize: 1, refCount: true }) // Щоб уникнути дублювання запитів
+    );
   }
 }

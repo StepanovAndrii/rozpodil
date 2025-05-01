@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Rozpodil.API.Dtos.Requests.Room;
+using Rozpodil.Application.Commands;
 
 namespace Rozpodil.API.Mappings.Profiles
 {
@@ -6,7 +8,7 @@ namespace Rozpodil.API.Mappings.Profiles
     {
         public RoomDtoMappingProfile()
         {
-            CreateMap<>();
+            CreateMap<CreateRoomRequest, CreateRoomCommand>();
         }
     }
 }

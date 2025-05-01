@@ -22,21 +22,6 @@ namespace Rozpodil.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("RoomUser", b =>
-                {
-                    b.Property<Guid>("RoomsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("RoomsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("RoomUser");
-                });
-
             modelBuilder.Entity("Rozpodil.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -60,8 +45,9 @@ namespace Rozpodil.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Code")
-                        .HasColumnType("integer");
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -70,6 +56,25 @@ namespace Rozpodil.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("Rozpodil.Domain.Entities.RoomUser", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RoomId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("UserId", "RoomId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("RoomUsers");
                 });
 
             modelBuilder.Entity("Rozpodil.Domain.Entities.TwoFactorCode", b =>
@@ -124,21 +129,6 @@ namespace Rozpodil.Persistence.Migrations
                     b.ToTable("UsersCredentials");
                 });
 
-            modelBuilder.Entity("RoomUser", b =>
-                {
-                    b.HasOne("Rozpodil.Domain.Entities.Room", null)
-                        .WithMany()
-                        .HasForeignKey("RoomsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Rozpodil.Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Rozpodil.Domain.Entities.RefreshToken", b =>
                 {
                     b.HasOne("Rozpodil.Domain.Entities.User", "User")
@@ -146,6 +136,25 @@ namespace Rozpodil.Persistence.Migrations
                         .HasForeignKey("Rozpodil.Domain.Entities.RefreshToken", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Rozpodil.Domain.Entities.RoomUser", b =>
+                {
+                    b.HasOne("Rozpodil.Domain.Entities.Room", "Room")
+                        .WithMany("RoomUsers")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rozpodil.Domain.Entities.User", "User")
+                        .WithMany("RoomUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
 
                     b.Navigation("User");
                 });
@@ -172,10 +181,17 @@ namespace Rozpodil.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Rozpodil.Domain.Entities.Room", b =>
+                {
+                    b.Navigation("RoomUsers");
+                });
+
             modelBuilder.Entity("Rozpodil.Domain.Entities.User", b =>
                 {
                     b.Navigation("Credentials")
                         .IsRequired();
+
+                    b.Navigation("RoomUsers");
                 });
 #pragma warning restore 612, 618
         }

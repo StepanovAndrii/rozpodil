@@ -37,7 +37,7 @@ namespace Rozpodil.Persistence.Repository
             }
         }
 
-        public Task DeleteUserAsync(User user)
+        public Task DeleteUser(User user)
         {
             _context.Users.Remove(user);
 

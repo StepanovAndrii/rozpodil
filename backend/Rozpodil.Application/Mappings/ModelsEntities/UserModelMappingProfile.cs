@@ -14,7 +14,7 @@ namespace Rozpodil.Application.Mappings.ModelsEntities
                     options => options.Ignore()
                 )
                 .ForMember(
-                    destination => destination.Rooms,
+                    destination => destination.RoomUsers,
                     options => options.Ignore()
                 );
             CreateMap<UserCredentialsModel, UserCredentials>()

@@ -1,16 +1,17 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { OAuthProviders } from '../../../../types/oauth-providers/oauth-providers';
 import { PkceService } from '../pkce-service/pkce.service';
 import { environment } from '../../../../../../environments/environment.development';
 import { StateService } from '../state-service/state.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 import { FrontendDiscoveryDocument } from '../../../../types/interfaces/discovery-document.interface';
 import { UrlService } from '../../../url-service/url.service';
 import { isPlatformBrowser } from '@angular/common';
 import { AccessToken } from '../../../../types/interfaces/access-token';
 import { State } from '../../../../types/interfaces/state';
 import { StorageService } from '../../../storage-service/storage.service';
+import { SKIP_TOKEN_CHECK } from '../../../../interceptors/http-context-tokens';
 
 @Injectable({
   providedIn: 'root'
@@ -40,12 +41,12 @@ export class OAuthService {
       codeChallenge
     );
     
-    if (!discoveryDocument?.authorization_endpoint) {
+    if (!discoveryDocument?.authorizationEndpoint) {
       throw new Error('Кінцева точка авторизації недоступна');
     }
 
     if (isPlatformBrowser(this._platformId)) {
-      window.location.assign(`${discoveryDocument.authorization_endpoint}${params}`);
+      window.location.assign(`${discoveryDocument.authorizationEndpoint}${params}`);
     }
   }
 
@@ -74,12 +75,15 @@ export class OAuthService {
       codeVerifier
     );
 
+    console.log(accessToken);
+    console.log(accessToken.accessToken);
+
     sessionStorage.removeItem('codeVerifier');
     sessionStorage.removeItem('state');
 
     this._storage.setItem(
       "token",
-      accessToken.token
+      accessToken.accessToken
     );
   }
 
@@ -89,15 +93,17 @@ export class OAuthService {
       codeVerifier: string
     ): Promise<AccessToken>
   {
+    const context = new HttpContext().set(SKIP_TOKEN_CHECK, true)
+
     return await firstValueFrom(
       this._http.post<AccessToken>(
         '/api/auth/oauth',
         {
           provider,
           code,
-          code_verifier: codeVerifier
+          codeVerifier
         },
-        { withCredentials: true }
+        { context }
       )
     );
   }
@@ -108,9 +114,12 @@ export class OAuthService {
 
   private async fetchDiscoveryDocumentAsync(provider: OAuthProviders): Promise<FrontendDiscoveryDocument> {
     const discoveryUrl = this.getDiscoveryDocumentUrl(provider);
+    const context = new HttpContext().set(SKIP_TOKEN_CHECK, true)
     try {
       return await firstValueFrom(
-        this._http.get<FrontendDiscoveryDocument>(discoveryUrl)
+        this._http.get<FrontendDiscoveryDocument>(discoveryUrl, {
+          context
+        })
       );
     }
     catch {

@@ -11,6 +11,7 @@ namespace Rozpodil.Persistence
         public ITwoFactorCodeRepository TwoFactorCodeRepository { get; }
         public IRoomRepository RoomRepository { get; }
         public IRefreshTokenRepository RefreshTokenRepository { get; }
+        public IRoomUserRepository RoomUserRepository { get; }
 
         private readonly DatabaseContext _context;
 
@@ -20,6 +21,7 @@ namespace Rozpodil.Persistence
                 ITwoFactorCodeRepository twoFactorCodeRepository,
                 IRoomRepository roomRepository,
                 IRefreshTokenRepository refreshTokenRepository,
+                IRoomUserRepository roomUserRepository,
                 DatabaseContext context
             )
         {
@@ -28,6 +30,7 @@ namespace Rozpodil.Persistence
             TwoFactorCodeRepository = twoFactorCodeRepository;
             RoomRepository = roomRepository;
             RefreshTokenRepository = refreshTokenRepository;
+            RoomUserRepository = roomUserRepository;
             _context = context;
         }
 

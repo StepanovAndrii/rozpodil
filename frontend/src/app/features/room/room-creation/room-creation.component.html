@@ -1,8 +1,29 @@
-<div class="wrapper">
-    <form class="create-form">
-        <h1 class="creation-header">Створення кімнати</h1>
-        <input class="name-field" type="text" placeholder="Назва кімнати">
-        <button (click)="goToHome()" class="create-button">Створити</button>
-        <a (click)="changeToJoin()" class="change-to-join-link">Увійти в існуючу кімнату</a>
+<div class="padding-container">
+    <form 
+        class="create-room-form"
+        [formGroup]="roomCreationForm">
+        
+        <h1
+            class="create-room-form__header">
+            
+            Створення кімнати
+        </h1>
+        <input
+            class="create-room-form__name-field"
+            type="text"
+            placeholder="Назва кімнати"
+            formControlName="name">
+        <button
+            (click)="sendRoomCreationRequestAsync()"
+            class="create-room-form__create-button">
+            
+            Створити
+        </button>
+        <a
+            (click)="changeToJoin()"
+            class="create-room-form__change-to-join-link">
+            
+            Увійти в існуючу кімнату
+        </a>
     </form>
 </div>

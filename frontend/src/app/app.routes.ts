@@ -32,10 +32,10 @@ export const routes: Routes = [
     },
     {path: 'room/create', loadComponent: () =>
         import('./features/room/room-creation/room-creation.component').then(component => component.RoomCreationComponent),
-        canActivate: [canAccessGuard],
+        // canActivate: [canAccessGuard],
     },
     {path: 'room/join', loadComponent: () =>
         import('./features/room/room-joining/room-joining.component').then(component => component.RoomJoiningComponent),
-        canActivate: [canAccessGuard],
+        // canActivate: [canAccessGuard],
     }
 ];

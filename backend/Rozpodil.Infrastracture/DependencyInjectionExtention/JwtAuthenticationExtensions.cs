@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Rozpodil.Infrastructure.Configurations;
+using System.Security.Claims;
 using System.Text;
 
 namespace Rozpodil.API.Extensions

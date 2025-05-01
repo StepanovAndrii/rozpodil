@@ -20,7 +20,7 @@ namespace Rozpodil.Persistence.Repository
             return room;
         }
 
-        public Task DeleteRoomAsync(Room room)
+        public Task DeleteRoom(Room room)
         {
            _context.Rooms.Remove(room);
            return Task.CompletedTask;
@@ -28,8 +28,11 @@ namespace Rozpodil.Persistence.Repository
 
         public async Task<IList<Room>> GetRoomsByUserIdAsync(Guid userId)
         {
+            // TODO: розібрати
             return await _context.Rooms
-                .Where(room => room.Users.Any(user => user.Id == userId))
+                .Join(_context.RoomUsers, room => room.Id, roomUser => roomUser.RoomId, (room, roomUser) => new {room, roomUser})
+                .Where(roomWithUser => roomWithUser.roomUser.UserId == userId)
+                .Select(roomWithUser => roomWithUser.room)
                 .ToListAsync();
         }
     }

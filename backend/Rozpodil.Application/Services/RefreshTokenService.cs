@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Rozpodil.Application.Common.Enums;
 using Rozpodil.Application.Common.Interfaces;
-using Rozpodil.Application.Interfaces;
 using Rozpodil.Application.Interfaces.Auth.AuthContext;
+using Rozpodil.Application.Interfaces.Repositories;
 using Rozpodil.Application.Interfaces.Security;
 using Rozpodil.Application.Models;
 using Rozpodil.Domain.Entities;
@@ -39,6 +39,8 @@ namespace Rozpodil.Infrastructure.Services
             )
         {
             // TODO: розібратись з CancellationToken
+
+            // TODO: прибрати перевірку на користувача мб
             var user = await _unitOfWork.UserRepository.GetUserByIdAsync(userId);
             if (user == null) {
                 throw new UnauthorizedAccessException("User is not active or does not exist.");

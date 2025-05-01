@@ -14,6 +14,8 @@ namespace Rozpodil.Infrastructure.DataConversion.Converters
         {
             _options = options;
         }
+
+        // TODO: покращити для роботи з кладеними об'єктами
         public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             using (JsonDocument document = JsonDocument.ParseValue(ref reader))
@@ -27,7 +29,7 @@ namespace Rozpodil.Infrastructure.DataConversion.Converters
                     dictionary[dynamicCaseProperty] = property.Value;
                 }
 
-                return ConvertToObject<T>(dictionary);
+                return ConvertToObject(dictionary);
             }
         }
 
@@ -100,7 +102,7 @@ namespace Rozpodil.Infrastructure.DataConversion.Converters
             return Regex.IsMatch(value, @"^[a-z]+([A-Z][a-z]*)*$");
         }
 
-        private T ConvertToObject<T>(Dictionary<string, JsonElement> dictionary)
+        private T ConvertToObject(Dictionary<string, JsonElement> dictionary)
         {
             var json = JsonSerializer.Serialize(dictionary);
             return JsonSerializer.Deserialize<T>(json)!;

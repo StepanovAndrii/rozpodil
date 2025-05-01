@@ -1,6 +1,6 @@
 ﻿namespace Rozpodil.Application.Interfaces.Auth
 {
-    public interface IVerificationCodeGeneratorService
+    public interface ICodeGeneratorService
     {
         string GenerateCode(int length = 6);
     }

@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Rozpodil.Application.Abstracts;
 using Rozpodil.Application.Common;
 using Rozpodil.Application.Common.Interfaces;
 using Rozpodil.Application.Common.Utilities;
-using Rozpodil.Application.Interfaces;
 using Rozpodil.Application.Interfaces.Security;
 using Rozpodil.Application.Models;
 using Rozpodil.Domain.Entities;
@@ -11,6 +9,7 @@ using Rozpodil.Application.Common.Enums;
 using Rozpodil.Application.Commands;
 using Rozpodil.Application.Interfaces.Auth.AuthContext;
 using Rozpodil.Application.Interfaces.Auth;
+using Rozpodil.Application.Interfaces.Repositories;
 
 namespace Rozpodil.Application.Services
 {
@@ -21,7 +20,7 @@ namespace Rozpodil.Application.Services
         private readonly IMapper _mapper;
         private readonly IEmailVerificationService _emailVerificationService;
         private readonly IHasherService _hasherService;
-        private readonly IVerificationCodeGeneratorService _verificationCodeGeneratorService;
+        private readonly ICodeGeneratorService _verificationCodeGeneratorService;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly IRefreshTokenService _refreshTokenService;
         private readonly ICookieService _cookieService;
@@ -32,7 +31,7 @@ namespace Rozpodil.Application.Services
                 IMapper mapper,
                 IEmailVerificationService emailVerificationService,
                 IHasherFactory hasherFactory,
-                IVerificationCodeGeneratorService verificationCodeGeneratorService,
+                ICodeGeneratorService verificationCodeGeneratorService,
                 IJwtTokenService jwtTokenService,
                 IRefreshTokenService refreshTokenService,
                 ICookieService cookieService
@@ -145,7 +144,7 @@ namespace Rozpodil.Application.Services
 
             await _transactionManager.ExecuteInTransactionAsync(async () =>
             {
-                await _unitOfWork.TwoFactorCodeRepository.DeleteTwoFactorCodeAsync(matchedCode);
+                await _unitOfWork.TwoFactorCodeRepository.DeleteTwoFactorCode(matchedCode);
                 await _unitOfWork.UserRepository.MarkEmailAsVerifiedAsync(matchedCode.UserId);
                 await _unitOfWork.SaveChangesAsync();
             });
