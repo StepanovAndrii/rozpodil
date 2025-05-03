@@ -1,7 +1,11 @@
 ﻿namespace Rozpodil.Application.Interfaces.Auth
 {
-    public interface IEmailVerificationService
+    public interface IEmailService
     {
-        Task SendVerificationCodeAsync(string email, string code);
+        Task SendVerificationCodeAsync(
+            string subject,
+            string email,
+            string code
+        );
     }
 }

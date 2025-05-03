@@ -74,10 +74,7 @@ export class OAuthService {
       code,
       codeVerifier
     );
-
-    console.log(accessToken);
-    console.log(accessToken.accessToken);
-
+    
     sessionStorage.removeItem('codeVerifier');
     sessionStorage.removeItem('state');
 

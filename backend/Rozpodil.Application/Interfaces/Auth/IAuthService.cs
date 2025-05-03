@@ -8,6 +8,7 @@ namespace Rozpodil.Application.Interfaces.Auth
     public interface IAuthService
     {
         Task<Result<ErrorType>> RegisterUser(RegisterUserCommand registerUserCommand);
+        Task<Result<AccessTokenModel, ErrorType>> LoginUserAsync(LoginCommand loginCommand, int refreshExpiresAtDays);
         Task<Result<AccessTokenModel, ErrorType>> VerifyEmailAndLoginAsync(
             EmailConfirmationCommand emailVerificationCommand,
             int refreshTokenLifetimeDays

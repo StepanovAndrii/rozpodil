@@ -15,8 +15,7 @@ import { GoogleAuthActionButtonComponent } from "../../core/components/google-au
     RouterLink,
     PasswordFieldComponent,
     InputFieldComponent,
-    GoogleAuthActionButtonComponent
-],
+    GoogleAuthActionButtonComponent],
   standalone: true,
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'

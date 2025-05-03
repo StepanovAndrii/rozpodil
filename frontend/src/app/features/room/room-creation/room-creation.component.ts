@@ -1,8 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
+
 import { AccessControlService } from '../../../core/services/access-control-service/access-control.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule
+} from '@angular/forms';
+
 import { requiredValidator } from '../../../core/validators/built-in-validators/required.validator';
 import { firstValueFrom } from 'rxjs';
 
@@ -31,12 +41,10 @@ export class RoomCreationComponent implements OnInit{
   // винести в окремий сервіс
   public async sendRoomCreationRequestAsync(): Promise<void> {
     if (this.roomCreationForm.valid) {
-      console.log(this.roomCreationForm.value);
       firstValueFrom(
         await this._httpClient.post(
           "/api/room/create",
-          this.roomCreationForm.value,
-          { withCredentials: true }
+          this.roomCreationForm.value
         )
       );
     }

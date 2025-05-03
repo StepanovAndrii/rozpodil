@@ -1,6 +1,8 @@
 import {
   Component,
-  OnInit
+  OnInit,
+  signal,
+  ViewChild
 } from '@angular/core';
 
 import { InputFieldComponent } from "../../core/components/input-field/input-field.component";
@@ -13,23 +15,30 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 
-import { requiredValidator } from '../../core/validators/built-in-validators/required.validator';
 import { Router } from '@angular/router';
 import { ResendCodeButtonComponent } from "../../core/components/resend-code-button/resend-code-button.component";
+import { getValidatorsPair } from '../../core/validators/utils/validator-type-guards';
+import { verificationCodeValidators } from './validators/verification-code-validators';
+import { FieldHintsPopoverComponent } from "../../core/components/field-hints-popover/field-hints-popover.component";
 
 @Component({
   selector: 'app-verification-code',
   imports: [
     InputFieldComponent,
     ReactiveFormsModule,
-    ResendCodeButtonComponent
+    ResendCodeButtonComponent,
+    FieldHintsPopoverComponent
 ],
   templateUrl: './verification-code.component.html',
   styleUrl: './verification-code.component.scss'
 })
 
 export class VerificationCodeComponent implements OnInit {
+  @ViewChild('verificationCode') verificationCodeField: InputFieldComponent | undefined;
+
+  public focusedDefault = signal(false);
   public verifyCodeForm!: FormGroup;
+  public verificationCodeValidators = verificationCodeValidators;
 
   constructor(
     private _router: Router,
@@ -53,9 +62,16 @@ export class VerificationCodeComponent implements OnInit {
     }
   }
 
+  // TODO: можливо якось винести метод звідси, register і тд..
+  public getControl(name: string): AbstractControl<any, any> | null {
+    return this.verifyCodeForm.get(name);
+  }
+
   private initForm() {
+   const [verificationCodeSync, verificationCodeAsync] = getValidatorsPair(verificationCodeValidators)
+
     this.verifyCodeForm = this._formBuilder.group({
-      code: ['', requiredValidator.fn]
+      code: ['', verificationCodeSync, verificationCodeAsync]
     });
   }
 }

@@ -35,7 +35,6 @@ namespace Rozpodil.API.Controllers
 
                 var accessTokenModel = result.Data;
                 var accessTokenResponce = _mapper.Map<AccessTokenResponse>(accessTokenModel);
-                Console.WriteLine("sad");
                 return Ok(accessTokenResponce);
             }
 

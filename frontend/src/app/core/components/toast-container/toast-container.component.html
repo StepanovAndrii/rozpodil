@@ -1,0 +1,21 @@
+<div class="toast-container">
+    @for (toast of toasts(); track $index) {
+      <button
+        type="button"
+        class="toast"
+        [ngClass]="{
+          'toast--success': toast.getType() === toastType.Success,
+          'toast--error': toast.getType() === toastType.Error,
+          'toast--info': toast.getType() === toastType.Info,
+          'toast--warning': toast.getType() === toastType.Warning
+      }"
+      (click)="dismissMessage(toast.getId())">
+      
+        <p class="toast__message">{{toast.getMessage()}}</p>
+        <div class="toast__close-button">
+          ✕
+        </div>
+      </button>
+    }
+  </div>
+  

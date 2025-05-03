@@ -33,5 +33,18 @@ namespace Rozpodil.Persistence.Repository
 
             return user;
         }
+
+        public async Task<UserCredentials?> GetUserCredentialsByEmailAsync(string email)
+        {
+            return await _context.UsersCredentials
+                .FirstOrDefaultAsync(userCredentials => userCredentials.Email == email);
+        }
+
+        public Task<bool> IsEmailTakenAsync(string email)
+        {
+            return _context.UsersCredentials.AnyAsync(
+                credentials => credentials.Email == email    
+            );
+        }
     }
 }

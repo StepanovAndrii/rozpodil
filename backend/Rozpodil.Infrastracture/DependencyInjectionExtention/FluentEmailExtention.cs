@@ -25,7 +25,7 @@ namespace Rozpodil.Infrastructure.DependencyInjectionExtention
                     Port = emailVerificationSettings.SmtpPort
                 });
 
-            services.AddScoped<IEmailVerificationService, FluentEmailVerificationService>();
+            services.AddScoped<IEmailService, FluentEmailService>();
 
             return services;
         }

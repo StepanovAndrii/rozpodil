@@ -25,12 +25,14 @@ export class TokenService {
             this._router.navigate(['/login']);
             return throwError(() => {});
           }
-            return throwError(() => {});
+          return throwError(() => {});
         }
-
         return throwError(() => {});
       }),
-      shareReplay({ bufferSize: 1, refCount: true }) // Щоб уникнути дублювання запитів
+      shareReplay({
+        bufferSize: 1,
+        refCount: true
+      })
     );
   }
 }

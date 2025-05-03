@@ -5,6 +5,7 @@ using Rozpodil.Application.Interfaces.Auth.AuthContext;
 using Rozpodil.Application.Interfaces.Repositories;
 using Rozpodil.Application.Interfaces.Services;
 using Rozpodil.Application.Services;
+using Rozpodil.Application.Services.Validation;
 using Rozpodil.Domain.Repositories;
 using Rozpodil.Infrastructure.Services;
 using Rozpodil.Infrastructure.Services.HostedServices;
@@ -37,6 +38,7 @@ namespace Rozpodil.API.Extensions
             services.AddScoped<IDynamicJsonSerializer, DynamicJsonSerializer>();
             services.AddScoped<ITokenManager, TokenManager>();
             services.AddScoped<IRoomService, RoomService>();
+            services.AddScoped<IEmailValidationService, EmailValidationService>();
 
             return services;
         }

@@ -4,7 +4,7 @@ import { NamedValidator } from "../../types/interfaces/validators/named-validato
 import { NamedAsyncValidator } from "../../types/interfaces/validators/named-async-validator.interface";
 
 export function getValidatorsPair(validators: CombinedValidator[]): [ValidatorFn[], AsyncValidatorFn[]] {
-    const sync = validators
+  const sync = validators
     .filter(validator => validator.type === 'sync')
     .map(validator => (validator as NamedValidator).fn);
 

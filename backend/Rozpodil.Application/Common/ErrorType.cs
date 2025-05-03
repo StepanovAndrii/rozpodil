@@ -6,7 +6,6 @@
         Unauthorized,
         Forbidden,
         Conflict,
-        Validation,
         BadRequest,
         Internal
     }

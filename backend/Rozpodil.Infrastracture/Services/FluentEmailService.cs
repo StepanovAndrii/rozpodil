@@ -3,26 +3,28 @@ using Rozpodil.Application.Interfaces.Auth;
 
 namespace Rozpodil.Infrastructure.Services
 {
-    public class FluentEmailVerificationService : IEmailVerificationService
+    public class FluentEmailService : IEmailService
     {
         private readonly IFluentEmail _fluentEmail;
-        private readonly string _subject =
-            "Rozpodil | Code verification";
 
         // TODO: Зробити гарне оформлення листу в пошті
         private readonly string _body =
             "";
 
-        public FluentEmailVerificationService(IFluentEmail fluentEmail)
+        public FluentEmailService(IFluentEmail fluentEmail)
         {
             _fluentEmail = fluentEmail;
         }
 
-        public async Task SendVerificationCodeAsync(string email, string code)
+        public async Task SendVerificationCodeAsync(
+                string subject,
+                string email,
+                string code
+            )
         {
             await _fluentEmail
                 .To(email)
-                .Subject(_subject)
+                .Subject($"Rozpodil | {subject}")
                 .Body(code, true)
                 .SendAsync();
         }

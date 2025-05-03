@@ -28,7 +28,7 @@ import { InputFieldComponent } from "../../core/components/input-field/input-fie
 import { PasswordFieldComponent } from "../../core/components/password-field/password-field.component";
 import { CheckmarkComponent } from "../../core/components/checkmark/checkmark.component";
 import { passwordNamedValidators } from './validators/password-named-validators';
-import { emailNamedValidators } from './validators/email-named-validators';
+import { createEmailNamedValidators } from './validators/email-named-validators';
 import { usernameNamedValidators } from './validators/username-named-validators';
 import { passwordRepetitionNamedValidators } from './validators/password-repetition-named-validators';
 import { getValidatorsPair } from '../../core/validators/utils/validator-type-guards';
@@ -36,6 +36,8 @@ import { FieldHintsPopoverComponent } from "../../core/components/field-hints-po
 import { AuthService } from '../../core/services/authentication/auth-service/auth.service';
 import { StorageService } from '../../core/services/storage-service/storage.service';
 import { GoogleAuthActionButtonComponent } from "../../core/components/google-auth-action-button/google-auth-action-button.component";
+import { HttpClient } from '@angular/common/http';
+import { CombinedValidator } from '../../core/validators/named-combined-validator';
 
 @Component({
   selector: 'app-registration',
@@ -53,6 +55,8 @@ import { GoogleAuthActionButtonComponent } from "../../core/components/google-au
   styleUrl: './registration.component.scss'
 })
 
+// TODO: подумати над фабріками, може зробити усім валідаторам
+
 export class RegistrationComponent implements OnInit, OnDestroy {
   @ViewChild('username') usernameField: InputFieldComponent | undefined;
   @ViewChild('email') emailField: InputFieldComponent | undefined;
@@ -65,7 +69,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   public registrationForm!: FormGroup;
 
   public usernameNamedValidators = usernameNamedValidators;
-  public emailNamedValidators = emailNamedValidators;
+  public emailNamedValidators!: CombinedValidator[];
   public passwordNamedValidators = passwordNamedValidators;
   public get passwordRepetitionNamedValidators() {
     const passwordControl = this.getControl('password');
@@ -78,7 +82,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     private router: Router,
     private formBuilder: FormBuilder,
     private _authService: AuthService,
-    private _stringStorage: StorageService<string>
+    private _stringStorage: StorageService<string>,
+    private _http: HttpClient
   ) { }
   
   public ngOnDestroy(): void {
@@ -87,6 +92,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.emailNamedValidators = createEmailNamedValidators(this._http);
     this.initForm();
   }
 
@@ -114,7 +120,9 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   private initForm() {
     const [usernameSync, usernameAsync] = getValidatorsPair(usernameNamedValidators);
     const [passwordSync, passwordAsync] = getValidatorsPair(passwordNamedValidators);
-    const [emailSync, emailAsync] = getValidatorsPair(emailNamedValidators);
+    const [emailSync, emailAsync] = getValidatorsPair(
+      createEmailNamedValidators(this._http)
+    );
 
     this.registrationForm = this.formBuilder.group({
       username: ['', usernameSync, usernameAsync],

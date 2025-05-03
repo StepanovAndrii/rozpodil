@@ -30,6 +30,7 @@ export class FieldHintsPopoverComponent {
     if (!this.control?.value) {
       return true;
     }
+    
     return !!this.control?.errors?.[validatorTitle];
   }
 }

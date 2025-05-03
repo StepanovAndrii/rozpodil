@@ -34,6 +34,10 @@
                 flex-direction: column;
                 gap: 5px;
                 width: 100%;
+
+                .verification-code-form__input-hints-container {
+                    position: relative;
+                }
             }
 
             .verification-code-form__submit-button {

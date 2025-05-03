@@ -52,7 +52,7 @@ namespace Rozpodil.Persistence.Repository
             }
         }
 
-        public async Task DeleteTwoFactorCodeByIdAsync(Guid userId)
+        public async Task DeleteTwoFactorCodeByUserIdAsync(Guid userId)
         {
             var twoFactorCode = await _context.TwoFactorCodes
                 .FindAsync(userId);
@@ -61,6 +61,12 @@ namespace Rozpodil.Persistence.Repository
             {
                 _context.TwoFactorCodes.Remove(twoFactorCode);
             }
+        }
+
+        public async Task<TwoFactorCode?> GetTwoFactorCodeByUserIdAsync(Guid userId)
+        {
+            return await _context.TwoFactorCodes
+                .FindAsync(userId);
         }
     }
 }

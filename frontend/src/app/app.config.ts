@@ -6,6 +6,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { SelectivePreloadingStrategy } from './core/preloading-strategies/selective-preloading.strategy';
 import { authInterceptor } from './core/interceptors/auth-interceptor/auth.interceptor';
 import { camelCaseInterceptor } from './core/interceptors/camel-case-interceptor/camel-case.interceptor';
+import { toastInterceptor } from './core/interceptors/toast-interceptor/toast.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +18,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([
         camelCaseInterceptor,
-        authInterceptor
+        authInterceptor,
+        toastInterceptor
       ])
     ), 
     provideClientHydration(withEventReplay())

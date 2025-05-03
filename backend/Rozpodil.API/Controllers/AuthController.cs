@@ -31,11 +31,28 @@ namespace Rozpodil.API.Controllers
         public async Task<ActionResult> Register([FromBody] RegisterUserRequest registerUserRequest)
         {
             var registerUserCommand = _mapper.Map<RegisterUserCommand>(registerUserRequest);
-            Result<ErrorType> result = await _authService.RegisterUser(registerUserCommand);
+            var result = await _authService.RegisterUser(registerUserCommand);
 
             if (result.Success)
             {
                 return Accepted();
+            }
+
+            return result.Error switch
+            {
+                ErrorType.Conflict => Conflict(),
+                ErrorType.Internal => StatusCode(500)
+            };
+        }
+
+        public async Task<ActionResult> Login([FromBody] LoginUserRequest loginUserRequest)
+        {
+            var loginUserCommand = _mapper.Map<LoginCommand>(loginUserRequest);
+            var result = await _authService.LoginUserAsync(loginUserCommand, 7);
+
+            if (result.Success)
+            {
+                return Ok(_mapper.Map<AccessTokenResponse>(result.Data));
             }
 
             return BadRequest();
@@ -51,11 +68,7 @@ namespace Rozpodil.API.Controllers
 
             if (result.Success)
             {
-                var newResult = result.Data;
-
-                return Ok(
-                    newResult
-                );
+                return Ok(_mapper.Map<AccessTokenResponse>(result.Data));
             }
 
             return BadRequest(result.Error);
@@ -69,7 +82,7 @@ namespace Rozpodil.API.Controllers
 
             if (result.Success)
             {
-                return _mapper.Map<AccessTokenResponse>(result.Data);
+                return Ok(_mapper.Map<AccessTokenResponse>(result.Data));
             }
             
             return BadRequest();
