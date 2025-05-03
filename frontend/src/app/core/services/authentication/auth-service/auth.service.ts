@@ -17,7 +17,19 @@ export class AuthService {
     private _urlService: UrlService
    ) { }
   
-  public async registerWithFormAsync<T extends Record<string, any>>(dataToSend: T): Promise<void> {
+  // TODO: замінити мб дженерик на щось більш конкретне (створити модель)
+  // public async loginWithFormAsync<T extends Record<string, unknown>>(dataToSend: T): Promise<AccessToken> {
+  //   await firstValueFrom (
+  //     this._http.get(
+  //       'api/auth/login',
+  //       { 
+  //         context: this._context
+  //       }
+  //     )
+  //   );
+  // }
+
+  public async registerWithFormAsync<T extends Record<string, unknown>>(dataToSend: T): Promise<void> {
     await firstValueFrom (
       this._http.post(
         '/api/auth/register',

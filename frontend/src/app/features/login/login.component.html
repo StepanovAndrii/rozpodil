@@ -1,20 +1,25 @@
 <div class="padding-container">
-    <form class="login-form"
-        autocomplete="off">
+    <form
+        class="login-form"
+        [formGroup]="loginForm"
+        autocomplete="off"
+        (ngSubmit)="loginWithForm()">
         
         <div class="login-form__content">
             <h1 class="login-form__main-header">Логін</h1>
             <app-input-field
                 class="login-form__input-field"
                 inputFieldId="login"
-                inputType="email">
+                inputType="email"
+                formControlName="email">
                 
                 Е-пошта
             </app-input-field>
             <div class="login-form__password-container">
                 <app-password-field
                     class="login-form__password-field"
-                    inputFieldId="password">
+                    inputFieldId="password"
+                    formControlName="password">
                     
                     Пароль
                 </app-password-field>
@@ -26,7 +31,12 @@
                 </a>
             </div>
             <div class="login-form__buttons-container">
-                <button class="login-form__submit-button">Увійти</button>
+                <button
+                    type="submit"
+                    class="login-form__submit-button">
+                    
+                    Увійти
+                </button>
                 <div class="login-form__providers-submit-buttons">
                     <app-google-auth-action-button />
                 </div>
