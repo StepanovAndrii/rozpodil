@@ -6,6 +6,7 @@ using Rozpodil.Application.Interfaces.Auth.AuthContext;
 using Rozpodil.Application.Interfaces.Repositories;
 using Rozpodil.Application.Interfaces.Security;
 using Rozpodil.Application.Models;
+using Rozpodil.Application.Services;
 
 namespace Rozpodil.Infrastructure.Services
 {
@@ -16,12 +17,14 @@ namespace Rozpodil.Infrastructure.Services
         private readonly IJwtTokenService _jwtTokenService;
         private readonly ITransactionManager _transactionManager;
         private readonly IRefreshTokenService _refreshTokenService;
+        private readonly ICookieService _cookieService;
         public TokenManager(
                 IUnitOfWork unitOfWork,
                 IHasherFactory hasherFactory,
                 IJwtTokenService jwtTokenService,
                 ITransactionManager transactionManager,
-                IRefreshTokenService refreshTokenService
+                IRefreshTokenService refreshTokenService,
+                ICookieService cookieService
             )
         {
             _unitOfWork = unitOfWork;
@@ -29,10 +32,12 @@ namespace Rozpodil.Infrastructure.Services
             _jwtTokenService = jwtTokenService;
             _transactionManager = transactionManager;
             _refreshTokenService = refreshTokenService;
+            _cookieService = cookieService;
         }
 
         // TODO: можливо зробити refresh токен окремою моделлю?
         // TODO: робити мапінги
+        // TODO: прибрати говнокод (кукі збереження тут)
         public async Task<Result<AccessTokenModel, ErrorType>> RefreshToken(string refreshToken)
         {
             Console.WriteLine(_hasherService.Hash(refreshToken));
@@ -56,6 +61,7 @@ namespace Rozpodil.Infrastructure.Services
                     user.Id,
                     7
                 );
+                _cookieService.SetRefreshToken(newRefreshToken, 7);
                 await _unitOfWork.SaveChangesAsync();
             });
 

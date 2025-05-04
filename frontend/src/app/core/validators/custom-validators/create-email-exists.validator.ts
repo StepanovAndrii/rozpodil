@@ -18,10 +18,7 @@ import {
     HttpContext
 } from "@angular/common/http";
 
-import { SKIP_TOKEN_CHECK } from "../../interceptors/http-context-tokens";
-
 export function createEmailExistsValidator(http: HttpClient): CombinedValidator {
-    const context = new HttpContext().set(SKIP_TOKEN_CHECK, true)
     
     // TODO: зрозуміти чому індикатор завжди зелений
     return {
@@ -33,8 +30,7 @@ export function createEmailExistsValidator(http: HttpClient): CombinedValidator 
                 debounceTime(500),
                 switchMap(email =>
                 http.get<{ taken: boolean }>('/api/check-email', {
-                    params: { email },
-                    context
+                    params: { email }
                 })
                 ),
                 map(response => (response.taken ? { emailtaken: true } : null)),

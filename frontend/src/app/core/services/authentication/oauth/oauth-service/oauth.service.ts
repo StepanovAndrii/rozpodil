@@ -10,8 +10,6 @@ import { UrlService } from '../../../url-service/url.service';
 import { isPlatformBrowser } from '@angular/common';
 import { AccessToken } from '../../../../types/interfaces/access-token';
 import { State } from '../../../../types/interfaces/state';
-import { StorageService } from '../../../storage-service/storage.service';
-import { SKIP_TOKEN_CHECK } from '../../../../interceptors/http-context-tokens';
 import { Router } from '@angular/router';
 import { TokenService } from '../../token-service/token.service';
 
@@ -96,7 +94,6 @@ export class OAuthService {
       codeVerifier: string
     ): Promise<AccessToken>
   {
-    const context = new HttpContext().set(SKIP_TOKEN_CHECK, true)
     return await firstValueFrom(
       this._http.post<AccessToken>(
         '/api/auth/oauth',
@@ -104,8 +101,7 @@ export class OAuthService {
           provider,
           code,
           codeVerifier
-        },
-        { context }
+        }
       )
     );
   }
@@ -116,12 +112,9 @@ export class OAuthService {
 
   private async fetchDiscoveryDocumentAsync(provider: OAuthProviders): Promise<FrontendDiscoveryDocument> {
     const discoveryUrl = this.getDiscoveryDocumentUrl(provider);
-    const context = new HttpContext().set(SKIP_TOKEN_CHECK, true)
     try {
       return await firstValueFrom(
-        this._http.get<FrontendDiscoveryDocument>(discoveryUrl, {
-          context
-        })
+        this._http.get<FrontendDiscoveryDocument>(discoveryUrl)
       );
     }
     catch {

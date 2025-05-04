@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError, map, of, firstValueFrom, tap, defaultIfEmpty } from 'rxjs';
+import { Observable, catchError, throwError, map, of, firstValueFrom, tap, defaultIfEmpty, switchMap } from 'rxjs';
 import { AccessToken } from '../../../types/interfaces/access-token';
 import { StorageService } from '../../storage-service/storage.service';
+import { SKIP_AUTH_REFRESH } from '../../../interceptors/http-context-tokens';
 
 @Injectable({
   providedIn: 'root'
@@ -26,14 +27,15 @@ export class TokenService {
     this._stringStorage.clearItem('token');
   }
 
-  public refreshToken(): Observable<void> {
-    return this._http.post<AccessToken>("/api/token/refresh", {})
-      .pipe(
-        map((accessTokenResponse) => accessTokenResponse.accessToken),
-        tap((accessToken) => this.setAccessToken(accessToken)),
-        map(() => void 0),
-        catchError((error) => throwError(() => error))
-      );
+  // TODO: подумати як залишити логіку зберігання access токену тут а не в інтерсепторі
+  public refreshToken(): Observable<string> {
+    return this._http.post<AccessToken>("/api/token/refresh", {}, {
+      context: new HttpContext().set(SKIP_AUTH_REFRESH, true)
+    }).pipe(
+      map((accessTokenResponse) => accessTokenResponse.accessToken),
+      tap((accessToken) => this.setAccessToken(accessToken)),
+      catchError((error) => throwError(() => error))
+    );
   }
 
   public hasValidAccessToken(): Observable<boolean> {

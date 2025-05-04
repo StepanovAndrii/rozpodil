@@ -25,12 +25,6 @@ export const routes: Routes = [
     {path: 'callback', loadComponent: () => 
         import('./features/callback/callback.component').then(component => component.CallbackComponent)
     },
-    {path: 'home', loadComponent: () => 
-        import('./features/home/home.component').then(component => component.HomeComponent),
-        resolve: {
-            taskData: taskResolver
-        }
-    },
     {path: 'room', component: RoomActionsComponent,
         data: { preload: true },
         canActivate: [authGuard]
@@ -41,8 +35,13 @@ export const routes: Routes = [
     },
     {path: 'room/join', loadComponent: () =>
         import('./features/room/room-joining/room-joining.component').then(component => component.RoomJoiningComponent)
-        
     },
-    // {path: '**', redirectTo: 'login', pathMatch: 'full'
-    // }
+    {path: 'home', loadComponent: () => 
+        import('./features/home/home.component').then(component => component.HomeComponent),
+        // resolve: {
+        //     taskData: taskResolver
+        // }
+    },
+    {path: '**', redirectTo: 'login', pathMatch: 'full'
+    }
 ];

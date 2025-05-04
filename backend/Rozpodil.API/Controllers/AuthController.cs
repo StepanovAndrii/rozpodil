@@ -4,7 +4,11 @@ using Rozpodil.API.Dtos.Requests.Auth;
 using Rozpodil.API.Dtos.Responses;
 using Rozpodil.Application.Commands;
 using Rozpodil.Application.Common;
+using Rozpodil.Application.Common.Interfaces;
 using Rozpodil.Application.Interfaces.Auth;
+using Rozpodil.Application.Interfaces.Repositories;
+using Rozpodil.Application.Interfaces.Security;
+using System.Threading.Tasks;
 
 namespace Rozpodil.API.Controllers
 {
@@ -16,15 +20,26 @@ namespace Rozpodil.API.Controllers
         private readonly IAuthService _authService;
         private readonly IOAuthService _oauthService;
 
+        // TODO: стерти
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IHasherService _hasherService;
+        private readonly ITransactionManager _transactionManager;
+
         public AuthController(
                 IMapper mapper,
                 IAuthService authService,
-                IOAuthService oAuthService
+                IOAuthService oAuthService,
+                IUnitOfWork unitOfWork,
+                IHasherFactory hasherFactory,
+                ITransactionManager transactionManager
             )
         {
             _mapper = mapper;
             _authService = authService;
             _oauthService = oAuthService;
+            _unitOfWork = unitOfWork;
+            _hasherService = hasherFactory.GetHasher(Application.Common.Enums.HasherType.Sha256);
+            _transactionManager = transactionManager;
         }
 
         [HttpPost("register")]
@@ -103,6 +118,28 @@ namespace Rozpodil.API.Controllers
             }
 
             return BadRequest();
+        }
+
+        // TODO: прибрати говнокод
+        [HttpPost("logout")]
+        public async Task<ActionResult> LogoutUser()
+        {
+            var refreshToken = Request.Cookies["RefreshToken"];
+            if (refreshToken != null)
+            {
+                await _transactionManager.ExecuteInTransactionAsync(async () =>
+                {
+                    var refreshTokenEntity = await _unitOfWork.RefreshTokenRepository.GetByHashedTokenAsync(_hasherService.Hash(refreshToken));
+
+                    if (refreshTokenEntity != null)
+                    {
+                        await _unitOfWork.RefreshTokenRepository.DeleteRefreshToken(refreshTokenEntity);
+                        await _unitOfWork.SaveChangesAsync();
+                    }
+                });
+            }
+            
+            return NoContent();
         }
     }
 }

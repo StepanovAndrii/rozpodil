@@ -39,13 +39,18 @@ export class RoomCreationComponent implements OnInit{
   // винести в окремий сервіс
   public async sendRoomCreationRequestAsync(): Promise<void> {
     if (this.roomCreationForm.valid) {
-      firstValueFrom(
-        await this._httpClient.post(
+        this._httpClient.post(
           "/api/room/create",
           this.roomCreationForm.value,
           { withCredentials: true }
-        )
-      );
+        ).subscribe({
+          next: () => {
+            this._router.navigate(['/home']);
+          },
+          error: () => {
+            this._router.navigate(['/login']);
+          }
+        });
     }
   }
 

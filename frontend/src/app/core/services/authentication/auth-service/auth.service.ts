@@ -3,20 +3,18 @@ import { Injectable } from '@angular/core';
 import { catchError, firstValueFrom, map, Observable, of } from 'rxjs';
 import { UrlService } from '../../url-service/url.service';
 import { AccessToken } from '../../../types/interfaces/access-token';
-import { SKIP_TOKEN_CHECK } from '../../../interceptors/http-context-tokens';
-import { StorageService } from '../../storage-service/storage.service';
 import { TokenService } from '../token-service/token.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
-  private _context = new HttpContext().set(SKIP_TOKEN_CHECK, true)
-
   constructor(
     private _http: HttpClient,
-    private _tokenService: TokenService
+    private _tokenService: TokenService,
+    private _router: Router
    ) { }
   
   // TODO: замінити мб дженерик на щось більш конкретне (створити модель)
@@ -25,8 +23,7 @@ export class AuthService {
       this._http.get<AccessToken>(
         'api/auth/login',
         { 
-          params: dataToSend,
-          context: this._context
+          params: dataToSend
         }
       )
     );
@@ -36,8 +33,7 @@ export class AuthService {
     await firstValueFrom (
       this._http.post(
         '/api/auth/register',
-        dataToSend,
-        { context: this._context }
+        dataToSend
       )
     );
   }
@@ -46,8 +42,7 @@ export class AuthService {
     return await firstValueFrom(
       this._http.post(
         '/api/auth/verify-code',
-        { code }, 
-        { context: this._context }
+        { code }
       )
     ) as AccessToken;
   }
@@ -56,8 +51,7 @@ export class AuthService {
     return await firstValueFrom(
       this._http.post(
         '/api/auth/resend-email',
-        { email },
-        { context: this._context }
+        { email }
       )
     );
   }
@@ -65,5 +59,6 @@ export class AuthService {
   public async logoutAsync(): Promise<void> {
     this._tokenService.deleteAccessToken();
     await this._http.post("/api/auth/logout", {});
+    this._router.navigate(['/login']);
   }
 }
