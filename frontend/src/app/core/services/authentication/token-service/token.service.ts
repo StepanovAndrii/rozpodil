@@ -1,76 +1,46 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError, shareReplay, EMPTY, ArgumentOutOfRangeError } from 'rxjs';
+import { Observable, catchError, throwError, map, of, firstValueFrom, tap, defaultIfEmpty } from 'rxjs';
 import { AccessToken } from '../../../types/interfaces/access-token';
-import { Router } from '@angular/router';
 import { StorageService } from '../../storage-service/storage.service';
-import { AccessTokenArray } from './models/access-token-array';
-import { CryptoService } from '../../crypto-service/crypto.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class TokenService {
-  private apiUrl = '/api/token/refresh';
-
   constructor(
     private _http: HttpClient,
-    private _router: Router,
     private _stringStorage: StorageService<string>,
-    private _cryptoService: CryptoService
   ) {}
 
-  // TODO: доробити обробку помилок
-  public refreshToken(): Observable<AccessToken> {
-    return this._http.post<AccessToken>(this.apiUrl, {}).pipe(
-      catchError((error: unknown) => {
-        if (error instanceof HttpErrorResponse) {
-          if (error.status == 401) {
-            this._router.navigate(['/login']);
-            return throwError(() => {});
-          }
-          return throwError(() => {});
-        }
-        return throwError(() => {});
-      }),
-      shareReplay({
-        bufferSize: 1,
-        refCount: true
-      })
-    );
+  public getAccessToken(): string | null {
+    return this._stringStorage.getItem<string>('token');
   }
 
-  public isAccessTokenValidLocally(): boolean {
-    const accessToken: string | null = this._stringStorage.getItem<string>('token');
-
-    if (!accessToken)
-      return false;
-
-    const splitToken = accessToken.split(".");
-
-    if (splitToken.length !== 3)
-      return false;
-
-    var decodedAccessToken: AccessTokenArray = accessToken.split(".") as AccessTokenArray;
-
-    let json;
-    try {
-      json = this.decodeJwtPart(decodedAccessToken, 2);
-    }
-    catch {
-      return false;
-    }
-
-    json.
+  public setAccessToken(accessToken: string): void {
+    this._stringStorage.setItem('token', accessToken);
   }
 
-  private decodeJwtPart(jwt: AccessTokenArray, position: number): any {
-    if (position < 0 && position >= jwt.length)
-      throw new RangeError("Індекс знаходиться поза межами масиву");
+  public deleteAccessToken() {
+    this._stringStorage.clearItem('token');
+  }
 
-    const base64 = this._cryptoService.convertBase64UrlToBase64(jwt[position]);
-    const json = this._cryptoService.convertBase64ToString(base64);
-    return JSON.parse(json);
+  public refreshToken(): Observable<void> {
+    return this._http.post<AccessToken>("/api/token/refresh", {})
+      .pipe(
+        map((accessTokenResponse) => accessTokenResponse.accessToken),
+        tap((accessToken) => this.setAccessToken(accessToken)),
+        map(() => void 0),
+        catchError((error) => throwError(() => error))
+      );
+  }
+
+  public hasValidAccessToken(): Observable<boolean> {
+    if (this.getAccessToken()) {
+      return of(true);
+    }
+  
+    return this._http.get<boolean>("/api/token/validate-access-token");
   }
 }

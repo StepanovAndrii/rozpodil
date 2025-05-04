@@ -1,7 +1,8 @@
-interface JwtPayload {
+export interface JwtPayload {
     sub: string;
-    name: string;
-    iat: number;
+    iss: string;
     exp: number;
+    aud: string;
+    nameid: string;
     [key: string]: any;
 }

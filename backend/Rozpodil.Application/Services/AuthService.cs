@@ -82,7 +82,14 @@ namespace Rozpodil.Application.Services
 
            
             var accessToken = _jwtTokenService.GenerateToken(userCredentials.UserId);
-            var refreshToken = await _refreshTokenService.GenerateAsync(userCredentials.UserId, refreshExpiresAtDays);
+
+            var existingRefreshToken = await _unitOfWork.RefreshTokenRepository.GetHashedTokenByIdASync(userCredentials.UserId);
+
+            // TODO: змінити логіку
+            if (existingRefreshToken != null)
+               await _unitOfWork.RefreshTokenRepository.DeleteRefreshToken(existingRefreshToken);
+
+            string refreshToken = await _refreshTokenService.GenerateAsync(userCredentials.UserId, refreshExpiresAtDays);
 
             _cookieService.SetRefreshToken(refreshToken, refreshExpiresAtDays);
 

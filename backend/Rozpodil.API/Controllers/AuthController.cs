@@ -45,7 +45,8 @@ namespace Rozpodil.API.Controllers
             };
         }
 
-        public async Task<ActionResult> Login([FromBody] LoginUserRequest loginUserRequest)
+        [HttpGet("login")]
+        public async Task<ActionResult> Login([FromQuery] LoginUserRequest loginUserRequest)
         {
             var loginUserCommand = _mapper.Map<LoginCommand>(loginUserRequest);
             var result = await _authService.LoginUserAsync(loginUserCommand, 7);

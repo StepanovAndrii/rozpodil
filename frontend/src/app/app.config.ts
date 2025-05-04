@@ -7,6 +7,7 @@ import { SelectivePreloadingStrategy } from './core/preloading-strategies/select
 import { authInterceptor } from './core/interceptors/auth-interceptor/auth.interceptor';
 import { camelCaseInterceptor } from './core/interceptors/camel-case-interceptor/camel-case.interceptor';
 import { toastInterceptor } from './core/interceptors/toast-interceptor/toast.interceptor';
+import { errorInterceptor } from './core/interceptors/error-interceptor/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +19,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([
         camelCaseInterceptor,
-        authInterceptor,
+       // authInterceptor,
+       // errorInterceptor,
         toastInterceptor
       ])
     ), 

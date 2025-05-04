@@ -1,5 +1,5 @@
 ﻿// TODO: приєднати FluentValidation
-
+using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Rozpodil.API.Extensions;
 using Rozpodil.API.Mappings;
@@ -27,7 +27,8 @@ builder.WebHost.ConfigureKestrel((context, options) =>
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddMappingProfiles();
 builder.Services.AddScopedServices();
 builder.Services.AddHostedServices();
@@ -62,7 +63,8 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseCors("AllowSpecificOrigins");

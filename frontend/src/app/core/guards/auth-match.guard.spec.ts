@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { CanMatchFn } from '@angular/router';
 
-import { roleGuard } from './role.guard';
+import { authMatchGuard } from './auth-match.guard';
 
-describe('roleGuard', () => {
+describe('authMatchGuard', () => {
   const executeGuard: CanMatchFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => roleGuard(...guardParameters));
+      TestBed.runInInjectionContext(() => authMatchGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

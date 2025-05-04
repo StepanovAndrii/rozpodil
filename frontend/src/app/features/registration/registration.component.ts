@@ -10,7 +10,8 @@ import {
   FormGroup,
   ReactiveFormsModule,
   FormBuilder,
-  AbstractControl
+  AbstractControl,
+  FormControl
 } from '@angular/forms';
 
 import {
@@ -38,6 +39,9 @@ import { StorageService } from '../../core/services/storage-service/storage.serv
 import { GoogleAuthActionButtonComponent } from "../../core/components/google-auth-action-button/google-auth-action-button.component";
 import { HttpClient } from '@angular/common/http';
 import { CombinedValidator } from '../../core/validators/named-combined-validator';
+import { ToastFactory } from '../../core/services/toast-service/factories/toast-factory';
+import { ToastType } from '../../core/services/toast-service/models/toast-types';
+import { ToastService } from '../../core/services/toast-service/toast.service';
 
 @Component({
   selector: 'app-registration',
@@ -67,7 +71,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   public registerWithGoogleUrl: string = "";
   public loginUrl: string = "/login";
   public registrationForm!: FormGroup;
-
   public usernameNamedValidators = usernameNamedValidators;
   public emailNamedValidators!: CombinedValidator[];
   public passwordNamedValidators = passwordNamedValidators;
@@ -83,7 +86,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private _authService: AuthService,
     private _stringStorage: StorageService<string>,
-    private _http: HttpClient
+    private _http: HttpClient,
+    private _toastService: ToastService
   ) { }
   
   public ngOnDestroy(): void {
@@ -100,14 +104,17 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     return this.registrationForm.get(name);
   }
 
-  public async registerWithFormAsync() {
-    if(this.registrationForm.valid) {
-      const { passwordRepetition, ...dataToSend } = this.registrationForm.value;
-      await this._authService.registerWithFormAsync(dataToSend)
-      const email = this.registrationForm.get('email')!.value;
-      this._stringStorage.setItem('email', email);
-      this.router.navigate(['verify-email']);
+  public async registerWithFormAsync(): Promise<void> {
+    if(this.registrationForm.invalid) {
+      this._toastService.show(ToastType.Warning, "Введені дані некоректні. Перевірте форму.");
+      return;
     }
+
+    const { passwordRepetition, ...dataToSend } = this.registrationForm.value;
+    await this._authService.registerWithFormAsync(dataToSend)
+    const email = this.registrationForm.get('email')!.value;
+    this._stringStorage.setItem('email', email);
+    this.router.navigate(['verify-email']);
   }
   
   public changeToLogin() {
@@ -125,7 +132,15 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     );
 
     this.registrationForm = this.formBuilder.group({
-      username: ['', usernameSync, usernameAsync],
+      username: new FormControl<string>(
+        '',
+        {
+          validators: usernameSync,
+          asyncValidators: usernameAsync,
+          updateOn: 'change',
+          nonNullable: true
+        }
+      ),
       email: ['', emailSync, emailAsync],
       password: ['', passwordSync, passwordAsync],
       passwordRepetition: ['']

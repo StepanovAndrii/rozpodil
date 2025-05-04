@@ -1,9 +1,11 @@
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { firstValueFrom, Observable, of } from 'rxjs';
+import { catchError, firstValueFrom, map, Observable, of } from 'rxjs';
 import { UrlService } from '../../url-service/url.service';
 import { AccessToken } from '../../../types/interfaces/access-token';
 import { SKIP_TOKEN_CHECK } from '../../../interceptors/http-context-tokens';
+import { StorageService } from '../../storage-service/storage.service';
+import { TokenService } from '../token-service/token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,20 +16,21 @@ export class AuthService {
 
   constructor(
     private _http: HttpClient,
-    private _urlService: UrlService
+    private _tokenService: TokenService
    ) { }
   
   // TODO: замінити мб дженерик на щось більш конкретне (створити модель)
-  // public async loginWithFormAsync<T extends Record<string, unknown>>(dataToSend: T): Promise<AccessToken> {
-  //   await firstValueFrom (
-  //     this._http.get(
-  //       'api/auth/login',
-  //       { 
-  //         context: this._context
-  //       }
-  //     )
-  //   );
-  // }
+  public async loginWithFormAsync<T extends Record<string, string>>(dataToSend: T): Promise<AccessToken> {
+    return await firstValueFrom (
+      this._http.get<AccessToken>(
+        'api/auth/login',
+        { 
+          params: dataToSend,
+          context: this._context
+        }
+      )
+    );
+  }
 
   public async registerWithFormAsync<T extends Record<string, unknown>>(dataToSend: T): Promise<void> {
     await firstValueFrom (
@@ -57,5 +60,10 @@ export class AuthService {
         { context: this._context }
       )
     );
+  }
+
+  public async logoutAsync(): Promise<void> {
+    this._tokenService.deleteAccessToken();
+    await this._http.post("/api/auth/logout", {});
   }
 }

@@ -36,7 +36,6 @@ namespace Rozpodil.Infrastructure.Services
         public async Task<Result<AccessTokenModel, ErrorType>> RefreshToken(string refreshToken)
         {
             Console.WriteLine(_hasherService.Hash(refreshToken));
-            Console.WriteLine(_hasherService.Hash(refreshToken));
             var refreshTokenEntity = await _unitOfWork.RefreshTokenRepository.GetByHashedTokenAsync(
                     _hasherService.Hash(refreshToken)
                 );

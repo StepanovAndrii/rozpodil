@@ -3,7 +3,6 @@ import {
   OnInit
 } from '@angular/core';
 
-import { AccessControlService } from '../../../core/services/access-control-service/access-control.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
@@ -28,7 +27,6 @@ export class RoomCreationComponent implements OnInit{
   public roomCreationForm!: FormGroup;
   
   constructor(
-    private _accessControlService: AccessControlService,
     private _router: Router,
     private _httpClient: HttpClient,
     private _formBuilder: FormBuilder
@@ -44,14 +42,14 @@ export class RoomCreationComponent implements OnInit{
       firstValueFrom(
         await this._httpClient.post(
           "/api/room/create",
-          this.roomCreationForm.value
+          this.roomCreationForm.value,
+          { withCredentials: true }
         )
       );
     }
   }
 
   public changeToJoin() : void {
-    this._accessControlService.enable();
     this._router.navigate(['/room/join'], { replaceUrl: true })
   }
 

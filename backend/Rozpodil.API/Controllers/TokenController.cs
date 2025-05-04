@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rozpodil.API.Dtos.Responses;
 using Rozpodil.Application.Common;
@@ -21,6 +22,14 @@ namespace Rozpodil.API.Controllers
             _mapper = mapper;
         }
 
+
+        [HttpGet("validate-access-token")]
+        public async Task<ActionResult<bool>> ValidateAccessToken()
+        {
+            return Ok(true);
+
+        }
+
         [HttpPost("refresh")]
         public async Task<ActionResult<AccessTokenResponse>> RefreshToken()
         {
@@ -28,6 +37,7 @@ namespace Rozpodil.API.Controllers
             {
                 var result = await _tokenManager.RefreshToken(refreshToken);
 
+                Console.WriteLine("тут");
                 if (result.Error == ErrorType.Unauthorized)
                 {
                     return Unauthorized();

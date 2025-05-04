@@ -12,6 +12,8 @@ import { AccessToken } from '../../../../types/interfaces/access-token';
 import { State } from '../../../../types/interfaces/state';
 import { StorageService } from '../../../storage-service/storage.service';
 import { SKIP_TOKEN_CHECK } from '../../../../interceptors/http-context-tokens';
+import { Router } from '@angular/router';
+import { TokenService } from '../../token-service/token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +23,11 @@ export class OAuthService {
   constructor(
     @Inject(PLATFORM_ID) private _platformId: Object,
     private _pkceService: PkceService,
-    private _storage: StorageService<string>,
+    private _tokenService: TokenService,
     private _stateService: StateService,
     private _urlService: UrlService,
-    private _http: HttpClient
+    private _http: HttpClient,
+    private _router: Router
   ) { }
 
   public async authenticateWithGoogleAsync(provider: OAuthProviders): Promise<void> {
@@ -53,35 +56,38 @@ export class OAuthService {
   public async sendAuthorizationCodeAsync (actualState: string, code: string): Promise<void> {
     const expectedState: string | null = sessionStorage.getItem('state');
     
-    if (!expectedState) {
-      throw new Error('Стан не був збережений');
+    try {
+      if (!expectedState) {
+        throw new Error('Стан не був збережений')
+      }
+  
+      if(!this.areStatesEqual(actualState, expectedState)) {
+        throw new Error(`Невідповідність state`);
+      }
+  
+      const codeVerifier: string | null = sessionStorage.getItem('codeVerifier');
+  
+      if (!codeVerifier) {
+        throw new Error('Код підтвердження не збережений');
+      }
+
+      const provider = this.getProvider(actualState);
+
+      const accessToken: AccessToken = await this.sendCodeToServerAsync(
+        provider,
+        code,
+        codeVerifier
+      );
+
+      sessionStorage.removeItem('codeVerifier');
+      sessionStorage.removeItem('state');
+
+      this._tokenService.setAccessToken(accessToken.accessToken);
     }
-
-    if(!this.areStatesEqual(actualState, expectedState)) {
-      throw new Error(`Невідповідність state`);
+    catch {
+      this._router.navigate(['/login']);
+      return;
     }
-
-    const codeVerifier: string | null = sessionStorage.getItem('codeVerifier');
-
-    if (!codeVerifier) {
-      throw new Error('Код підтвердження не збережений');
-    }
-
-    const provider = this.getProvider(actualState);
-
-    const accessToken: AccessToken = await this.sendCodeToServerAsync(
-      provider,
-      code,
-      codeVerifier
-    );
-    
-    sessionStorage.removeItem('codeVerifier');
-    sessionStorage.removeItem('state');
-
-    this._storage.setItem(
-      "token",
-      accessToken.accessToken
-    );
   }
 
   private async sendCodeToServerAsync(
@@ -91,7 +97,6 @@ export class OAuthService {
     ): Promise<AccessToken>
   {
     const context = new HttpContext().set(SKIP_TOKEN_CHECK, true)
-
     return await firstValueFrom(
       this._http.post<AccessToken>(
         '/api/auth/oauth',

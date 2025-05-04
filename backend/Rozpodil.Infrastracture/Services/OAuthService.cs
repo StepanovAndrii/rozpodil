@@ -53,6 +53,7 @@ namespace Rozpodil.Infrastructure.Services
             _cookieService = cookieService;
         }
 
+        // TODO: переробити + рефакторинг
         public async Task<Result<AccessTokenModel, ErrorType>> AuthenticateExternalUserAsync(ExternalAuthenticationCommand externalAuthenticationCommand)
         {
             var externalAuthenticationModel = _mapper.Map<ExternalAuthenticationModel>(externalAuthenticationCommand);
@@ -117,9 +118,17 @@ namespace Rozpodil.Infrastructure.Services
                 );
                 
                 await _unitOfWork.SaveChangesAsync();
+
+                existingUser = user;
             }  
 
             var accessTokenModel = _jwtTokenService.GenerateToken(id);
+
+            var existingRefreshToken = await _unitOfWork.RefreshTokenRepository.GetHashedTokenByIdASync(existingUser!.Id);
+
+            if (existingRefreshToken != null)
+                await _unitOfWork.RefreshTokenRepository.DeleteRefreshToken(existingRefreshToken);
+
             var refreshToken = await _refreshTokenService.GenerateAsync(id, 7);
 
             _cookieService.SetRefreshToken(refreshToken, 7);

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AccessControlService } from '../../../core/services/access-control-service/access-control.service';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -11,11 +10,5 @@ import { RouterLink } from '@angular/router';
 })
 
 export class RoomActionsComponent {
-  constructor(
-    private accessControlService: AccessControlService
-  ) { }
-  
-  public allowAccess(): void {
-    this.accessControlService.enable();
-  }
+
 }

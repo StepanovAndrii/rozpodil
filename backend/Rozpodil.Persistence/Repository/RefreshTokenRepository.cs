@@ -43,5 +43,11 @@ namespace Rozpodil.Persistence.Repository
 
             return Task.CompletedTask;
         }
+
+        public async Task<RefreshToken?> GetHashedTokenByIdASync(Guid userId)
+        {
+           return await _context.RefreshTokens
+                .FindAsync(userId);
+        }
     }
 }

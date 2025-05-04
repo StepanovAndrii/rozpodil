@@ -13,6 +13,6 @@ export function createEmailNamedValidators(http: HttpClient): CombinedValidator[
         maxLengthValidator(100),
         requiredValidator,
         emailValidator,
-        //createEmailExistsValidator(http)
+        createEmailExistsValidator(http)
     ]
 };

@@ -7,7 +7,7 @@
         width: 100%;
         position: relative;
     
-        .input-field__input {
+       &__input {
             width: 100%;
             padding: 1.2rem;
             font-size: 1rem;
@@ -34,7 +34,7 @@
             top: 50%;
             left: 0.7rem;
             padding: 0rem 0.3rem;
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: map.get($colors, gray-color);
             transition: 0.3s;
             pointer-events: none;
@@ -43,14 +43,7 @@
 }
 
 @include media.screen-size(sm) {
-    .input-field {
-        .input-field__input {
-            padding: 1rem 2rem; // TODO
-        }
-        .input-field__label {
-            font-size: 1.2rem;
-        }
-    }
+   
 }
 
 @include media.screen-size(md) {

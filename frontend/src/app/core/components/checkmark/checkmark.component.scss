@@ -1,28 +1,26 @@
 .checkmark {
     position: absolute;
+    left: -3rem;
     top: 50%;
-    left: -2rem;
     transform: translateY(-50%);
     z-index: 10;
-}
 
-.checkmark__indicator {
-    width: 1.1rem;
-    height: 1.1rem;
-}
+    .checkmark__indicator {
+        width: 0.9rem;
+        aspect-ratio: 1/1;
+        background: url('/optimised-icons/criss-cross.svg') no-repeat center;
+        transition: transform 0.3s ease-out;
 
-.checkmark__indicator--untoched {
-    display: none;
-}
+        &--untoched {
+            display: none;
+        }
 
-.checkmark__indicator--valid {
-    background: url('/optimised-icons/check-mark.svg')
-        no-repeat
-        center;
-}
+        &--valid {
+            transform: rotate(45deg);
+        }
 
-.checkmark__indicator--invalid {
-    background: url('/optimised-icons/criss-cross.svg')
-        no-repeat
-        center;
+        &--invalid {
+            transform: rotate(0deg);
+        }
+    }
 }

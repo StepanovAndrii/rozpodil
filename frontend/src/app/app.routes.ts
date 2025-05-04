@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
-import { canAccessGuard } from './core/guards/can-access-guard/can-access.guard';
 import { taskResolver } from './core/resolvers/task-resolver/task.resolver';
+import { authGuard } from './core/guards/auth/auth.guard';
+import { authMatchGuard } from './core/guards/auth-match.guard';
+import { RoomActionsComponent } from './features/room/room-actions/room-actions.component';
 
 export const routes: Routes = [
     {path: '',
@@ -14,6 +16,9 @@ export const routes: Routes = [
     {path: 'register', loadComponent: () =>
         import('./features/registration/registration.component').then(component => component.RegistrationComponent)
     },
+    {path: 'reset-password', loadComponent: () => 
+        import('./features/password-reset/password-reset.component').then(component => component.PasswordResetComponent)
+    },
     {path: 'verify-email', loadComponent: () =>
         import('./features/verification-code/verification-code.component').then(component => component.VerificationCodeComponent)
     },
@@ -26,16 +31,18 @@ export const routes: Routes = [
             taskData: taskResolver
         }
     },
-    {path: 'room', loadComponent: () =>
-        import('./features/room/room-actions/room-actions.component').then(component => component.RoomActionsComponent),
-        data: { preload: true }
+    {path: 'room', component: RoomActionsComponent,
+        data: { preload: true },
+        canActivate: [authGuard]
     },
     {path: 'room/create', loadComponent: () =>
-        import('./features/room/room-creation/room-creation.component').then(component => component.RoomCreationComponent),
-        // canActivate: [canAccessGuard],
+        import('./features/room/room-creation/room-creation.component').then(component => component.RoomCreationComponent)
+        
     },
     {path: 'room/join', loadComponent: () =>
-        import('./features/room/room-joining/room-joining.component').then(component => component.RoomJoiningComponent),
-        // canActivate: [canAccessGuard],
-    }
+        import('./features/room/room-joining/room-joining.component').then(component => component.RoomJoiningComponent)
+        
+    },
+    // {path: '**', redirectTo: 'login', pathMatch: 'full'
+    // }
 ];
