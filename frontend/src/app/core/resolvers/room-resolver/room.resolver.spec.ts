@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ResolveFn } from '@angular/router';
 
-import { dropdownRoomsResolver } from './dropdown-rooms.resolver';
+import { dropdownRoomsResolver } from './room.resolver';
 
 describe('dropdownRoomsResolver', () => {
   const executeResolver: ResolveFn<boolean> = (...resolverParameters) => 

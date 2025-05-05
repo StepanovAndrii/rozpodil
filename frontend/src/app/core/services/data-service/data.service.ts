@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { IRoom } from '../../types/interfaces/room-interface';
 import { IUser } from '../../types/interfaces/user-interface';
+import { UUID } from 'crypto';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +25,9 @@ export class DataService {
   // TODO: зробити мб щоб завантажувалась потрохи через потік
   public async getRoomsForDropdownByUserId(): Promise<IRoom[]>  {
     return await firstValueFrom(this.http.get<IRoom[]>('api/rooms'));
+  }
+
+  public async getRoomById(roomId: UUID): Promise<IRoom> {
+    return await firstValueFrom(this.http.get<IRoom>(`api/rooms/${roomId}`));
   }
 }

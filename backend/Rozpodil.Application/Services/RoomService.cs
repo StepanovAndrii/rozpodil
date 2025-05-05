@@ -31,7 +31,7 @@ namespace Rozpodil.Application.Services
             _transactionManager = transactionManager;
         }
 
-        public async Task<Result<ErrorType>> CreateRoomAsync(CreateRoomCommand createRoomCommand, Guid userId)
+        public async Task<Result<Guid, ErrorType>> CreateRoomAsync(CreateRoomCommand createRoomCommand, Guid userId)
         {
             // TODO: перевірити в якому порядку і які параметри робити мапінг
             var createUserModel = _mapper.Map<RoomCreationModel>(createRoomCommand);
@@ -58,7 +58,7 @@ namespace Rozpodil.Application.Services
                 await _unitOfWork.SaveChangesAsync();
             });
 
-            return Result<ErrorType>.Ok();
+            return Result<Guid, ErrorType>.Ok(room.Id);
         }
     }
 }

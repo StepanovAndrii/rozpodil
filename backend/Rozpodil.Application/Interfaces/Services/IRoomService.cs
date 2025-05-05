@@ -5,6 +5,6 @@ namespace Rozpodil.Application.Interfaces.Services
 {
     public interface IRoomService
     {
-        Task<Result<ErrorType>> CreateRoomAsync(CreateRoomCommand createRoomCommand, Guid userId);
+        Task<Result<Guid, ErrorType>> CreateRoomAsync(CreateRoomCommand createRoomCommand, Guid userId);
     }
 }

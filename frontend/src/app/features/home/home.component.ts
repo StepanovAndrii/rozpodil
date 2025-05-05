@@ -6,6 +6,7 @@ import { IRoom } from '../../core/types/interfaces/room-interface';
 import { SettingButtonComponent } from "../../core/components/setting-button/setting-button.component";
 import { IUser } from '../../core/types/interfaces/user-interface';
 import { CalendarComponent } from "../../core/components/calendar/calendar.component";
+import { UUID } from 'crypto';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,7 @@ import { CalendarComponent } from "../../core/components/calendar/calendar.compo
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit{
+  roomId: string = '';
   public rooms: IRoom[] = [];
   public user: IUser | null = null;
   public selectedRoom: IRoom | null = null;
@@ -24,6 +26,7 @@ export class HomeComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
+    this.roomId = this.route.snapshot.paramMap.get('id')!;
     this.route.data.subscribe( data =>
       this.rooms = data['userRooms']
     )

@@ -1,4 +1,12 @@
-.wrapper {
+.padding-container {
+    display: flex;
+    align-items: center;
+    max-width: 460px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.join-room-form {
     max-width: 460px;
     margin: 0 auto;
     height: 100%;
@@ -7,38 +15,31 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
-}
 
-.creation-header {
-    font-size: 20px;
-}
+    &__header {
+        font-size: 20px;
+    }
 
-.name-field {
-    height: 48px;
-    width: 100%;
-    max-width: 325px;
-    padding: 0 10px;
-}
+    &__button {
+        background-color: #000000;
+        border: none;
+        height: 55px;
+        width: 100%;
+        max-width: 325px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #ffffff;
+    }
 
-.join-button {
-    background-color: #000000;
-    border: none;
-    height: 48px;
-    width: 100%;
-    max-width: 325px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #ffffff;
-}
-
-.change-to-create-link {
-    font-size: 14px;
-    text-decoration: underline;
-    text-decoration-thickness: 6%;
-    text-underline-offset: 15%;
-    text-decoration-skip-ink: all;
-    cursor: pointer;
-    color: #000000;
+    &__change-to-create-link {
+        font-size: 14px;
+        text-decoration: underline;
+        text-decoration-thickness: 6%;
+        text-underline-offset: 15%;
+        text-decoration-skip-ink: all;
+        cursor: pointer;
+        color: #000000;
+    }
 }

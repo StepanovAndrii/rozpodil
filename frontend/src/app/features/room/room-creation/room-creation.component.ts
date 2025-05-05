@@ -13,6 +13,7 @@ import {
 } from '@angular/forms';
 
 import { requiredValidator } from '../../../core/validators/built-in-validators/required.validator';
+import { UUID } from 'crypto';
 
 @Component({
   selector: 'app-room-creation',
@@ -38,12 +39,13 @@ export class RoomCreationComponent implements OnInit{
   // винести в окремий сервіс
   public async sendRoomCreationRequestAsync(): Promise<void> {
     if (this.roomCreationForm.valid) {
-        this._httpClient.post(
+        this._httpClient.post<UUID>(
           "/api/rooms/create",
           this.roomCreationForm.value
         ).subscribe({
-          next: () => {
-            this._router.navigate(['/home']);
+          next: (roomId: UUID) => {
+            console.log(roomId);
+            this._router.navigate(['/room', roomId]);
           },
           error: () => {
             this._router.navigate(['/login']);

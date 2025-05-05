@@ -26,6 +26,18 @@ namespace Rozpodil.Persistence.Repository
            return Task.CompletedTask;
         }
 
+        public async Task<Room?> GetRoomByCode(string code)
+        {
+            return await _context.Rooms
+                .FirstOrDefaultAsync(room => room.Code == code);
+        }
+
+        public async Task<Room?> GetRoomById(Guid id)
+        {
+            return await _context.Rooms
+                .FindAsync(id);
+        }
+
         public async Task<IList<Room>> GetRoomsByUserIdAsync(Guid userId)
         {
             // TODO: розібрати

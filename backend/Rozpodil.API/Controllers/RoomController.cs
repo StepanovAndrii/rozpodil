@@ -7,6 +7,7 @@ using Rozpodil.Application.Commands;
 using Rozpodil.Application.Common;
 using Rozpodil.Application.Interfaces.Repositories;
 using Rozpodil.Application.Interfaces.Services;
+using Rozpodil.Domain.Entities;
 using System.Security.Claims;
 
 namespace Rozpodil.API.Controllers
@@ -47,20 +48,37 @@ namespace Rozpodil.API.Controllers
 
             if (result.Success)
             {
-                return Accepted();
+                return Accepted(result.Data);
             }
 
             return BadRequest();
         }
 
         [HttpPost("join")]
-        public async Task<ActionResult> Register([FromBody] RegisterUserRequest registerUserRequest)
+        public async Task<ActionResult<Room>> JoinRoom([FromBody] JoinRoomRequest joinRoomRequest)
         {
-            return Ok();
+            // TODO: додати перевірку чи присутній вже користувач
+            var room = await this._unitOfWork.RoomRepository.GetRoomByCode(joinRoomRequest.Code);
+
+            if (room == null)
+                return NotFound();
+
+            return Ok(room);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Room>> GetRoomById(Guid id)
+        {
+            var room = await _unitOfWork.RoomRepository.GetRoomById(id);
+
+            if (room == null)
+                return NotFound();
+
+            return Ok(room);
         }
 
         [HttpGet]
-        public async Task<ActionResult> CreateRoom()
+        public async Task<ActionResult> GetRooms()
         {
             // TODO: лооіку перевірки користувача ва окремий сервіс
             // TODO: перенести у сервіс

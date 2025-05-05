@@ -61,4 +61,17 @@ export class AuthService {
     await this._http.post("/api/auth/logout", {});
     this._router.navigate(['/login']);
   }
+
+  async tryRefreshTokenIfNeeded(): Promise<void> {
+    const accessToken = this._tokenService.getAccessToken();
+
+    if (!accessToken) {
+      try {
+        const newToken = await firstValueFrom(this._tokenService.refreshToken());
+        this._tokenService.setAccessToken(newToken);
+      } catch (error) {
+        await this.logoutAsync();
+      }
+    }
+  }
 }
