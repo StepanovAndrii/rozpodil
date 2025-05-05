@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
-import { taskResolver } from './core/resolvers/task-resolver/task.resolver';
 import { authGuard } from './core/guards/auth/auth.guard';
-import { authMatchGuard } from './core/guards/auth-match.guard';
 import { RoomActionsComponent } from './features/room/room-actions/room-actions.component';
 import { dropdownRoomsResolver } from './core/resolvers/dropdown-rooms/dropdown-rooms.resolver';
 import { userResolver } from './core/resolvers/user-resolver/user.resolver';
@@ -32,14 +30,16 @@ export const routes: Routes = [
         canActivate: [authGuard]
     },
     {path: 'room/create', loadComponent: () =>
-        import('./features/room/room-creation/room-creation.component').then(component => component.RoomCreationComponent)
-        
+        import('./features/room/room-creation/room-creation.component').then(component => component.RoomCreationComponent),
+        canActivate: [authGuard]
     },
     {path: 'room/join', loadComponent: () =>
-        import('./features/room/room-joining/room-joining.component').then(component => component.RoomJoiningComponent)
+        import('./features/room/room-joining/room-joining.component').then(component => component.RoomJoiningComponent),
+        canActivate: [authGuard]
     },
     {path: 'home', loadComponent: () => 
         import('./features/home/home.component').then(component => component.HomeComponent),
+        canActivate: [authGuard],
         resolve: {
            // taskData: taskResolver
            user: userResolver,
@@ -47,7 +47,8 @@ export const routes: Routes = [
         }
     },
     {path: 'room/settings', loadComponent: () =>
-        import('./features/room-settings/room-settings.component').then(component => component.RoomSettingsComponent)
+        import('./features/room-settings/room-settings.component').then(component => component.RoomSettingsComponent),
+        canActivate: [authGuard]
     },
     {path: '**', redirectTo: 'login', pathMatch: 'full'
     }

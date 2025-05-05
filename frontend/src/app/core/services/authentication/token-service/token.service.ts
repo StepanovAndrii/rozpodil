@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError, map, of, firstValueFrom, tap, defaultIfEmpty, switchMap, exhaustMap, shareReplay } from 'rxjs';
 import { AccessToken } from '../../../types/interfaces/access-token';
 import { StorageService } from '../../storage-service/storage.service';
+import { CryptoService } from '../../crypto-service/crypto.service';
+import { AccessTokenPayload } from '../../../types/interfaces/access-token-payload';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,7 @@ export class TokenService {
   constructor(
     private _http: HttpClient,
     private _stringStorage: StorageService<string>,
+    private _cryptoService: CryptoService
   ) {}
 
   public getAccessToken(): string | null {
@@ -39,11 +42,19 @@ export class TokenService {
     );
   }
 
-  public hasValidAccessToken(): Observable<boolean> {
-    if (this.getAccessToken()) {
-      return of(true);
+  public checkIfTokenIsExpired(token: string): boolean {
+    if (!this.isValidJwtFormat) {
+      return true;
     }
-  
-    return this._http.get<boolean>("/api/token/validate-access-token");
+    const tokenPayloadBase64UrlFormat = token.split(".")[1];
+    const base64FormatTokenPayload = this._cryptoService.convertBase64UrlToBase64(tokenPayloadBase64UrlFormat);
+    const stringFormatTokenPayload = this._cryptoService.convertBase64ToString(base64FormatTokenPayload);
+    const accessTokenPayload = JSON.parse(stringFormatTokenPayload) as AccessTokenPayload;
+
+    return accessTokenPayload.exp < Math.floor(Date.now() / 1000);
+  }
+
+  private isValidJwtFormat(token: string): boolean {
+    return typeof token === 'string' && token.split(".").length === 3;
   }
 }
