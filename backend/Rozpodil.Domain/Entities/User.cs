@@ -4,6 +4,7 @@
     {
         public Guid Id { get; set; }
         public required string Username { get; set; }
+        public string? PhotoUrl { get; set; }
         public bool IsEmailConfirmed { get; set; }
 
         public required UserCredentials Credentials { get; set; }

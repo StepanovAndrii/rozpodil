@@ -106,7 +106,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   public async registerWithFormAsync(): Promise<void> {
     if(this.registrationForm.invalid) {
-      this._toastService.show(ToastType.Warning, "Введені дані некоректні. Перевірте форму.");
+      this._toastService.show(ToastType.Error, "Введені дані некоректні. Перевірте форму.");
       return;
     }
 

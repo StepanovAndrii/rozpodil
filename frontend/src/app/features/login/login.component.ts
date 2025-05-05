@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit{
 
   public async loginWithForm(): Promise<void> {
     if (this.loginForm.invalid) {
-      this._toastService.show(ToastType.Warning, "Введені дані некоректні. Перевірте форму.");
+      this._toastService.show(ToastType.Error, "Введені дані некоректні. Перевірте форму.");
       return;
     }
 

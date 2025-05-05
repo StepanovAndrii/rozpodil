@@ -1,0 +1,20 @@
+<div class="calendar-container">
+    <div class="calendar">
+        <div class="calendar-headline">
+            <div class="calendar-headline-month">
+                {{firstDayOfActiveMonth().monthShort}}
+                {{firstDayOfActiveMonth().year}}
+            </div>
+            <div class="calendar-headline-controls">
+                <div class="calendar-headline-control"><</div>
+                <div class="calendar-headline-control">Сьогодні</div>
+                <div class="calendar-headline-control">></div>
+            </div>
+        </div>
+        <div class="calendar-weeks-grid">
+            @for (weekDay of weekDays(); track $index) {
+                <div class="calendar-weeks-grid-cell">{{weekDay}}</div>
+            }
+        </div>
+    </div>
+</div>

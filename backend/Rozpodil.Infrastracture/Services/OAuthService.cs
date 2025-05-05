@@ -99,6 +99,7 @@ namespace Rozpodil.Infrastructure.Services
                 {
                     Id = id,
                     Username = claimsPrincipal.FindFirst("name")?.Value,
+                    PhotoUrl = claimsPrincipal.FindFirst("picture")?.Value,
                     IsEmailConfirmed = bool.Parse(claimsPrincipal.FindFirst("email_verified")?.Value)
                 };
 

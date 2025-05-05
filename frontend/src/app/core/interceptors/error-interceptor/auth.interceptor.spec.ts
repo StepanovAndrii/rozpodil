@@ -3,7 +3,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 
 import { authInterceptor } from './auth.interceptor';
 
-describe('authInterceptor', () => {
+describe('errorInterceptor', () => {
   const interceptor: HttpInterceptorFn = (req, next) => 
     TestBed.runInInjectionContext(() => authInterceptor(req, next));
 

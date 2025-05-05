@@ -12,6 +12,8 @@ namespace Rozpodil.Application.Mappings.CommandsModels
                 .ForMember(destination => destination.Id,
                     options => options.Ignore())
                 .ForMember(destination => destination.IsEmailConfirmed,
+                    options => options.Ignore())
+                .ForMember(destination => destination.PhotoUrl,
                     options => options.Ignore());
             CreateMap<RegisterUserCommand, UserCredentialsModel>()
                 .ForMember(destination => destination.UserId,

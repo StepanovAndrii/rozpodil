@@ -4,6 +4,7 @@ import { authGuard } from './core/guards/auth/auth.guard';
 import { authMatchGuard } from './core/guards/auth-match.guard';
 import { RoomActionsComponent } from './features/room/room-actions/room-actions.component';
 import { dropdownRoomsResolver } from './core/resolvers/dropdown-rooms/dropdown-rooms.resolver';
+import { userResolver } from './core/resolvers/user-resolver/user.resolver';
 
 export const routes: Routes = [
     {path: '',
@@ -41,8 +42,12 @@ export const routes: Routes = [
         import('./features/home/home.component').then(component => component.HomeComponent),
         resolve: {
            // taskData: taskResolver
+           user: userResolver,
            userRooms: dropdownRoomsResolver
         }
+    },
+    {path: 'room/settings', loadComponent: () =>
+        import('./features/room-settings/room-settings.component').then(component => component.RoomSettingsComponent)
     },
     {path: '**', redirectTo: 'login', pathMatch: 'full'
     }

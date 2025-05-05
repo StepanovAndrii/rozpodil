@@ -3,10 +3,9 @@ import { provideRouter, withPreloading } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { SelectivePreloadingStrategy } from './core/preloading-strategies/selective-preloading.strategy';
-import { authInterceptor } from './core/interceptors/auth-interceptor/auth.interceptor';
 import { camelCaseInterceptor } from './core/interceptors/camel-case-interceptor/camel-case.interceptor';
-import { errorInterceptor } from './core/interceptors/error-interceptor/error.interceptor';
+import { authInterceptor } from './core/interceptors/error-interceptor/auth.interceptor';
+import { SelectivePreloadingStrategy } from './core/preloading-strategies/selective-preloading.strategy';
 import { toastInterceptor } from './core/interceptors/toast-interceptor/toast.interceptor';
 
 // розібратись чому не працю рефреш і як вирішити (через тости)
@@ -20,10 +19,9 @@ export const appConfig: ApplicationConfig = {
     ),
     provideHttpClient(
       withInterceptors([
-        camelCaseInterceptor,
+        toastInterceptor,
         authInterceptor,
-        errorInterceptor,
-       // toastInterceptor
+        camelCaseInterceptor
       ])
     ), 
     provideClientHydration(withEventReplay())
