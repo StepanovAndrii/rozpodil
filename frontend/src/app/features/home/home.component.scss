@@ -1,0 +1,12 @@
+.navigation {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+
+    &__room-code {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+}

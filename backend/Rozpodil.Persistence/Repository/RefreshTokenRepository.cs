@@ -14,6 +14,8 @@ namespace Rozpodil.Persistence.Repository
         {
             _context = context;
         }
+
+        // TODO: в деяких репозиторіях IList, в деяких List і тд. Змінити
         public async Task<RefreshToken> CreateAsync(RefreshToken refreshToken)
         {
             await _context.RefreshTokens.AddAsync(refreshToken);

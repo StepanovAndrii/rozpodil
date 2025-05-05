@@ -1,4 +1,5 @@
 ﻿using Rozpodil.Application.Common.Utilities;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -37,8 +38,12 @@ namespace Rozpodil.Infrastructure.DataConversion.Converters
         {
             writer.WriteStartObject();
 
-            foreach (var property in typeof(T).GetProperties())
+            foreach (var property in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
+                // Пропускаємо індексатори або властивості без геттера
+                if (property.GetIndexParameters().Length > 0 || property.GetMethod == null)
+                    continue;
+
                 var name = CaseConverter.ConvertToSnakeCase(property.Name);
                 var val = property.GetValue(value);
 
@@ -62,12 +67,29 @@ namespace Rozpodil.Infrastructure.DataConversion.Converters
                 }
                 else
                 {
-                    JsonSerializer.Serialize(writer, val, options);
+                    // рекурсивна серіалізація вкладених об'єктів
+                    var valType = val.GetType();
+
+                    // якщо це колекція
+                    if (typeof(System.Collections.IEnumerable).IsAssignableFrom(valType) && valType != typeof(string))
+                    {
+                        writer.WriteStartArray();
+                        foreach (var item in (System.Collections.IEnumerable)val)
+                        {
+                            JsonSerializer.Serialize(writer, item, item?.GetType() ?? typeof(object), options);
+                        }
+                        writer.WriteEndArray();
+                    }
+                    else
+                    {
+                        JsonSerializer.Serialize(writer, val, valType, options);
+                    }
                 }
             }
 
             writer.WriteEndObject();
         }
+
 
         private string ConvertPropertyName(string propertyName)
         {

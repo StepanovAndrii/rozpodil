@@ -15,14 +15,21 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error) => {
       const isRefreshOrLogout = req.url.includes('/token/refresh') || req.url.includes('/auth/logout');
 
-      if (error instanceof HttpErrorResponse
-        && error.status === 401
-        && (isRefreshOrLogout || skipRefresh)) {
+      if (error instanceof HttpErrorResponse) {
+        if(error.status === 401) {
+          if(isRefreshOrLogout || skipRefresh) {
+            return from(authService.logoutAsync())
+              .pipe(
+                switchMap(() => throwError(() => error))
+            );
+          }
+        }
 
-        return from(authService.logoutAsync())
-          .pipe(
-            switchMap(() => throwError(() => error))
-          );
+        throwError(() => error);
+      }
+
+      if (skipRefresh) {
+        return throwError(() => error);
       }
 
       return tokenService.refreshToken().pipe(

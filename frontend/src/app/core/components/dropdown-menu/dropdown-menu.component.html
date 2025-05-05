@@ -1,1 +1,33 @@
-<div class="dropdown-menu"></div>
+<!--TODO: Обов'язково змінити (чому dropdown__body залежить від padding?)-->
+<div class="padding-container">
+    <div class="dropdown">
+        <p 
+            class="dropdown__selected-name">
+
+            Кімната: {{selectedOption?.name}}
+        </p>
+        <button
+            class="dropdown__open-button" 
+            type="button"
+            (click)="toggleDropdown()"
+            [ngClass]="isOpen
+                ? 'dropdown__open-button--opened'
+                : 'dropdown__open-button--closed'">
+        
+        </button>
+    </div>
+    @if (isOpen) {
+        <ul class="dropdown__body">
+            @for (option of options; track $index) {
+                <li class="dropdown__option"
+                (click)="selectOption(option)">
+                    <a
+                        class="dropdown__button">
+                    
+                        {{option.name}}
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+</div>

@@ -3,6 +3,7 @@ import { taskResolver } from './core/resolvers/task-resolver/task.resolver';
 import { authGuard } from './core/guards/auth/auth.guard';
 import { authMatchGuard } from './core/guards/auth-match.guard';
 import { RoomActionsComponent } from './features/room/room-actions/room-actions.component';
+import { dropdownRoomsResolver } from './core/resolvers/dropdown-rooms/dropdown-rooms.resolver';
 
 export const routes: Routes = [
     {path: '',
@@ -38,9 +39,10 @@ export const routes: Routes = [
     },
     {path: 'home', loadComponent: () => 
         import('./features/home/home.component').then(component => component.HomeComponent),
-        // resolve: {
-        //     taskData: taskResolver
-        // }
+        resolve: {
+           // taskData: taskResolver
+           userRooms: dropdownRoomsResolver
+        }
     },
     {path: '**', redirectTo: 'login', pathMatch: 'full'
     }

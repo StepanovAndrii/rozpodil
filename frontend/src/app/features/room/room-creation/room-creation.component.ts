@@ -13,7 +13,6 @@ import {
 } from '@angular/forms';
 
 import { requiredValidator } from '../../../core/validators/built-in-validators/required.validator';
-import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-room-creation',
@@ -40,9 +39,8 @@ export class RoomCreationComponent implements OnInit{
   public async sendRoomCreationRequestAsync(): Promise<void> {
     if (this.roomCreationForm.valid) {
         this._httpClient.post(
-          "/api/room/create",
-          this.roomCreationForm.value,
-          { withCredentials: true }
+          "/api/rooms/create",
+          this.roomCreationForm.value
         ).subscribe({
           next: () => {
             this._router.navigate(['/home']);

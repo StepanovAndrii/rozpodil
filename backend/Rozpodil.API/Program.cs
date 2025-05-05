@@ -11,13 +11,13 @@ using System.IdentityModel.Tokens.Jwt;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(
-            new DynamicNamingConverterFactory()
-        );
-    });
+    .AddControllers();
+    //.AddJsonOptions(options =>
+    //{
+    //    options.JsonSerializerOptions.Converters.Add(
+    //        new DynamicNamingConverterFactory()
+    //    );
+    //});
 
 builder.WebHost.ConfigureKestrel((context, options) =>
 {

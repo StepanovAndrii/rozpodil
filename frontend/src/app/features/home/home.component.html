@@ -1,1 +1,17 @@
-<app-dropdown-menu></app-dropdown-menu>
+<div class="padding-container">
+    <nav class="navigation">
+        <app-dropdown-menu
+            class="navigation__dropdown-menu"
+            [options]="rooms"
+            (selectedOptionChange)="onRoomSelected($event)"/>
+        <div class="navigation__room-code">
+            <p class="navigation__room-code-title">Код кімнати: {{selectedRoom?.code}}</p>
+            <app-setting-button />
+        </div>
+        <div class="navigation__user-settings">
+            <p class="navigation__username">{{username}}</p>
+            <img src="" alt="">
+            <app-setting-button />
+        </div>
+    </nav>
+</div>
