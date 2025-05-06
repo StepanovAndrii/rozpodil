@@ -27,8 +27,8 @@ export const routes: Routes = [
         import('./features/callback/callback.component').then(component => component.CallbackComponent)
     },
     {path: 'room', component: RoomActionsComponent,
-        data: { preload: true },
-        //canActivate: [authGuard]
+        // data: { preload: true },
+        // canActivate: [authGuard]
     },
     {path: 'room/create', loadComponent: () =>
         import('./features/room/room-creation/room-creation.component').then(component => component.RoomCreationComponent),
@@ -44,7 +44,7 @@ export const routes: Routes = [
         resolve: {
            // taskData: taskResolver
            user: userResolver,
-           userRooms: dropdownRoomsResolver,
+           userRoomsIds: dropdownRoomsResolver,
            room: fetchRoomByIdAsyncResolver
         }
     },

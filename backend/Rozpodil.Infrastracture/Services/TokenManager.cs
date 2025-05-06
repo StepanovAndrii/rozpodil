@@ -6,7 +6,6 @@ using Rozpodil.Application.Interfaces.Auth.AuthContext;
 using Rozpodil.Application.Interfaces.Repositories;
 using Rozpodil.Application.Interfaces.Security;
 using Rozpodil.Application.Models;
-using Rozpodil.Application.Services;
 
 namespace Rozpodil.Infrastructure.Services
 {
@@ -44,7 +43,7 @@ namespace Rozpodil.Infrastructure.Services
             var refreshTokenEntity = await _unitOfWork.RefreshTokenRepository.GetByHashedTokenAsync(
                     _hasherService.Hash(refreshToken)
                 );
-
+            Console.WriteLine(refreshToken);
             if (refreshTokenEntity == null)
             {
                 return Result<AccessTokenModel, ErrorType>.Fail(ErrorType.Unauthorized);

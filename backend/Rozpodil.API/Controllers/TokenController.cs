@@ -7,6 +7,7 @@ using Rozpodil.Application.Interfaces;
 
 namespace Rozpodil.API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class TokenController : ControllerBase
@@ -31,24 +32,31 @@ namespace Rozpodil.API.Controllers
         }
 
         [HttpPost("refresh")]
-        public async Task<ActionResult<AccessTokenResponse>> RefreshToken()
+        public async Task<ActionResult<object>> RefreshToken()
         {
             if (Request.Cookies.TryGetValue("RefreshToken", out string? refreshToken))
             {
+                Console.WriteLine(refreshToken + "ТУТ");
                 var result = await _tokenManager.RefreshToken(refreshToken);
 
-                Console.WriteLine("тут");
                 if (result.Error == ErrorType.Unauthorized)
                 {
                     return Unauthorized();
                 }
+                // TODO: переробити тут все
 
                 var accessTokenModel = result.Data;
-                var accessTokenResponce = _mapper.Map<AccessTokenResponse>(accessTokenModel);
-                return Ok(accessTokenResponce);
+                return Ok(new { accessToken = accessTokenModel.AccessToken });
             }
 
             return Unauthorized();
+        }
+
+        [HttpDelete("delete-refresh")]
+        public ActionResult DeleteRefreshToken()
+        {
+            Response.Cookies.Delete("RefreshToken");
+            return Ok();
         }
     }
 }

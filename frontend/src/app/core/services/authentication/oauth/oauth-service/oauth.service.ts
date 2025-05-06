@@ -71,16 +71,21 @@ export class OAuthService {
 
       const provider = this.getProvider(actualState);
 
+      console.log("тут є")
+
       const accessToken: AccessToken = await this.sendCodeToServerAsync(
         provider,
         code,
         codeVerifier
       );
 
+      console.log("Аксес токен отриманий " + accessToken);
+
       sessionStorage.removeItem('codeVerifier');
       sessionStorage.removeItem('state');
 
       this._tokenService.setAccessToken(accessToken.accessToken);
+      console.log("access токен " + accessToken.accessToken);
     }
     catch {
       this._router.navigate(['/login']);

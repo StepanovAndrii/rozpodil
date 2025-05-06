@@ -29,10 +29,10 @@ export class HomeComponent implements OnInit{
     this.roomId = this.route.snapshot.paramMap.get('id')!;
     this.route.data.subscribe( data =>
       this.rooms = data['userRooms']
-    )
+    );
     this.route.data.subscribe( data => 
       this.user = data['user']
-    )
+    );
   }
 
   public onRoomSelected(room: IRoom): void {

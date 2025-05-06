@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rozpodil.API.Dtos.Requests.Auth;
 using Rozpodil.API.Dtos.Requests.Room;
 using Rozpodil.Application.Commands;
-using Rozpodil.Application.Common;
 using Rozpodil.Application.Interfaces.Repositories;
 using Rozpodil.Application.Interfaces.Services;
 using Rozpodil.Domain.Entities;
-using System.Security.Claims;
 
 namespace Rozpodil.API.Controllers
 {

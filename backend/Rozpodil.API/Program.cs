@@ -1,17 +1,21 @@
 ﻿// TODO: приєднати FluentValidation
-using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Rozpodil.API.Extensions;
 using Rozpodil.API.Mappings;
-using Rozpodil.Infrastructure.DataConversion.Deserialization;
 using Rozpodil.Infrastructure.DependencyInjectionExtention;
 using Rozpodil.Persistence;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddControllers();
+    .AddControllers(
+        options =>
+        {
+            options.Filters.Add(new AuthorizeFilter());
+        }
+    );
     //.AddJsonOptions(options =>
     //{
     //    options.JsonSerializerOptions.Converters.Add(

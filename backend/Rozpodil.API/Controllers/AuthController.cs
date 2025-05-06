@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rozpodil.API.Dtos.Requests.Auth;
 using Rozpodil.API.Dtos.Responses;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Rozpodil.API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -79,6 +81,7 @@ namespace Rozpodil.API.Controllers
                 [FromBody] ExternalAuthenticationRequest externalAuthenticationRequest
             )
         {
+            Console.WriteLine("YA TUUUTTTTTTTTTTTTTTTT");
             var externalAuthenticationCommand = _mapper.Map<ExternalAuthenticationCommand>(externalAuthenticationRequest);
             var result = await _oauthService.AuthenticateExternalUserAsync(externalAuthenticationCommand);
 

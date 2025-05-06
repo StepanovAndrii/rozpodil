@@ -1,7 +1,6 @@
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, firstValueFrom, map, Observable, of } from 'rxjs';
-import { UrlService } from '../../url-service/url.service';
+import { catchError, firstValueFrom, map, Observable, of, Subject } from 'rxjs';
 import { AccessToken } from '../../../types/interfaces/access-token';
 import { TokenService } from '../token-service/token.service';
 import { Router } from '@angular/router';
@@ -13,7 +12,6 @@ import { Router } from '@angular/router';
 export class AuthService {
   constructor(
     private _http: HttpClient,
-    private _tokenService: TokenService,
     private _router: Router
    ) { }
   
@@ -54,24 +52,5 @@ export class AuthService {
         { email }
       )
     );
-  }
-
-  public async logoutAsync(): Promise<void> {
-    this._tokenService.deleteAccessToken();
-    await this._http.post("/api/auth/logout", {});
-    this._router.navigate(['/login']);
-  }
-
-  async tryRefreshTokenIfNeeded(): Promise<void> {
-    const accessToken = this._tokenService.getAccessToken();
-
-    if (!accessToken) {
-      try {
-        const newToken = await firstValueFrom(this._tokenService.refreshToken());
-        this._tokenService.setAccessToken(newToken);
-      } catch (error) {
-        await this.logoutAsync();
-      }
-    }
   }
 }
