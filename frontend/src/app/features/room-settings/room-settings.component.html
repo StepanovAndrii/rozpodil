@@ -1,18 +1,18 @@
-<!-- <h1>Редагування кімнати</h1>
+<h1>Редагування кімнати</h1>
 <div>
     <p>Назва:</p>
     <input type="text">
 </div>
 <div>
     <p>Учасники</p>
-    @for (item of items; track $index) {
+    @for (user of users; track $index) {
         <div>
-            <img src="" alt="">
+            <img src="{{user?.photoUrl}}" alt="Фото користувача"> <!--Якого? Додати це-->
             <div>
-                <p></p>
+                <p>{{user?.username}}</p>
                 <p></p>
             </div>
         </div>
         <button></button>
     }
-</div> -->
+</div>

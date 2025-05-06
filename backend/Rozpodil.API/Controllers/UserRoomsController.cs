@@ -16,6 +16,8 @@ namespace Rozpodil.API.Controllers
         {
             _unitOfWork = unitOfWork;
         }
+
+        [HttpGet]
         public async Task<ActionResult> GetRooms(
             Guid userId,
             [FromQuery] int? limit

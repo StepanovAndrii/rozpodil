@@ -41,4 +41,10 @@ export class DataService {
       this.http.get<IUser>(`/api/users/${userId}`)
     );
   }
+
+  public async getUsersByRoomId(roomId: UUID) {
+    return await firstValueFrom(
+      this.http.get<IUser[]>(`api/rooms/${roomId}/users`)
+    );
+  }
 }

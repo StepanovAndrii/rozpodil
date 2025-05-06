@@ -9,7 +9,6 @@ using Rozpodil.Domain.Entities;
 
 namespace Rozpodil.API.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/rooms")]
     public class RoomController : ControllerBase
