@@ -1,9 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IRoom } from '../../types/interfaces/room-interface';
-import { HttpClient } from '@angular/common/http';
 import { NgClass } from '@angular/common';
-import { Router } from '@angular/router';
-import { UUID } from 'crypto';
 
 @Component({
   selector: 'app-dropdown-menu',
@@ -20,7 +17,7 @@ export class DropdownMenuComponent {
   public isOpen: boolean = false; 
 
   constructor(
-    private _router: Router
+    
   ) { }
 
   public toggleDropdown(): void {
@@ -28,9 +25,8 @@ export class DropdownMenuComponent {
   }
 
   public selectOption(option: IRoom) {
-    // this.selectedOption = option;
-    // this.selectedOptionChange.emit(option);
-    // this.toggleDropdown();
-    this._router.navigate(['/room', option.id])
+    this.selectedOption = option;
+    this.selectedOptionChange.emit(option);
+    this.toggleDropdown();
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DropdownMenuComponent } from "../../core/components/dropdown-menu/dropdown-menu.component";
 import { IRoom } from '../../core/types/interfaces/room-interface';
@@ -14,13 +14,15 @@ import { CalendarComponent } from "../../core/components/calendar/calendar.compo
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
+
 export class HomeComponent implements OnInit{
   public user: IUser | null = null;
   public rooms: IRoom[] | [] = [];
   public selectedRoom: IRoom | null = null;
 
   constructor(
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _router: Router
   ) { }
 
   ngOnInit(): void {
@@ -45,6 +47,7 @@ export class HomeComponent implements OnInit{
 
   public onRoomSelected(room: IRoom): void {
     this.selectedRoom = room;
+    this._router.navigate(["/room", room.id])
   }
 
   public openUserSettings() {
@@ -52,6 +55,6 @@ export class HomeComponent implements OnInit{
   }
 
   public openRoomSettings() {
-
+    
   }
 }

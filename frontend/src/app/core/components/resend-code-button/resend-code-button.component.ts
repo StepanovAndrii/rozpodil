@@ -2,7 +2,6 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, PLATFORM_ID, signal } from '@angular/core';
 import { interval, map, takeWhile } from 'rxjs';
 import { AuthService } from '../../services/authentication/auth-service/auth.service';
-import { StorageService } from '../../services/storage-service/storage.service';
 
 @Component({
   selector: 'app-resend-code-button',
@@ -20,8 +19,7 @@ export class ResendCodeButtonComponent {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private _authService: AuthService,
-    private _stringStorage: StorageService<string>
+    private _authService: AuthService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
@@ -43,7 +41,7 @@ export class ResendCodeButtonComponent {
     sessionStorage.setItem(this.storageKey, Date.now().toString());
     this.startCountdown(this.cooldownSeconds);
     
-    const userEmail = this._stringStorage.getItem<string>('email');
+    const userEmail = sessionStorage.getItem('email');
     if(userEmail != null) {
       this._authService.resendCodeAsync(userEmail)
     }

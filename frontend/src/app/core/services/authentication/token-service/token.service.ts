@@ -1,8 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map, ReplaySubject, firstValueFrom, take, filter, Subject, share, tap, catchError, of, defaultIfEmpty } from 'rxjs';
+import { Observable, catchError, throwError, map, of, firstValueFrom, tap, defaultIfEmpty, switchMap, exhaustMap, shareReplay, Subject, take, ReplaySubject } from 'rxjs';
 import { CryptoService } from '../../crypto-service/crypto.service';
+import { AuthService } from '../auth-service/auth.service';
 import { JwtPayload } from './models/jwt-payload';
+import { UUID } from 'crypto';
 
 @Injectable({
   providedIn: 'root'
@@ -30,42 +32,36 @@ export class TokenService {
     sessionStorage.removeItem('token');
   }
 
-  public async getValidAccessToken(): Promise<string | null> {
+  public getValidAccessToken(): Observable<string | null> {
     const token = this.getAccessToken();
   
     if (token && !this.isTokenExpired(token)) {
-      return token;
+      return of(token);
     }
-
+  
     if (this.refreshTokenInProgress) {
-      return firstValueFrom(this.refreshDone$.pipe(
+      return this.refreshDone$.pipe(
         take(1)
-      ));
+      );
     }
-
+  
     this.refreshTokenInProgress = true;
-    
-    return firstValueFrom(
-      this.refreshToken().pipe(
-        tap((token) => {
-          this.setAccessToken(token);
-          this.refreshTokenInProgress = false;
-          this.refreshDone$.next(token);
-        }),
-        catchError((error) => {
-          this.refreshTokenInProgress = false;
-          this.refreshDone$.next(null);
-          console.log(error);
-          return of(null);
-        }),
-        defaultIfEmpty('default value')
-      )
+  
+    return this.refreshToken().pipe(
+      tap(token => {
+        this.setAccessToken(token);
+        this.refreshTokenInProgress = false;
+        this.refreshDone$.next(token);
+      }),
+      catchError(err => {
+        console.error('[TokenService] Помилка під час оновлення токена:', err);
+        this.refreshTokenInProgress = false;
+        this.logout();
+        this.refreshDone$.next(null);
+        return of(null);
+      })
     );
-
-    return null;
   }
-  
-  
   
   public getUserId(): string | null{
     const token = this.getAccessToken();

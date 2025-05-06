@@ -20,7 +20,6 @@ import { ResendCodeButtonComponent } from "../../core/components/resend-code-but
 import { getValidatorsPair } from '../../core/validators/utils/validator-type-guards';
 import { verificationCodeValidators } from './validators/verification-code-validators';
 import { FieldHintsPopoverComponent } from "../../core/components/field-hints-popover/field-hints-popover.component";
-import { StorageService } from '../../core/services/storage-service/storage.service';
 import { TokenService } from '../../core/services/authentication/token-service/token.service';
 
 @Component({
@@ -46,8 +45,7 @@ export class VerificationCodeComponent implements OnInit {
     private _router: Router,
     private _authService: AuthService,
     private _tokenService: TokenService,
-    private _formBuilder: FormBuilder,
-    private _stringStorage: StorageService<string>
+    private _formBuilder: FormBuilder
   ) { }
 
   public ngOnInit(): void {

@@ -35,7 +35,6 @@ import { passwordRepetitionNamedValidators } from './validators/password-repetit
 import { getValidatorsPair } from '../../core/validators/utils/validator-type-guards';
 import { FieldHintsPopoverComponent } from "../../core/components/field-hints-popover/field-hints-popover.component";
 import { AuthService } from '../../core/services/authentication/auth-service/auth.service';
-import { StorageService } from '../../core/services/storage-service/storage.service';
 import { GoogleAuthActionButtonComponent } from "../../core/components/google-auth-action-button/google-auth-action-button.component";
 import { HttpClient } from '@angular/common/http';
 import { CombinedValidator } from '../../core/validators/named-combined-validator';
@@ -85,7 +84,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     private router: Router,
     private formBuilder: FormBuilder,
     private _authService: AuthService,
-    private _stringStorage: StorageService<string>,
     private _http: HttpClient,
     private _toastService: ToastService
   ) { }
@@ -113,7 +111,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     const { passwordRepetition, ...dataToSend } = this.registrationForm.value;
     await this._authService.registerWithFormAsync(dataToSend)
     const email = this.registrationForm.get('email')!.value;
-    this._stringStorage.setItem('email', email);
+    sessionStorage.setItem('email', email);
     this.router.navigate(['verify-email']);
   }
   

@@ -8,13 +8,19 @@ import { switchMap } from 'rxjs';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const tokenService: TokenService = inject(TokenService);
 
-  var token = tokenService.getAccessToken();
-  if(token)
-    return next(req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    }));
-  
-  return next(req);
+  if (req.url.includes('/api/token/refresh')
+    || req.url.includes('/api/token/delete-refresh')
+    || req.url.includes('.well-known/openid-configuration')
+    || req.url.includes('/api/auth/oauth')) {
+    return next(req);
+  }
+
+  return tokenService.getValidAccessToken().pipe(
+    switchMap(token => {
+      const clone = token
+        ? req.clone({setHeaders: { Authorization: `Bearer ${token}` }})
+        : req;
+      return next(clone);
+    })
+  );
 };

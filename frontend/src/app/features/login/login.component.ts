@@ -16,7 +16,6 @@ import { ToastType } from '../../core/services/toast-service/models/toast-types'
 import { getValidatorsPair } from '../../core/validators/utils/validator-type-guards';
 import { emailNamedValidators } from './validators/email-named-validators';
 import { passwordNamedValidators } from './validators/password-named-valodators';
-import { StorageService } from '../../core/services/storage-service/storage.service';
 import { TokenService } from '../../core/services/authentication/token-service/token.service';
 
 @Component({

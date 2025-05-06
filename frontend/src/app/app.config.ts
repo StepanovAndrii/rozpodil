@@ -7,16 +7,10 @@ import { camelCaseInterceptor } from './core/interceptors/camel-case-interceptor
 import { authInterceptor } from './core/interceptors/auth-interceptor/auth.interceptor';
 import { SelectivePreloadingStrategy } from './core/preloading-strategies/selective-preloading.strategy';
 import { toastInterceptor } from './core/interceptors/toast-interceptor/toast.interceptor';
-import { TokenService } from './core/services/authentication/token-service/token.service';
-import { catchError, firstValueFrom, of } from 'rxjs';
 
 // розібратись чому не працю рефреш і як вирішити (через тости)
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAppInitializer(() => {
-      const tokenService = inject(TokenService);
-      return tokenService.getValidAccessToken();
-    }),
     provideZoneChangeDetection({ eventCoalescing: true }),
     SelectivePreloadingStrategy,
     provideRouter(
