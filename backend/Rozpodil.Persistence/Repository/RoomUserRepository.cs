@@ -39,13 +39,16 @@ namespace Rozpodil.Persistence.Repository
                 .ToListAsync();
         }
 
-        //TODO: розібрати
-        public async Task<IList<Room>> GetRoomsByUserId(Guid userId)
+        public async Task<IList<Room>> GetRoomsByUserId(Guid userId, int? limit = null)
         {
-            return await _context.RoomUsers
+            var query = _context.RoomUsers
                 .Where(ru => ru.UserId == userId)
-                .Select(ru => ru.Room)
-                .ToListAsync();
+                .Select(ru => ru.Room);
+
+            if (limit.HasValue)
+                query = query.Take(limit.Value);
+
+            return await query.ToListAsync();
         }
     }
 }

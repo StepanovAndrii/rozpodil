@@ -17,17 +17,19 @@ namespace Rozpodil.API.Controllers
             _unitOfWork = unitOfWork;
         }
         public async Task<ActionResult> GetRooms(
-            Guid userId
+            Guid userId,
+            [FromQuery] int? limit
         )
         {
             var tokenUserId = User.FindFirst("sub")?.Value;
 
             if(tokenUserId != userId.ToString())
             {
-                return Forbid();
-            } 
+                return Unauthorized("You do not have permission to access this data.");
+            }
 
-            var rooms = await _unitOfWork.RoomUserRepository.GetRoomsByUserId(userId);
+            var rooms = await _unitOfWork.RoomUserRepository.GetRoomsByUserId(userId, limit);
+
             return Ok(rooms);
 
         }

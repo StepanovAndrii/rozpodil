@@ -7,6 +7,7 @@ import { camelCaseInterceptor } from './core/interceptors/camel-case-interceptor
 import { authInterceptor } from './core/interceptors/auth-interceptor/auth.interceptor';
 import { SelectivePreloadingStrategy } from './core/preloading-strategies/selective-preloading.strategy';
 import { toastInterceptor } from './core/interceptors/toast-interceptor/toast.interceptor';
+import { errorInterceptor } from './core/interceptors/error-interceptor/error.interceptor';
 
 // розібратись чому не працю рефреш і як вирішити (через тости)
 export const appConfig: ApplicationConfig = {
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([
         toastInterceptor,
+        errorInterceptor,
         authInterceptor,
         camelCaseInterceptor
       ])

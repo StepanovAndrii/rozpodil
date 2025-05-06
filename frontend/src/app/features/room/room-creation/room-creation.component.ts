@@ -44,7 +44,6 @@ export class RoomCreationComponent implements OnInit{
           this.roomCreationForm.value
         ).subscribe({
           next: (roomId: UUID) => {
-            console.log(roomId);
             this._router.navigate(['/room', roomId]);
           },
           error: () => {

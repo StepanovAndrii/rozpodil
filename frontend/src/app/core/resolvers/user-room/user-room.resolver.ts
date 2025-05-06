@@ -1,20 +1,26 @@
 import { ResolveFn } from '@angular/router';
-import { UUID } from 'crypto';
-import { TokenService } from '../../services/authentication/token-service/token.service';
-import { inject } from '@angular/core';
-import { DataService } from '../../services/data-service/data.service';
-import { validate as isValidUuid } from 'uuid';
 import { IRoom } from '../../types/interfaces/room-interface';
+import { TokenService } from '../../services/authentication/token-service/token.service';
+import { DataService } from '../../services/data-service/data.service';
+import { inject } from '@angular/core';
+import { validate as isValidUuid } from 'uuid';
+import { UUID } from 'crypto';
 
-export const userRoomsResolver: ResolveFn<IRoom[]> = async (route, state) => {
+export const userRoomResolver: ResolveFn<IRoom | null> = async (route, state) => {
   const tokenService: TokenService = inject(TokenService);
   const dataService: DataService = inject(DataService);
 
   const userId: string | null = tokenService.getUserId();
-  console.log("User ID 1:", userId);
+  console.log(userId + "userId")
+
   if (userId && isValidUuid(userId)) {
-    return await dataService.getRoomsByUserId(userId as UUID);
+    console.log(userId + "userId")
+    const result = await dataService.getRoomsByUserId(userId as UUID, 1);
+    return result[0];
   }
-  console.log("User ID:", userId);
-  return [];
+  else {
+    console.log("немає userId")
+  }
+
+  return null;
 };

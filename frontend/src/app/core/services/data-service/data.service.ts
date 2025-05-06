@@ -14,9 +14,18 @@ export class DataService {
     private http: HttpClient
   ) { }
 
-  public async getRoomsByUserId(userId: UUID): Promise<IRoom[]> {
+  // TODO: повертається цілий об'єкет. А якщо я хочу тільки id? вирішити
+  public async getRoomsByUserId(userId: UUID, limit?: number): Promise<IRoom[]> {
+    let params = new HttpParams();
+
+    console.log(limit + "limit")
+    if (limit) {
+      params = params.set('limit', limit.toString());
+    }
+
+    console.log(params.toString() + "параметри")
     const response = await firstValueFrom(
-      this.http.get<IRoom[]>(`/api/users/${userId}/rooms`)
+      this.http.get<IRoom[]>(`/api/users/${userId}/rooms`, {params})
     );
 
     // TODO: переробити перевірку на нормальну

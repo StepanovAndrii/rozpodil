@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
-import { RoomActionsComponent } from './features/room/room-actions/room-actions.component';
-import { userRoomsResolver } from './core/resolvers/user-room/user-rooms.resolver';
+import { userRoomsResolver } from './core/resolvers/user-rooms/user-rooms.resolver';
 import { userResolver } from './core/resolvers/user/user.resolver';
+import { authGuard } from './core/guards/auth/auth.guard';
+import { userRoomResolver } from './core/resolvers/user-room/user-room.resolver';
 
 export const routes: Routes = [
     {path: '',
-        redirectTo: 'login',
+        redirectTo: 'room',
         pathMatch: 'full'
     },
     {path: 'login', loadComponent: () =>
@@ -24,9 +25,13 @@ export const routes: Routes = [
     {path: 'callback', loadComponent: () => 
         import('./features/callback/callback.component').then(component => component.CallbackComponent)
     },
-    {path: 'room', component: RoomActionsComponent,
-        // data: { preload: true },
-        // canActivate: [authGuard]
+    {path: 'room', loadComponent: () =>
+        import('./features/room/room-actions/room-actions.component').then(c => c.RoomActionsComponent),
+        resolve: {
+            user: userResolver,
+            room: userRoomResolver
+        },
+        //canActivate: [authGuard]
     },
     {path: 'room/create', loadComponent: () =>
         import('./features/room/room-creation/room-creation.component').then(component => component.RoomCreationComponent),
@@ -34,7 +39,7 @@ export const routes: Routes = [
     },
     {path: 'room/join', loadComponent: () =>
         import('./features/room/room-joining/room-joining.component').then(component => component.RoomJoiningComponent),
-        //canActivate: [authGuard]
+       // canActivate: [authGuard]
     },
     {path: 'room/:id', loadComponent: () => 
         import('./features/home/home.component').then(component => component.HomeComponent),
@@ -44,10 +49,9 @@ export const routes: Routes = [
            user: userResolver
         }
     },
-    {path: 'room/settings', loadComponent: () =>
+    {path: 'room/:id/settings', loadComponent: () => 
         import('./features/room-settings/room-settings.component').then(component => component.RoomSettingsComponent),
-        //canActivate: [authGuard]
+       // canActivate: [authGuard]
     },
-    {path: '**', redirectTo: 'login', pathMatch: 'full'
-    }
+    {path: '**', redirectTo: 'room', pathMatch: 'full'}
 ];

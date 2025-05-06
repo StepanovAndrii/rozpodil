@@ -7,7 +7,6 @@ using Rozpodil.Application.Interfaces;
 
 namespace Rozpodil.API.Controllers
 {
-    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class TokenController : ControllerBase
@@ -23,12 +22,11 @@ namespace Rozpodil.API.Controllers
             _mapper = mapper;
         }
 
-
+        [Authorize]
         [HttpGet("validate-access-token")]
         public async Task<ActionResult<bool>> ValidateAccessToken()
         {
-            return Ok(true);
-
+            return Ok();
         }
 
         [HttpPost("refresh")]

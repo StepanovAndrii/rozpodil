@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { IRoom } from '../../../core/types/interfaces/room-interface';
 
 @Component({
   selector: 'app-room-actions',
@@ -9,6 +10,23 @@ import { RouterLink } from '@angular/router';
   styleUrl: './room-actions.component.scss'
 })
 
-export class RoomActionsComponent {
+export class RoomActionsComponent implements OnInit{
+  constructor(
+    private _route: ActivatedRoute,
+    private _router: Router 
+  ) { }
 
+  ngOnInit(): void {
+    let existingRoom: IRoom | null = null;
+    
+    this._route.data.subscribe({
+      next: (data) => {
+        existingRoom = data['room'];
+        if (existingRoom) {
+          
+          this._router.navigate(['room', existingRoom.id])
+        }
+      }
+    });
+  }
 }

@@ -21,14 +21,14 @@ export class HomeComponent implements OnInit{
   public selectedRoom: IRoom | null = null;
 
   constructor(
-    private route: ActivatedRoute,
+    private _route: ActivatedRoute,
     private _router: Router
   ) { }
 
   ngOnInit(): void {
-    const selecterRoomId = this.route.snapshot.paramMap.get('id');
+    const selecterRoomId = this._route.snapshot.paramMap.get('id');
 
-    this.route.data.subscribe({
+    this._route.data.subscribe({
       next: (data) => {
           this.user = data['user'];
           this.rooms = data['userRooms'];
@@ -55,6 +55,6 @@ export class HomeComponent implements OnInit{
   }
 
   public openRoomSettings() {
-    
+    this._router.navigate(['settings'], { relativeTo: this._route })
   }
 }

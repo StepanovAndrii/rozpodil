@@ -1,10 +1,11 @@
-import { HttpClient, HttpContext } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
+import { inject, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Observable, catchError, throwError, map, of, firstValueFrom, tap, defaultIfEmpty, switchMap, exhaustMap, shareReplay, Subject, take, ReplaySubject } from 'rxjs';
 import { CryptoService } from '../../crypto-service/crypto.service';
 import { AuthService } from '../auth-service/auth.service';
 import { JwtPayload } from './models/jwt-payload';
 import { UUID } from 'crypto';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -18,18 +19,27 @@ export class TokenService {
   constructor(
     private _http: HttpClient,
     private _cryptoService: CryptoService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   public getAccessToken(): string | null {
-    return sessionStorage.getItem('token');
+    if (isPlatformBrowser(this.platformId)) {
+      return sessionStorage.getItem('token');
+    }
+
+    return null;
   }
 
   public setAccessToken(accessToken: string): void {
-    sessionStorage.setItem('token', accessToken);
+    if (isPlatformBrowser(this.platformId)) {
+      sessionStorage.setItem('token', accessToken);
+    }
   }
 
   public deleteAccessToken() {
-    sessionStorage.removeItem('token');
+    if (isPlatformBrowser(this.platformId)) {
+      sessionStorage.removeItem('token');
+    }
   }
 
   public getValidAccessToken(): Observable<string | null> {
@@ -65,12 +75,11 @@ export class TokenService {
   
   public getUserId(): string | null{
     const token = this.getAccessToken();
-    console.log("token: " + token);
     if (!token)
       return null;
 
     const jwtPayload = this.getTokenPayload(token);
-    console.log("jwt: " + jwtPayload);
+
     return jwtPayload?.sub ?? null;
   }
 
@@ -88,10 +97,25 @@ export class TokenService {
     return true;
   }  
 
+  public async validateAccessToken(): Promise<boolean> {
+    const token = this.getAccessToken();
+    if (token) {
+      try {
+        await firstValueFrom(
+          this._http.get("/api/token/validate-access-token")
+        );
+        return true;
+      }
+      catch (error) {
+        return false;
+      }
+    }
+
+    return false;
+  }
+
   private getTokenPayload(token: string): JwtPayload | null {
     if (!this.isValidJwtFormat(token)) return null;
-
-    console.log("ТОкен в правильній формі")
     try {
       const [, payload] = token.split('.');
 
@@ -111,7 +135,6 @@ export class TokenService {
   }
 
   private isJwtPayload(obj: any): obj is JwtPayload {
-    console.log("В методі isJwtPayload")
     return obj && typeof obj === 'object';
   }
 
