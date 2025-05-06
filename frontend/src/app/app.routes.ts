@@ -1,9 +1,7 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth/auth.guard';
 import { RoomActionsComponent } from './features/room/room-actions/room-actions.component';
-import { dropdownRoomsResolver } from './core/resolvers/room-resolver/room.resolver';
-import { userResolver } from './core/resolvers/user-resolver/user.resolver';
-import { fetchRoomByIdAsyncResolver } from './core/resolvers/room-by-id-async-resolver/room.resolver';
+import { userRoomsResolver } from './core/resolvers/user-room/user-rooms.resolver';
+import { userResolver } from './core/resolvers/user/user.resolver';
 
 export const routes: Routes = [
     {path: '',
@@ -42,10 +40,8 @@ export const routes: Routes = [
         import('./features/home/home.component').then(component => component.HomeComponent),
         //canActivate: [authGuard],
         resolve: {
-           // taskData: taskResolver
-           user: userResolver,
-           userRoomsIds: dropdownRoomsResolver,
-           room: fetchRoomByIdAsyncResolver
+           userRooms: userRoomsResolver,
+           user: userResolver
         }
     },
     {path: 'room/settings', loadComponent: () =>

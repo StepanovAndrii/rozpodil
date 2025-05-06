@@ -6,5 +6,6 @@ namespace Rozpodil.Application.Interfaces.Repositories
     {
         Task<RoomUser> CreateRoomUserAsync(RoomUser roomUser);
         Task<IList<Room>> GetRoomsByUserId(Guid userId);
+        Task<IList<Guid>> GetRoomIdsByUserId(Guid userId);
     }
 }

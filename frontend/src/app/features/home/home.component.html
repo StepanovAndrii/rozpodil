@@ -3,6 +3,7 @@
         <app-dropdown-menu
             class="navigation__dropdown-menu"
             [options]="rooms"
+            [selectedOption]="selectedRoom"
             (selectedOptionChange)="onRoomSelected($event)"/>
         <div class="navigation__room-code">
             <p class="navigation__room-code-title">Код кімнати: {{selectedRoom?.code}}</p>
@@ -10,7 +11,7 @@
         </div>
         <div class="navigation__user-settings">
             <p class="navigation__username">{{user?.username}}</p>
-            <img class="navigation__user-logotype" src="{{user?.photoUrl}}" alt="">
+            <img class="navigation__user-logotype" src="{{user?.photoUrl}}" alt="Аватарка">
             <app-setting-button (clickAction)="openUserSettings()"/>
         </div>
     </nav>

@@ -1,9 +1,8 @@
-import { HttpClient, HttpContext } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError, map, of, firstValueFrom, tap, defaultIfEmpty, switchMap, exhaustMap, shareReplay, Subject, take, ReplaySubject } from 'rxjs';
-import { StorageService } from '../../storage-service/storage.service';
+import { Observable, map, ReplaySubject, firstValueFrom, take, filter, Subject, share, tap, catchError, of, defaultIfEmpty } from 'rxjs';
 import { CryptoService } from '../../crypto-service/crypto.service';
-import { AuthService } from '../auth-service/auth.service';
+import { JwtPayload } from './models/jwt-payload';
 
 @Injectable({
   providedIn: 'root'
@@ -11,77 +10,114 @@ import { AuthService } from '../auth-service/auth.service';
 
 export class TokenService {
   private refreshTokenInProgress = false;
-  private refreshDone$ = new ReplaySubject<string | null>(1);
+  private refreshDone$ = new Subject<string | null>;
 
 
   constructor(
     private _http: HttpClient,
-    private _stringStorage: StorageService<string>,
     private _cryptoService: CryptoService,
   ) {}
 
   public getAccessToken(): string | null {
-    return this._stringStorage.getItem<string>('token');
+    return sessionStorage.getItem('token');
   }
 
   public setAccessToken(accessToken: string): void {
-    this._stringStorage.setItem('token', accessToken);
+    sessionStorage.setItem('token', accessToken);
   }
 
   public deleteAccessToken() {
-    this._stringStorage.clearItem('token');
+    sessionStorage.removeItem('token');
   }
 
-  public getValidAccessToken(): Observable<string | null> {
+  public async getValidAccessToken(): Promise<string | null> {
     const token = this.getAccessToken();
-    console.log('[TokenService] Поточний токен:', token);
   
-    if (token && this.isTokenExpired(token)) {
-      console.log('[TokenService] Токен дійсний');
-      return of(token);
+    if (token && !this.isTokenExpired(token)) {
+      return token;
     }
-  
+
     if (this.refreshTokenInProgress) {
-      console.log('[TokenService] Оновлення вже виконується, чекаємо');
-      return this.refreshDone$.pipe(
-        tap(t => console.log('[TokenService] Отримано з refreshDone$', t)),
+      return firstValueFrom(this.refreshDone$.pipe(
         take(1)
-      );
+      ));
     }
-  
-    console.log('[TokenService] Токен недійсний, починаємо оновлення');
+
     this.refreshTokenInProgress = true;
-  
-    return this.refreshToken().pipe(
-      tap(token => {
-        console.log('[TokenService] Отримали новий токен з бекенду:', token);
-        this.setAccessToken(token);
-        this.refreshTokenInProgress = false;
-        this.refreshDone$.next(token);
-      }),
-      catchError(err => {
-        console.error('[TokenService] Помилка під час оновлення токена:', err);
-        this.refreshTokenInProgress = false;
-        this.logout();
-        this.refreshDone$.next(null);
-        return of(null);
-      })
+    
+    return firstValueFrom(
+      this.refreshToken().pipe(
+        tap((token) => {
+          this.setAccessToken(token);
+          this.refreshTokenInProgress = false;
+          this.refreshDone$.next(token);
+        }),
+        catchError((error) => {
+          this.refreshTokenInProgress = false;
+          this.refreshDone$.next(null);
+          console.log(error);
+          return of(null);
+        }),
+        defaultIfEmpty('default value')
+      )
     );
+
+    return null;
   }
   
+  
+  
+  public getUserId(): string | null{
+    const token = this.getAccessToken();
+    console.log("token: " + token);
+    if (!token)
+      return null;
+
+    const jwtPayload = this.getTokenPayload(token);
+    console.log("jwt: " + jwtPayload);
+    return jwtPayload?.sub ?? null;
+  }
 
   public isTokenExpired(token: string | null): boolean {
     if (!token) return true;
-    if (!this.isValidJwtFormat(token)) return true;
   
+    const tokenPayload = this.getTokenPayload(token);
+
+    if (tokenPayload) {
+      const { exp } = tokenPayload;
+
+      return Date.now() / 1000 > exp;
+    }
+    
+    return true;
+  }  
+
+  private getTokenPayload(token: string): JwtPayload | null {
+    if (!this.isValidJwtFormat(token)) return null;
+
+    console.log("ТОкен в правильній формі")
     try {
       const [, payload] = token.split('.');
-      const { exp } = JSON.parse(this._cryptoService.convertBase64UrlToBase64(payload));
-      return Date.now() / 1000 > exp;
-    } catch {
-      return true;
+
+      const base64: string = this._cryptoService.convertBase64UrlToBase64(payload);
+      const parsedPayload = JSON.parse(
+        this._cryptoService.convertBase64ToString(base64)
+      );
+
+      if (this.isJwtPayload(parsedPayload))
+        return parsedPayload
+
+      return null;
     }
-  }  
+    catch (error) {
+      return null;
+    }
+  }
+
+  private isJwtPayload(obj: any): obj is JwtPayload {
+    console.log("В методі isJwtPayload")
+    return obj && typeof obj === 'object';
+  }
 
   private refreshToken(): Observable<string> {
     return this._http.post<{accessToken: string }> (

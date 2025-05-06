@@ -73,25 +73,5 @@ namespace Rozpodil.API.Controllers
 
             return Ok(room);
         }
-
-        [HttpGet]
-        public async Task<ActionResult> GetRooms()
-        {
-            // TODO: лооіку перевірки користувача ва окремий сервіс
-            // TODO: перенести у сервіс
-            // TODO: в ідеалі робити мапінг (щоб id не кидати) і лишнє також
-            var userId = User.FindFirst("sub")?.Value;
-
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
-
-            var guidUserId = Guid.Parse(userId);
-
-            var rooms = await _unitOfWork.RoomUserRepository.GetRoomsByUserId(guidUserId);
-
-            return Ok(rooms);
-        }
     }
 }

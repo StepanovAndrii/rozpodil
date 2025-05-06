@@ -17,19 +17,22 @@ namespace Rozpodil.API.Controllers
         }
 
         // TODO: зробити по людськи
-        [HttpGet("me")]
-        public async Task<ActionResult<User>> GetUserByToken()
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetUserByToken(Guid id)
         {
-            var userId = User.FindFirst("sub")?.Value;
-
-            if (userId == null)
+            var tokenUserId = User.FindFirst("sub")?.Value;
+            Console.WriteLine("Я тут увкп");
+            if (tokenUserId == null)
             {
                 return Unauthorized();
             }
 
-            var guidUserId = Guid.Parse(userId);
+            if (tokenUserId != id.ToString())
+            {
+                return Forbid();
+            }
 
-            var user = await _unitOfWork.UserRepository.GetUserByIdAsync(guidUserId);
+            var user = await _unitOfWork.UserRepository.GetUserByIdAsync(id);
 
             if (user == null)
             {

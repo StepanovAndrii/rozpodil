@@ -6,7 +6,6 @@ import { IRoom } from '../../core/types/interfaces/room-interface';
 import { SettingButtonComponent } from "../../core/components/setting-button/setting-button.component";
 import { IUser } from '../../core/types/interfaces/user-interface';
 import { CalendarComponent } from "../../core/components/calendar/calendar.component";
-import { UUID } from 'crypto';
 
 @Component({
   selector: 'app-home',
@@ -16,9 +15,8 @@ import { UUID } from 'crypto';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit{
-  roomId: string = '';
-  public rooms: IRoom[] = [];
   public user: IUser | null = null;
+  public rooms: IRoom[] | [] = [];
   public selectedRoom: IRoom | null = null;
 
   constructor(
@@ -26,13 +24,23 @@ export class HomeComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-    this.roomId = this.route.snapshot.paramMap.get('id')!;
-    this.route.data.subscribe( data =>
-      this.rooms = data['userRooms']
-    );
-    this.route.data.subscribe( data => 
-      this.user = data['user']
-    );
+    const selecterRoomId = this.route.snapshot.paramMap.get('id');
+
+    this.route.data.subscribe({
+      next: (data) => {
+          this.user = data['user'];
+          this.rooms = data['userRooms'];
+      }
+    });
+
+    const selectedRoom = this.rooms.find(room => room.id == selecterRoomId)
+
+    if (selectedRoom) {
+      this.selectedRoom = selectedRoom;
+    }
+    else{
+      this.rooms[0];
+    }
   }
 
   public onRoomSelected(room: IRoom): void {

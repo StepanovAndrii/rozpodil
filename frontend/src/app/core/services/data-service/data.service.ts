@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { IRoom } from '../../types/interfaces/room-interface';
@@ -14,20 +14,22 @@ export class DataService {
     private http: HttpClient
   ) { }
 
-  public async getTasks() {
-    return await firstValueFrom(this.http.get('/api/tasks'));
+  public async getRoomsByUserId(userId: UUID): Promise<IRoom[]> {
+    const response = await firstValueFrom(
+      this.http.get<IRoom[]>(`/api/users/${userId}/rooms`)
+    );
+
+    // TODO: переробити перевірку на нормальну
+    if (Array.isArray(response)
+      && response.every(item => typeof item === 'object'))
+      return response;
+
+    return [];
   }
 
-  public async getUser() {
-    return await firstValueFrom(this.http.get<IUser>('/api/users/me'));
-  }
-
-  // TODO: зробити мб щоб завантажувалась потрохи через потік
-  public async getRoomsForDropdownByUserId(): Promise<IRoom[]>  {
-    return await firstValueFrom(this.http.get<IRoom[]>('api/rooms'));
-  }
-
-  public async getRoomById(roomId: UUID): Promise<IRoom> {
-    return await firstValueFrom(this.http.get<IRoom>(`api/rooms/${roomId}`));
+  public async getUserById(userId: UUID): Promise<IUser> {
+    return await firstValueFrom(
+      this.http.get<IUser>(`/api/users/${userId}`)
+    );
   }
 }

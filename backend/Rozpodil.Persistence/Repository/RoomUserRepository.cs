@@ -30,7 +30,15 @@ namespace Rozpodil.Persistence.Repository
 
             return existingRoomUser;
         }
-        
+
+        public async Task<IList<Guid>> GetRoomIdsByUserId(Guid userId)
+        {
+            return await _context.RoomUsers
+                .Where(roomUser => roomUser.UserId == userId)
+                .Select(roomUser => roomUser.RoomId)
+                .ToListAsync();
+        }
+
         //TODO: розібрати
         public async Task<IList<Room>> GetRoomsByUserId(Guid userId)
         {
