@@ -25,7 +25,7 @@ namespace Rozpodil.Domain.Enums
         }
     }
 
-    // TODO: розібрати та звкінчити
+    // TODO: розібрати та закінчити
     public static class EnumExtentions
     {
         public static int GetImportance(this Enum value)

@@ -9,12 +9,17 @@ import { DateTime, Info, Interval } from 'luxon';
 })
 
 // TODO: розібрати до кінця
+// TODO: вивчити і використати завантаженнями чанками
 export class CalendarComponent {
   public currentDate = signal(DateTime.now().setLocale('uk'));
   public selectedWeek: { start: DateTime, end: DateTime } | null = null;
 
   constructor() {
     this.resetWeek();
+  }
+
+  formatDay(day: DateTime): string {
+    return day.toFormat('ccc dd.MM.yy').replace(/^./, (match) => match.toUpperCase());
   }
 
   public weeks = computed(() => 

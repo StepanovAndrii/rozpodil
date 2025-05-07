@@ -9,5 +9,6 @@
 
         public required UserCredentials Credentials { get; set; }
         public ICollection<RoomUser> RoomUsers { get; set; } = new List<RoomUser>();
+        public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
     }
 }

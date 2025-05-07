@@ -6,7 +6,7 @@
                 type="button"
                 (click)="selectWeek(week)">
 
-                {{week.start.toFormat('dd MMM')}} - {{week.end.toFormat('dd MMM')}}
+                {{week.start.toFormat('dd MMM yyyy')}} - {{week.end.toFormat('dd MMM yyyy')}}
             </button>
         }
         <button (click)="nextWeek()">Вперед</button>
@@ -14,11 +14,16 @@
     <div>
         @if (selectedWeek) {
             <div class="week-details">
-                <h3>Дні тижня: {{ selectedWeek.start.toFormat('dd MMM') }} - {{ selectedWeek.end.toFormat('dd MMM') }}</h3>
                 <ul>
                     @for (day of getDaysOfWeek(selectedWeek); track $index) {
                         <li>
-                            {{ day.toFormat('cccc, dd MMMM') }}
+                            {{ formatDay(day) }}
+                            @if () {
+                                
+                            } @else {
+                                <p>Завдань немає</p>
+                            }
+                            <button>Створити</button>
                         </li>
                     }
                 </ul>

@@ -24,6 +24,7 @@ namespace Rozpodil.API.Extensions
             services.AddScoped<IUserCredentialsRepository, UserCredentialsRepository>();
             services.AddScoped<ITwoFactorCodeRepository, TwoFactorCodeRepository>();
             services.AddScoped<IRoomUserRepository, RoomUserRepository>();
+            services.AddScoped<IAssignmentRepository, AssignmentRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<ITransactionManager, TransactionManager>();

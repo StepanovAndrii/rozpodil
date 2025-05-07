@@ -12,6 +12,7 @@ namespace Rozpodil.Persistence
         public IRoomRepository RoomRepository { get; }
         public IRefreshTokenRepository RefreshTokenRepository { get; }
         public IRoomUserRepository RoomUserRepository { get; }
+        public IAssignmentRepository AssignmentRepository { get; }
 
         private readonly DatabaseContext _context;
 
@@ -22,6 +23,7 @@ namespace Rozpodil.Persistence
                 IRoomRepository roomRepository,
                 IRefreshTokenRepository refreshTokenRepository,
                 IRoomUserRepository roomUserRepository,
+                IAssignmentRepository assignmentRepository,
                 DatabaseContext context
             )
         {
@@ -31,6 +33,7 @@ namespace Rozpodil.Persistence
             RoomRepository = roomRepository;
             RefreshTokenRepository = refreshTokenRepository;
             RoomUserRepository = roomUserRepository;
+            AssignmentRepository = assignmentRepository;
             _context = context;
         }
 

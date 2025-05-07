@@ -12,6 +12,7 @@ namespace Rozpodil.Persistence
         public DbSet<TwoFactorCode> TwoFactorCodes { get; set; }
         public DbSet<UserCredentials> UsersCredentials { get; set; }
         public DbSet<RoomUser> RoomUsers { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
 
         public DatabaseContext(
             DbContextOptions<DatabaseContext> options
