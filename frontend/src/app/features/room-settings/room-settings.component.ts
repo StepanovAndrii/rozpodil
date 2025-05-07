@@ -16,7 +16,7 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './room-settings.component.html',
   styleUrl: './room-settings.component.scss'
 })
-
+// TODO: повинорсити все в сервіси, наприклад RoomService
 export class RoomSettingsComponent implements OnInit{
   public usersRoles: IUsersRoles[] | [] = [];
   public room: IRoom | null = null;
@@ -37,6 +37,12 @@ export class RoomSettingsComponent implements OnInit{
       }
     });
     this.user = this.getCurrentUser();
+  }
+
+  public deleteOwnerFromRoom(user: IUsersRoles) {
+    if (user.id === this.tokenService.getUserId()) {
+      
+    }
   }
 
   public canDeleteUser(targetRole?: RoomRole): boolean {

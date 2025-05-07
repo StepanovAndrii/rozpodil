@@ -70,6 +70,7 @@ namespace Rozpodil.Persistence.Repository
         {
              return await _context.RoomUsers
                 .AsNoTracking() // TODO: додати всюди де читаю дані
+                .Include(roomUser => roomUser.Room)
                 .FirstOrDefaultAsync(roomUser => roomUser.UserId == userId
                     && roomUser.RoomId == roomId);
         }
@@ -101,6 +102,13 @@ namespace Rozpodil.Persistence.Repository
         {
             return await _context.RoomUsers
                 .AnyAsync(ru => ru.RoomId == roomId && ru.UserId == userId);
+        }
+
+        public async Task<int> GetUsersInRoomCountAsync(Guid roomId)
+        {
+            return await _context.RoomUsers
+                .Where(roomUser => roomUser.RoomId == roomId)
+                .CountAsync();
         }
     }
 }

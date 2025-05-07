@@ -45,6 +45,12 @@ namespace Rozpodil.API.Controllers
                 return NoContent();
 
             await _unitOfWork.RoomUserRepository.DeleteUserRoom(roomUser);
+
+            if (await _unitOfWork.RoomUserRepository.GetUsersInRoomCountAsync(roomUser.RoomId) == 0)
+            {
+                await _unitOfWork.RoomRepository.DeleteRoom(roomUser.Room);
+            }
+
             await _unitOfWork.SaveChangesAsync();
 
             return NoContent();

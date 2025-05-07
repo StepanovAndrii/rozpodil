@@ -14,5 +14,6 @@ namespace Rozpodil.Application.Interfaces.Repositories
         Task<bool> IsUserInRoomAsync(Guid roomId, Guid userId);
         Task<List<UserWithRoles>> GetUsersWithRolesInRoomAsync (Guid roomId);
         Task DeleteUserRoom (RoomUser roomUser);
+        Task<int> GetUsersInRoomCountAsync(Guid roomId);
     }
 }
