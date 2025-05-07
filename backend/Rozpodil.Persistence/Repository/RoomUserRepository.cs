@@ -32,6 +32,12 @@ namespace Rozpodil.Persistence.Repository
             return existingRoomUser;
         }
 
+        public Task DeleteUserRoom(RoomUser roomUser)
+        {
+            _context.Remove(roomUser);
+            return Task.CompletedTask;
+        }
+
         public async Task<IList<Guid>> GetRoomIdsByUserId(Guid userId)
         {
             return await _context.RoomUsers
@@ -60,6 +66,14 @@ namespace Rozpodil.Persistence.Repository
             .FirstOrDefaultAsync();
         }
 
+        public async Task<RoomUser?> GetUserRoomAsync(Guid roomId, Guid userId)
+        {
+             return await _context.RoomUsers
+                .AsNoTracking() // TODO: додати всюди де читаю дані
+                .FirstOrDefaultAsync(roomUser => roomUser.UserId == userId
+                    && roomUser.RoomId == roomId);
+        }
+
         public async Task<IList<User>> GetUsersByRoomId(Guid roomId)
         {
             return await _context.RoomUsers
@@ -75,6 +89,7 @@ namespace Rozpodil.Persistence.Repository
                 .Include(roomUsers => roomUsers.User)
                 .Select(roomUsers => new UserWithRoles
                 {
+                    Id = roomUsers.UserId,
                     Username = roomUsers.User.Username,
                     PhotoUrl = roomUsers.User.PhotoUrl,
                     Role = roomUsers.Role

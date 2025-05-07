@@ -1,5 +1,5 @@
 export enum RoomRole {
-    Owner = "Хост",
-    Admin = "Адміністратор",
-    Member = "Учасник"
+    Owner = "Owner",
+    Admin = "Admin",
+    Member = "Member"
 }

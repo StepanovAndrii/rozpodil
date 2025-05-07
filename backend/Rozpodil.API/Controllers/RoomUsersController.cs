@@ -35,5 +35,19 @@ namespace Rozpodil.API.Controllers
 
             return StatusCode(500);
         }
+
+        [HttpDelete("{userId}")]
+        public async Task<ActionResult> DeleteUserFromRoom(Guid roomId, Guid userId)
+        {
+            var roomUser = await _unitOfWork.RoomUserRepository.GetUserRoomAsync(roomId, userId);
+
+            if (roomUser == null)
+                return NoContent();
+
+            await _unitOfWork.RoomUserRepository.DeleteUserRoom(roomUser);
+            await _unitOfWork.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }

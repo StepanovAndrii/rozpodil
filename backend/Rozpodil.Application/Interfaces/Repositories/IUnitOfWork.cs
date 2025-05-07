@@ -13,5 +13,6 @@ namespace Rozpodil.Application.Interfaces.Repositories
         IRefreshTokenRepository RefreshTokenRepository { get; }
         IRoomUserRepository RoomUserRepository { get; }
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
+
     }
 }

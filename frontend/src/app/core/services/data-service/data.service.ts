@@ -5,6 +5,7 @@ import { IRoom } from '../../types/interfaces/room-interface';
 import { IUser } from '../../types/interfaces/user-interface';
 import { UUID } from 'crypto';
 import { IUsersRoles } from '../../types/interfaces/users-roles';
+import { RoomRole } from '../../types/room-role-enum';
 
 @Injectable({
   providedIn: 'root'
