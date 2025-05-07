@@ -6,6 +6,9 @@ import { IRoom } from '../../core/types/interfaces/room-interface';
 import { SettingButtonComponent } from "../../core/components/setting-button/setting-button.component";
 import { IUser } from '../../core/types/interfaces/user-interface';
 import { CalendarComponent } from "../../core/components/calendar/calendar.component";
+import { ITask } from '../../core/types/interfaces/task';
+import { ToastService } from '../../core/services/toast-service/toast.service';
+import { ToastType } from '../../core/services/toast-service/models/toast-types';
 
 @Component({
   selector: 'app-home',
@@ -17,12 +20,14 @@ import { CalendarComponent } from "../../core/components/calendar/calendar.compo
 
 export class HomeComponent implements OnInit{
   public user: IUser | null = null;
-  public rooms: IRoom[] | [] = [];
+  public rooms: IRoom[] = [];
+  public tasks: ITask[] = [];
   public selectedRoom: IRoom | null = null;
 
   constructor(
     private _route: ActivatedRoute,
-    private _router: Router
+    private _router: Router,
+    private _toastService: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -32,6 +37,7 @@ export class HomeComponent implements OnInit{
       next: (data) => {
           this.user = data['user'];
           this.rooms = data['userRooms'];
+          this.tasks = data['tasks']
       }
     });
 
@@ -43,6 +49,11 @@ export class HomeComponent implements OnInit{
     else{
       this.rooms[0];
     }
+  }
+
+  async copyCode(): Promise<void> {
+    await navigator.clipboard.writeText(this.selectedRoom!.code);
+    this._toastService.show(ToastType.Success, "Код скопійовано");
   }
 
   public onRoomSelected(room: IRoom): void {

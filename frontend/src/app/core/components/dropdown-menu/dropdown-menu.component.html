@@ -1,5 +1,5 @@
 <!--TODO: Обов'язково змінити (чому dropdown__body залежить від padding?)-->
-<div class="padding-container">
+<div (click)="toggleDropdown()" class="padding-container">
     <div class="dropdown">
         <p 
             class="dropdown__selected-name">
@@ -9,7 +9,6 @@
         <button
             class="dropdown__open-button" 
             type="button"
-            (click)="toggleDropdown()"
             [ngClass]="isOpen
                 ? 'dropdown__open-button--opened'
                 : 'dropdown__open-button--closed'">

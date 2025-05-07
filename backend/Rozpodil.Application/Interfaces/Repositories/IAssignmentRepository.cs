@@ -1,4 +1,5 @@
 ﻿using Rozpodil.Domain.Entities;
+using Rozpodil.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Rozpodil.Application.Interfaces.Repositories
         Task<Assignment> CreateAssignmentAsync(Assignment assignment);
         Task DeleteAssignment(Assignment assignment);
         Task<IList<Assignment>> GetAssignmentsAsync(DateTime? startDate, DateTime? endDate);
-        Task<bool> UpdateAssignmentStatusAsync(Guid asignmentId, TaskStatus newStatus);
+        Task<bool> UpdateAssignmentStatusAsync(Guid asignmentId, TaskStatuses newStatus);
         Task<Assignment?> GetAssignmentByIdAsync(Guid asignmentId);
     }
 }

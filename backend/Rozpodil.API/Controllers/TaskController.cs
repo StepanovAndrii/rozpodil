@@ -5,7 +5,7 @@ using Rozpodil.Domain.Entities;
 
 namespace Rozpodil.API.Controllers
 {
-    [Route("api/tasks/rooms/{roomId}/tasks")]
+    [Route("api/rooms/{roomId}/tasks")]
     [ApiController]
     public class TaskController : ControllerBase
     {

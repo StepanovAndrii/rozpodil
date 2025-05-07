@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rozpodil.Application.Interfaces.Repositories;
 using Rozpodil.Domain.Entities;
+using Rozpodil.Domain.Enums;
 using System.Threading.Tasks;
 
 namespace Rozpodil.Persistence.Repository
@@ -41,7 +42,7 @@ namespace Rozpodil.Persistence.Repository
             return await query.ToListAsync();
         }
 
-        public async Task<bool> UpdateAssignmentStatusAsync (Guid asignmentId, TaskStatus newStatus)
+        public async Task<bool> UpdateAssignmentStatusAsync (Guid asignmentId, TaskStatuses newStatus)
         {
             var assignment = await _context.Assignments.FindAsync(asignmentId);
 

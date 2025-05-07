@@ -5,6 +5,7 @@ import { authGuard } from './core/guards/auth/auth.guard';
 import { userRoomResolver } from './core/resolvers/user-room/user-room.resolver';
 import { roomUsersResolver } from './core/resolvers/room-users/room-users.resolver';
 import { roomResolver } from './core/resolvers/room-resolver/room.resolver';
+import { roomTasksResolver } from './core/resolvers/room-tasks-resolver/room-tasks.resolver';
 
 export const routes: Routes = [
     {path: '',
@@ -48,7 +49,8 @@ export const routes: Routes = [
         //canActivate: [authGuard],
         resolve: {
            userRooms: userRoomsResolver,
-           user: userResolver
+           user: userResolver,
+           tasks: roomTasksResolver
         }
     },
     {path: 'room/:id/settings', loadComponent: () => 

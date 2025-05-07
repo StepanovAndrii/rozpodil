@@ -1,9 +1,12 @@
-import { Component, computed, effect, signal, Signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, Input, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { DateTime, Info, Interval } from 'luxon';
+import { ITask } from '../../types/interfaces/task';
+import { TaskCreationDialogComponent } from '../task-creation-dialog/task-creation-dialog.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-calendar',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
@@ -11,17 +14,29 @@ import { DateTime, Info, Interval } from 'luxon';
 // TODO: розібрати до кінця
 // TODO: вивчити і використати завантаженнями чанками
 export class CalendarComponent {
+  @Input() tasks: ITask[] = [];
   public currentDate = signal(DateTime.now().setLocale('uk'));
   public selectedWeek: { start: DateTime, end: DateTime } | null = null;
 
-  constructor() {
+  constructor( ) {
     this.resetWeek();
-  }
-
+   }
+  
   formatDay(day: DateTime): string {
     return day.toFormat('ccc dd.MM.yy').replace(/^./, (match) => match.toUpperCase());
   }
 
+  public getTasksForDay(day: DateTime): ITask[] {
+    return this.tasks.filter(task =>
+      task.dueTime.hasSame(day, 'day')
+    );
+  }
+
+  public isCurrentWeek(week: { start: DateTime, end: DateTime }): boolean {
+    const now = DateTime.now().setLocale('uk').setZone(week.start.zoneName ?? 'local');
+    return now >= week.start && now <= week.end;
+  }  
+  
   public weeks = computed(() => 
     Array.from({ length: 4 }).map((_, index) => {
       const startOfWeek = this.currentDate().startOf('week').plus({ weeks: index });

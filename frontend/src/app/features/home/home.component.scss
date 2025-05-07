@@ -1,11 +1,22 @@
 .padding-container {
     padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 
     .navigation {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         justify-items: center;
         align-items: center;
+
+        & > :first-child {
+            justify-self: start;
+        }
+
+        & > :last-child {
+            justify-self: end;
+        }
     
         &__room-code {
             display: flex;
@@ -24,8 +35,11 @@
             border-radius: 50%;
             width: 45px;
             aspect-ratio: 1/1;
-            border: 1px solid #000000;
             background-color: #dfdfdf;
+        }
+
+        &__code {
+            cursor: pointer;
         }
     }
 }

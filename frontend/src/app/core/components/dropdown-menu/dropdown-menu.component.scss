@@ -3,41 +3,47 @@
     flex-direction: column;
     gap: 5px;
     align-items: center;
+    cursor: pointer;
     position: relative;
 
     .dropdown {
-        background: none;
+        border-bottom: 1px solid transparent;
         display: flex;
         gap: 10px;
         align-items: center;
         justify-content: center;
+        user-select: none;
+
+        &:hover {
+            border-bottom: 1px solid #000000;
+        }
 
         &__body {
             display: flex;
             flex-direction: column;
             gap: 5px;
             position: absolute;
-            right: 50%;
-            transform: translate(50%);
-            top: 30px;
+            left: 50%;
+            transform: translateX(-55%);
+            top: 60px;
             list-style-type: none;
         }
 
         &__option {
-            cursor: pointer;
             border: 1px solid #000000;
             background-color: #ffffff;
+            width: 200px;
             padding: 5px 10px;
         }
 
         &__open-button {
-            width: 25px;
+            width: 15px;
             aspect-ratio: 1/1;
             display: block;
             border: none;
             border-radius: 50%;
-            background: url('/optimised-icons/arrow.svg') no-repeat center / auto;
             cursor: pointer;
+            background: url('/optimised-icons/arrow.svg') no-repeat center / contain;
             transition: transform 0.3s ease-out;
 
             &--opened {

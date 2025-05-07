@@ -6,6 +6,8 @@ import { IUser } from '../../types/interfaces/user-interface';
 import { UUID } from 'crypto';
 import { IUsersRoles } from '../../types/interfaces/users-roles';
 import { RoomRole } from '../../types/room-role-enum';
+import { DateTime } from 'luxon';
+import { ITask } from '../../types/interfaces/task';
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +22,10 @@ export class DataService {
   public async getRoomsByUserId(userId: UUID, limit?: number): Promise<IRoom[]> {
     let params = new HttpParams();
 
-    console.log(limit + "limit")
     if (limit) {
       params = params.set('limit', limit.toString());
     }
 
-    console.log(params.toString() + "параметри")
     const response = await firstValueFrom(
       this.http.get<IRoom[]>(`/api/users/${userId}/rooms`, {params})
     );
@@ -53,6 +53,20 @@ export class DataService {
   public async getRoomById(roomId: UUID) {
     return await firstValueFrom(
       this.http.get<IRoom>(`/api/rooms/${roomId}`)
+    );
+  }
+
+  // TODO: порозбиртись
+  public async getRoomTasks(roomId: UUID, from?: DateTime, to?: DateTime): Promise<ITask[]> {
+    const params = new HttpParams({
+      fromObject: {
+        ...(from ? { from: from.toISO() ?? '' } : {}),
+        ...(to ? { to: to.toISO() ?? '' } : {})
+      }
+    });
+  
+    return await firstValueFrom(
+      this.http.get<ITask[]>(`/api/rooms/${roomId}/tasks`, { params })
     );
   }
 }

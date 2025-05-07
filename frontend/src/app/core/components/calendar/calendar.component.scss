@@ -1,0 +1,50 @@
+.calendar {
+    width: 100%;
+
+    &__navigation {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        column-gap: 3px;
+    }
+
+    &__nav-buttons {
+        background-color: #000000;
+        border: none;
+        color: #ffffff;
+        padding: 20px 10px;
+        flex-grow: 1;
+        cursor: pointer;
+        border: 1px solid transparent;
+        border-radius: 5px;
+
+        &:hover {
+            border: 1px solid #ffffff;
+            border-radius: 7px;
+        }
+    }
+
+    &__move-buttons {
+        background-color: rgb(39, 48, 90);
+    }
+
+    &__nav-button {
+        &--current-week {
+            border-radius: 150px;
+            background-color: rgb(39, 48, 90);
+
+            &:hover {
+                border-radius: 150px;
+            }
+        }
+    }
+
+    &__week-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__day {
+        list-style: none;
+    }
+}

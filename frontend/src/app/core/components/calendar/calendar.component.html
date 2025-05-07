@@ -1,25 +1,29 @@
-<div>
-    <div>
-        <button (click)="previousWeek()">Назад</button>
+<div class="calendar">
+    <div class="calendar__navigation">
+        <button class="calendar__previous-button calendar__nav-buttons calendar__move-buttons" (click)="previousWeek()">Назад</button>
         @for (week of weeks(); track $index) {
             <button
+                class="calendar__week-button calendar__nav-buttons"
                 type="button"
-                (click)="selectWeek(week)">
+                (click)="selectWeek(week)"
+                [ngClass]="{'calendar__nav-button--current-week': isCurrentWeek(week)}">
 
                 {{week.start.toFormat('dd MMM yyyy')}} - {{week.end.toFormat('dd MMM yyyy')}}
             </button>
         }
-        <button (click)="nextWeek()">Вперед</button>
+        <button class="calendar__next-button calendar__nav-buttons calendar__move-buttons" (click)="nextWeek()">Вперед</button>
     </div>
     <div>
         @if (selectedWeek) {
-            <div class="week-details">
-                <ul>
+            <div class="calendar__week-details">
+                <ul class="calendar__week-list">
                     @for (day of getDaysOfWeek(selectedWeek); track $index) {
-                        <li>
+                        <li class="calendar__day">
                             {{ formatDay(day) }}
-                            @if () {
-                                
+                            @if (tasks.length) {
+                                @for (task of getTasksForDay(day); track $index) {
+                                    <p>{{task.title}}</p>
+                                }
                             } @else {
                                 <p>Завдань немає</p>
                             }

@@ -12,7 +12,7 @@ using Rozpodil.Persistence;
 namespace Rozpodil.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250507144652_AddTasks")]
+    [Migration("20250507154316_AddTasks")]
     partial class AddTasks
     {
         /// <inheritdoc />

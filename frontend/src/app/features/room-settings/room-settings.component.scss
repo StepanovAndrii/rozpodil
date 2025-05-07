@@ -10,19 +10,19 @@ div.padding-container {
     height: 100%;
     gap: 5px;
   }
-  div.padding-container div.room-setting h1.room-setting__header {  }
-  div.padding-container div.room-setting div.room-setting_room-name { 
-    width: 100%;
-   }
-   div.padding-container div.room-setting div.room-setting_room-name p.room-setting_room-name-title {  }
-   div.padding-container div.room-setting div.room-setting_room-name app {  }
+  .room-setting__list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
   div.padding-container div.room-setting div.room-setting_members-list { 
-    width: 100%;
+    width: 60%;
    }
   // TODO
   .room-setting__main-content {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
    div.padding-container div.room-setting div.room-setting_members-list p.room-setting__members-list-title { 
     display: flex;
@@ -36,14 +36,13 @@ div.padding-container {
     .room-setting__member-logotype { 
       border-radius: 50%;
      }
-     .room-setting__member-logotype div.room-setting__member-text-info {  }
-      .room-setting__member-logotype div.room-setting__member-text-info p.room-setting__member-username {  }
-      .room-setting__member-logotype div.room-setting__member-text-info p.room-setting__member-role {  }
+     
     .room-setting__negative_button { 
       background-color: #000000;
       color: #ffffff;
       border: none;
-      max-height: 40px;
+      height: 40px;
+      width: 130px;
       cursor: pointer;
       
      }
