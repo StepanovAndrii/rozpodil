@@ -1,0 +1,45 @@
+div.padding-container { 
+    padding: 30px;
+    height: 100%;
+ }
+ div.padding-container div.room-setting { 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 5px;
+  }
+  div.padding-container div.room-setting h1.room-setting__header {  }
+  div.padding-container div.room-setting div.room-setting_room-name {  }
+   div.padding-container div.room-setting div.room-setting_room-name p.room-setting_room-name-title {  }
+   div.padding-container div.room-setting div.room-setting_room-name app {  }
+  div.padding-container div.room-setting div.room-setting_members-list {  }
+  // TODO
+  .room-setting__main-conntent {
+    display: flex;
+    justify-content: space-around;
+  }
+   div.padding-container div.room-setting div.room-setting_members-list p.room-setting__members-list-title { 
+    display: flex;
+    justify-content: start;
+    }
+   div.padding-container div.room-setting div.room-setting_members-list div.room-setting__member-card { 
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    }
+    .room-setting__member-logotype { 
+      border-radius: 50%;
+     }
+     .room-setting__member-logotype div.room-setting__member-text-info {  }
+      .room-setting__member-logotype div.room-setting__member-text-info p.room-setting__member-username {  }
+      .room-setting__member-logotype div.room-setting__member-text-info p.room-setting__member-role {  }
+    .room-setting__negative_button { 
+      background-color: #000000;
+      color: #ffffff;
+      border: none;
+      max-height: 40px;
+      cursor: pointer;
+     }

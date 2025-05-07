@@ -4,6 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { IRoom } from '../../types/interfaces/room-interface';
 import { IUser } from '../../types/interfaces/user-interface';
 import { UUID } from 'crypto';
+import { IUsersRoles } from '../../types/interfaces/users-roles';
 
 @Injectable({
   providedIn: 'root'
@@ -42,9 +43,15 @@ export class DataService {
     );
   }
 
-  public async getUsersByRoomId(roomId: UUID) {
+  public async getUserRolesByRoomId(roomId: UUID): Promise<IUsersRoles[]> {
     return await firstValueFrom(
-      this.http.get<IUser[]>(`api/rooms/${roomId}/users`)
+      this.http.get<IUsersRoles[]>(`api/rooms/${roomId}/users`)
+    );
+  }
+
+  public async getRoomById(roomId: UUID) {
+    return await firstValueFrom(
+      this.http.get<IRoom>(`/api/rooms/${roomId}`)
     );
   }
 }

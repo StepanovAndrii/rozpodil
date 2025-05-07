@@ -54,14 +54,14 @@ export class RoomJoiningComponent implements OnInit{
 
     this._httpClient.post("/api/rooms/join", {code: this.roomJoiningForm.value.code})
       .pipe(
-        map((result) => result as IRoom),
+        map((result) => result as UUID),
         catchError((error) => {
           this._toastService.show(ToastType.Error, "Не вдалося приєднатись до кімнати");
           return throwError(() => error);
         })
       ).subscribe({
-        next: (result) => {
-         this._router.navigate([`/room`, result.id]);  
+        next: (roomId) => {
+         this._router.navigate([`/room`, roomId]);  
         }
       });
   }

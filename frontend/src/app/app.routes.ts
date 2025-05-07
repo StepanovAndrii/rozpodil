@@ -4,6 +4,7 @@ import { userResolver } from './core/resolvers/user/user.resolver';
 import { authGuard } from './core/guards/auth/auth.guard';
 import { userRoomResolver } from './core/resolvers/user-room/user-room.resolver';
 import { roomUsersResolver } from './core/resolvers/room-users/room-users.resolver';
+import { roomResolver } from './core/resolvers/room-resolver/room.resolver';
 
 export const routes: Routes = [
     {path: '',
@@ -53,7 +54,8 @@ export const routes: Routes = [
     {path: 'room/:id/settings', loadComponent: () => 
         import('./features/room-settings/room-settings.component').then(component => component.RoomSettingsComponent),
         resolve: {
-            roomUsers: roomUsersResolver
+            roomUsersRoles: roomUsersResolver,
+            room: roomResolver
         }
        // canActivate: [authGuard]
     },

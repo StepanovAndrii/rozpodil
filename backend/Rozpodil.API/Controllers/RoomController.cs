@@ -53,13 +53,38 @@ namespace Rozpodil.API.Controllers
         [HttpPost("join")]
         public async Task<ActionResult<Room>> JoinRoom([FromBody] JoinRoomRequest joinRoomRequest)
         {
-            // TODO: додати перевірку чи присутній вже користувач
-            var room = await this._unitOfWork.RoomRepository.GetRoomByCode(joinRoomRequest.Code);
+            var room = await _unitOfWork.RoomRepository.GetRoomByCode(joinRoomRequest.Code);
+            var userId = User.FindFirst("sub")?.Value;
 
+            if (userId == null)
+                return Unauthorized();
+            
             if (room == null)
                 return NotFound();
 
-            return Ok(room);
+            var isUserInRoom = await _unitOfWork.RoomUserRepository.IsUserInRoomAsync(room.Id, Guid.Parse(userId));
+
+            if (isUserInRoom)
+                return Conflict();
+
+            var user = await _unitOfWork.UserRepository.GetUserByIdAsync(Guid.Parse(userId));
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var newRoomUser = new RoomUser
+            {
+                UserId = user.Id,
+                RoomId = room.Id,
+                Role = Domain.Enums.RoomRole.Member
+            };
+
+            await _unitOfWork.RoomUserRepository.CreateRoomUserAsync(newRoomUser);
+            await _unitOfWork.SaveChangesAsync();
+
+            return Ok(room.Id);
         }
 
         [HttpGet("{id}")]

@@ -1,18 +1,26 @@
-<h1>Редагування кімнати</h1>
-<div>
-    <p>Назва:</p>
-    <input type="text">
-</div>
-<div>
-    <p>Учасники</p>
-    @for (user of users; track $index) {
-        <div>
-            <img src="{{user?.photoUrl}}" alt="Фото користувача"> <!--Якого? Додати це-->
-            <div>
-                <p>{{user?.username}}</p>
-                <p></p>
-            </div>
+<div class="padding-container">
+    <div class="room-setting">
+        <h1 class="room-setting__header">Налаштування кімнати</h1>
+        <div class="room-setting_room-name">
+            <p class="room-setting_room-name-title">Назва:</p>
+            <app-input-field>{{room?.name}}</app-input-field>
         </div>
-        <button></button>
-    }
+        <div class="room-setting_members-list">
+            <p class="room-setting__members-list-title">Учасники</p>
+            @for (userRole of usersRoles; track $index) {
+            <div class="room-setting__main-conntent">
+                
+                    <div class="room-setting__member-card">
+                        <img class="room-setting__member-logotype" src="{{userRole?.photoUrl}}" alt="Фото користувача"> <!--Якого? Додати це-->
+                        <div class="room-setting__member-text-info">
+                            <p class="room-setting__member-username">{{userRole?.username}}</p>
+                            <p class="room-setting__member-role">{{userRole?.role}}</p>
+                        </div>
+                    </div>
+                    <button class="room-setting__negative_button"></button>
+        
+            </div>
+        }
+        </div>
+    </div>
 </div>

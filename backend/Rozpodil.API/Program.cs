@@ -6,6 +6,7 @@ using Rozpodil.Infrastructure.DependencyInjectionExtention;
 using Rozpodil.Persistence;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,13 +16,16 @@ builder.Services
         {
             options.Filters.Add(new AuthorizeFilter());
         }
-    );
-    //.AddJsonOptions(options =>
-    //{
-    //    options.JsonSerializerOptions.Converters.Add(
-    //        new DynamicNamingConverterFactory()
-    //    );
-    //});
+    ).AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+//.AddJsonOptions(options =>
+//{
+//    options.JsonSerializerOptions.Converters.Add(
+//        new DynamicNamingConverterFactory()
+//    );
+//});
 
 builder.WebHost.ConfigureKestrel((context, options) =>
 {

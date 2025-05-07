@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rozpodil.Application.Interfaces.Repositories;
+using Rozpodil.Application.Models.Dtos;
 using Rozpodil.Domain.Entities;
 
 namespace Rozpodil.Persistence.Repository
@@ -51,12 +52,40 @@ namespace Rozpodil.Persistence.Repository
             return await query.ToListAsync();
         }
 
+        public async Task<User?> GetUserByRoomAsync(Guid roomId, Guid userId)
+        {
+            return await _context.RoomUsers
+            .Where(roomUser => roomUser.RoomId == roomId && roomUser.UserId == userId)
+            .Select(roomUser => roomUser.User)
+            .FirstOrDefaultAsync();
+        }
+
         public async Task<IList<User>> GetUsersByRoomId(Guid roomId)
         {
             return await _context.RoomUsers
                 .Where(roomUser => roomUser.RoomId == roomId)
                 .Select(roomUser => roomUser.User)
                 .ToListAsync();
+        }
+
+        public async Task<List<UserWithRoles>> GetUsersWithRolesInRoomAsync(Guid roomId)
+        {
+            return await _context.RoomUsers
+                .Where(roomUsers => roomUsers.RoomId == roomId)
+                .Include(roomUsers => roomUsers.User)
+                .Select(roomUsers => new UserWithRoles
+                {
+                    Username = roomUsers.User.Username,
+                    PhotoUrl = roomUsers.User.PhotoUrl,
+                    Role = roomUsers.Role
+                }).ToListAsync();
+        }
+
+
+        public async Task<bool> IsUserInRoomAsync(Guid roomId, Guid userId)
+        {
+            return await _context.RoomUsers
+                .AnyAsync(ru => ru.RoomId == roomId && ru.UserId == userId);
         }
     }
 }
