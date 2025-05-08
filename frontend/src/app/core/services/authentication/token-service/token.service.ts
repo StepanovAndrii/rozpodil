@@ -107,7 +107,6 @@ export class TokenService {
         console.log('New access token:', result);
         this.setAccessToken(result);
       }),
-      shareReplay(1),
       catchError((error) => {
         console.error('Refresh token error:', error);
         return throwError(() => error);

@@ -13,6 +13,7 @@ import localeUk from '@angular/common/locales/uk';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatDateFormats, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
 import { DateTime } from 'luxon';
 import { AutoFormatDateDirective } from '../../directives/auto-format-date.directive';
+import { firstValueFrom } from 'rxjs';
 
 registerLocaleData(localeUk, 'uk');
 
@@ -83,15 +84,16 @@ export class TaskCreationDialogComponent implements OnInit{
 
   public async createTaskMethod() {
     const selecterRoomId = this._route.snapshot.paramMap.get('id');
-    console.log('Відправка завдання', this.taskCreationForm.valid, this.taskCreationForm.value);
-    console.log('Дедлайн:', this.taskCreationForm.get('deadline')?.value);
+   
     if (this.taskCreationForm.valid) {
-      const formData = { ...this.taskCreationForm.value };
-      console.log('Форма валідна, дані:', formData);
-  
+      this.taskCreationForm.patchValue({
+        createdAt: DateTime.now().toISO()
+      });
+       
       try {
-        const result = await this._http.post(`/api/rooms/${selecterRoomId}/tasks`, formData).toPromise();
-        console.log('Завдання створено', result);
+        await firstValueFrom (
+          this._http.post(`/api/rooms/${selecterRoomId}/tasks`, this.taskCreationForm)
+        );
       } catch (error) {
         console.error('Помилка створення завдання:', error);
       }

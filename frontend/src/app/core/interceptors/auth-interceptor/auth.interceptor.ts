@@ -5,18 +5,15 @@ import { catchError, Observable, switchMap, of, throwError, BehaviorSubject, fil
 import { Router } from '@angular/router';
 import { SKIP_AUTH } from '../../http-context/skip-auth-context';
 
-let isRefreshing = false;
-let refreshSubject = new BehaviorSubject<boolean>(false);
-
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  let isRefreshing = false;
+  let refreshSubject = new BehaviorSubject<boolean>(false);
   const service = inject(TokenService);
   const router = inject(Router);
-  const excludedPaths = ['/.well-known/openid-configuration'];
+  const excludedPaths = ['/.well-known/openid-configuration', '/api/token/refresh'];
 
   if (excludedPaths.some(path => req.url.includes(path)))
     return next(req);
-
-  skipAuthCheck(req, next);
 
   const accessToken = service.getAccessToken();
   const clonedRequest = accessToken 
@@ -28,23 +25,26 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     : req;
 
   return next(clonedRequest).pipe(
-    catchError(error => handleAuthError(error, service, router, clonedRequest, next))
+    catchError(error => handleAuthError(
+      error,
+      service,
+      router,
+      req,
+      next,
+      isRefreshing,
+      refreshSubject
+    ))
   );
 };
-
-function skipAuthCheck (req: HttpRequest<any>, next: HttpHandlerFn) {
-  if (req.context.get(SKIP_AUTH))
-    return next(req);
-
-  return null;
-}
 
 function handleAuthError(
   error: HttpErrorResponse,
   tokenService: TokenService,
   router: Router,
   req: HttpRequest<any>,
-  next: HttpHandlerFn
+  next: HttpHandlerFn,
+  isRefreshing: boolean,
+  refreshSubject: BehaviorSubject<boolean>
 ): Observable<any> {
   if (error.status === 401) {
     if (!isRefreshing) {
@@ -56,15 +56,10 @@ function handleAuthError(
           isRefreshing = false;
           refreshSubject.next(true);
           const accessToken = tokenService.getAccessToken();
-          console.log('Access token after refresh: ', accessToken);
-          if (!accessToken) {
-            console.error('No access token after refresh');
-          }
           const clonedRequest = req.clone({
             setHeaders: {
               Authorization: `Bearer ${accessToken}`
-            },
-            context: req.context.set(SKIP_AUTH, true)
+            }
           });
           return next(clonedRequest);
         }),
@@ -73,7 +68,6 @@ function handleAuthError(
           refreshSubject.next(false);
           tokenService.revokeToken();
           router.navigateByUrl('/login');
-          console.error('Token refresh error: ', err);
           return throwError(() => new Error("Authentication Error: Redirected"));
         })
       );
@@ -85,7 +79,7 @@ function handleAuthError(
         switchMap(() => {
           const clonedRequest = req.clone({
             setHeaders: {
-              Authorization: `Bearer ${tokenService.getAccessToken()}`
+              Authorization: `Bearer ${tokenService.getAccessToken()}` // Отримуємо оновлений токен
             }
           });
           return next(clonedRequest);
