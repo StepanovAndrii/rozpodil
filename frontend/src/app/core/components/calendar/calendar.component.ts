@@ -1,12 +1,17 @@
-import { Component, computed, effect, Input, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, inject, Input, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { DateTime, Info, Interval } from 'luxon';
 import { ITask } from '../../types/interfaces/task';
-import { TaskCreationDialogComponent } from '../task-creation-dialog/task-creation-dialog.component';
 import { CommonModule } from '@angular/common';
+import { InfoPopUpComponent } from "../info-pop-up/info-pop-up.component";
+import { DataService } from '../../services/data-service/data.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UUID } from 'crypto';
+import { error } from 'console';
+import { TaskCreationDialogComponent } from "../task-creation-dialog/task-creation-dialog.component";
 
 @Component({
   selector: 'app-calendar',
-  imports: [CommonModule],
+  imports: [CommonModule, InfoPopUpComponent, TaskCreationDialogComponent],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
@@ -15,15 +20,25 @@ import { CommonModule } from '@angular/common';
 // TODO: вивчити і використати завантаженнями чанками
 export class CalendarComponent {
   @Input() tasks: ITask[] = [];
+  public hoveredDay: DateTime | null = null;
   public currentDate = signal(DateTime.now().setLocale('uk'));
+  public selectedDay: DateTime = DateTime.now().setLocale('uk');
   public selectedWeek: { start: DateTime, end: DateTime } | null = null;
+  public createTask: WritableSignal<boolean> = signal(false);
 
-  constructor( ) {
+  constructor( 
+    private _dataService: DataService,
+    private _route: ActivatedRoute
+  ) {
     this.resetWeek();
    }
   
-  formatDay(day: DateTime): string {
-    return day.toFormat('ccc dd.MM.yy').replace(/^./, (match) => match.toUpperCase());
+  public formatDay(day: DateTime): string {
+    return day.toFormat('ccc').replace(/^./, (match) => match.toUpperCase());
+  }
+
+  public formatData(day: DateTime): string {
+    return day.toFormat('dd.MM');
   }
 
   public getTasksForDay(day: DateTime): ITask[] {
@@ -47,8 +62,32 @@ export class CalendarComponent {
     })
   );
 
+  public isSelectedWeek(week: { start: DateTime, end: DateTime }): boolean {
+    if (!this.selectedWeek) {
+      return false;
+    }
+    return this.selectedWeek.start.hasSame(week.start, 'week') && this.selectedWeek.end.hasSame(week.end, 'week');
+  }
+
   public selectWeek(week: { start: DateTime, end: DateTime }) {
     this.selectedWeek = week;
+  }
+
+  public onDayHover(day: DateTime | null) {
+    this.hoveredDay = day;
+  }
+
+  public async onDateSelect(date: DateTime) {
+    this.selectedDay = date;
+    const selecterRoomId = this._route.snapshot.paramMap.get('id');
+    if (selecterRoomId) {
+      try {
+        this.tasks = await this._dataService.getRoomTasks(selecterRoomId as UUID, date, date);
+      }
+      catch(error){
+        console.error(error);
+      }      
+    }
   }
 
   public nextWeek() {
@@ -69,6 +108,10 @@ export class CalendarComponent {
     }
 
     return days;
+  }
+
+  public openCreationDialog() {
+    this.createTask.set(true);
   }
 
   private resetWeek() {

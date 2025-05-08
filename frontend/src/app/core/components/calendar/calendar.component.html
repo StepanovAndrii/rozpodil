@@ -1,36 +1,70 @@
 <div class="calendar">
     <div class="calendar__navigation">
         <button class="calendar__previous-button calendar__nav-buttons calendar__move-buttons" (click)="previousWeek()">Назад</button>
-        @for (week of weeks(); track $index) {
+        @for (week of weeks(); track week.start.toISO()) {
             <button
                 class="calendar__week-button calendar__nav-buttons"
                 type="button"
                 (click)="selectWeek(week)"
-                [ngClass]="{'calendar__nav-button--current-week': isCurrentWeek(week)}">
+                [ngClass]="{
+                    'calendar__nav-button--current-week': isCurrentWeek(week),
+                    'calendar__nav-button--selected-week': isSelectedWeek(week)
+                    }">
 
                 {{week.start.toFormat('dd MMM yyyy')}} - {{week.end.toFormat('dd MMM yyyy')}}
             </button>
         }
         <button class="calendar__next-button calendar__nav-buttons calendar__move-buttons" (click)="nextWeek()">Вперед</button>
     </div>
-    <div>
+    <p>{{formatData(selectedDay)}}</p>
+    <div class="tasks-area">
+        @if (!tasks.length) {
+            <p class="no-tasks">Завдань немає</p>
+        }
+        @for (task of tasks; track $index) {
+            <div>
+                <div>
+                    <p>Заголовок</p>
+                    <p>{{task.title}}</p>
+                </div>
+                <div>
+                    <p>Опис</p>
+                    <p>{{task.description}}</p>
+                </div>
+                <div>
+                    <p>Статус</p>
+                    <p>{{task.statuses}}</p>
+                </div>
+                <div>
+                    <p>Створене</p>
+                    <p>{{formatDay(task.dueTime)}}</p>
+                </div>
+                <div>
+                    <p>Дедлайн</p>
+                    <p>{{formatDay(task.dueTime)}}</p>
+                </div>
+            </div>
+        }
+        <button class="create-button" (click)="openCreationDialog()">Створити</button>
+        <app-task-creation-dialog [createTask]="createTask" />
+    </div>
+    <div class="calendar_days">
         @if (selectedWeek) {
             <div class="calendar__week-details">
-                <ul class="calendar__week-list">
                     @for (day of getDaysOfWeek(selectedWeek); track $index) {
-                        <li class="calendar__day">
-                            {{ formatDay(day) }}
-                            @if (tasks.length) {
-                                @for (task of getTasksForDay(day); track $index) {
-                                    <p>{{task.title}}</p>
-                                }
-                            } @else {
-                                <p>Завдань немає</p>
+                        <div class="calendar__day-button">
+                            @if (hoveredDay && hoveredDay.hasSame(day, 'day')) {
+                                <app-info-pop-up [data]="formatData(day)"/>
                             }
-                            <button>Створити</button>
-                        </li>
+                            <button
+                                (mouseenter)="onDayHover(day)"
+                                (mouseleave)="onDayHover(null)"
+                                (click)="onDateSelect(day)"
+                                class="calendar__day calendar__nav-buttons">
+                                {{formatDay(day)}}
+                            </button>
+                        </div>
                     }
-                </ul>
             </div>
         }
         

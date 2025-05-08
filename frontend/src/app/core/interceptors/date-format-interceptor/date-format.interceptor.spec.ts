@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpInterceptorFn } from '@angular/common/http';
 
-import { errorInterceptor } from './error.interceptor';
+import { dateFormatInterceptor } from './date-format.interceptor';
 
-describe('errorInterceptor', () => {
+describe('dateFormatInterceptor', () => {
   const interceptor: HttpInterceptorFn = (req, next) => 
-    TestBed.runInInjectionContext(() => errorInterceptor(req, next));
+    TestBed.runInInjectionContext(() => dateFormatInterceptor(req, next));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

@@ -9,10 +9,12 @@ import { CalendarComponent } from "../../core/components/calendar/calendar.compo
 import { ITask } from '../../core/types/interfaces/task';
 import { ToastService } from '../../core/services/toast-service/toast.service';
 import { ToastType } from '../../core/services/toast-service/models/toast-types';
+import { DoughnutChartComponent } from "../../core/components/charts/doughnut-chart/doughnut-chart.component";
+import { ChartsMenuComponent } from "../../core/components/charts-menu/charts-menu.component";
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, DropdownMenuComponent, SettingButtonComponent, CalendarComponent],
+  imports: [CommonModule, DropdownMenuComponent, SettingButtonComponent, CalendarComponent, DoughnutChartComponent, ChartsMenuComponent],
   standalone: true,
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'

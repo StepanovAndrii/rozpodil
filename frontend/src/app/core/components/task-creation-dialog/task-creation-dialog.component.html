@@ -1,8 +1,42 @@
-<!-- <div class="padding-container" [ngClass]="isActivated() ? 'activated' : 'closed'">
+<div class="overlay" (click)="close()" [ngClass]="createTask() ? 'visible' : ''"></div>
+<div class="padding-container" [ngClass]="createTask() ? 'activated' : 'closed'">
     <div class="task-creation-dialog">
       <div class="content-wrapper">
-        <p>тут</p>
+        <form
+          (ngSubmit)="createTaskMethod()"
+          [formGroup]="taskCreationForm"
+          autocomplete="off"
+          class="create-pop-up"
+          >
+
+          <div class="close-button-area">
+            <button  type="button" class="close-button" (click)="close()">✕</button>
+          </div>
+          <h2>Створення завдання</h2>
+          <app-input-field formControlName="title">Заголовок</app-input-field>
+          <app-input-field formControlName="description">Опис</app-input-field>
+          
+          <mat-form-field appearance="fill">
+            <mat-label>Оберіть дедлайн</mat-label>
+            <input
+                matInput
+                [appAutoFormatDate]="'DD/MM/YYYY'"
+                placeholder="DD/MM/YYYY"
+                [matDatepicker]="picker"
+                [min]="minDate"
+                formControlName="deadline"
+                />
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>  
+          <button
+            class="button-submit"
+            type="submit"
+            >
+            
+            Підтвердити
+          </button>
+        </form>
       </div>
     </div>
-  </div>
-   -->
+</div>

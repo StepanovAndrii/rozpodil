@@ -1,0 +1,14 @@
+.open-close-button {
+    display: block;
+    background: url('/optimised-icons/arrow.svg') no-repeat center / 30px, rgb(255, 255, 255);
+    height: 60px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    transform: rotate(-90deg);
+    cursor: pointer;
+}
+
+.charts-menu {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
