@@ -21,10 +21,10 @@ export const appConfig: ApplicationConfig = {
     ),
     provideHttpClient(
       withInterceptors([
-        toastInterceptor,
-        dateFormatInterceptor,
-        authInterceptor,
-        camelCaseInterceptor
+        //toastInterceptor,
+        //dateFormatInterceptor,
+        //authInterceptor,
+        //camelCaseInterceptor
       ])
     ), 
     provideClientHydration(withEventReplay()),

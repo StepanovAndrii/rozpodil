@@ -97,6 +97,18 @@ export class TokenService {
     return true;
   }  
 
+  public refreshToken(): Observable<string> {
+    return this._http.post<{accessToken: string }> (
+      '/api/token/refresh', {}
+    ).pipe(
+      map(result => result.accessToken),
+      tap((result) => {
+        this.setAccessToken(result);
+      }),
+      shareReplay(1)
+    );
+  }
+
   public async validateAccessToken(): Promise<boolean> {
     const token = this.getAccessToken();
     if (token) {
@@ -138,19 +150,11 @@ export class TokenService {
     return obj && typeof obj === 'object';
   }
 
-  private refreshToken(): Observable<string> {
-    return this._http.post<{accessToken: string }> (
-      '/api/token/refresh', {}
-    ).pipe(
-      map(result => result.accessToken)
-    )
-  }
-
   private isValidJwtFormat(token: string): boolean {
     return typeof token === 'string' && token.split(".").length === 3;
   }
 
-  public deleteRefreshToken(): Observable<void> {
+  public revokeToken(): Observable<void> {
     return this._http.delete<void>("/api/token/delete-refresh");
   }
 
@@ -161,6 +165,6 @@ export class TokenService {
 
   public logout() {
     this.deleteAccessToken();
-    this.deleteRefreshToken();
+    this.revokeToken();
   }
 }

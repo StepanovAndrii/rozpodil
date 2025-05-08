@@ -22,8 +22,8 @@ export class RoomActionsComponent implements OnInit{
     this._route.data.subscribe({
       next: (data) => {
         existingRoom = data['room'];
+        console.log(existingRoom);
         if (existingRoom) {
-          
           this._router.navigate(['room', existingRoom.id])
         }
       }

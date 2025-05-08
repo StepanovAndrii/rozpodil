@@ -6,9 +6,8 @@ import { of, switchMap } from 'rxjs';
 export const authGuard: CanActivateFn = (route, state) => {
   const tokenService: TokenService = inject(TokenService);
   const router: Router = inject(Router);
-
   const token = tokenService.getAccessToken();
-  if (token && tokenService.isTokenExpired(token))
+  if (token && !tokenService.isTokenExpired(token))
     return true;
 
   return router.createUrlTree(['/login']);

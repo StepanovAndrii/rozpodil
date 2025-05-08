@@ -34,19 +34,19 @@ export const routes: Routes = [
             user: userResolver,
             room: userRoomResolver
         },
-        //canActivate: [authGuard]
+        canActivate: [authGuard]
     },
     {path: 'room/create', loadComponent: () =>
         import('./features/room/room-creation/room-creation.component').then(component => component.RoomCreationComponent),
-        //canActivate: [authGuard]
+        canActivate: [authGuard]
     },
     {path: 'room/join', loadComponent: () =>
         import('./features/room/room-joining/room-joining.component').then(component => component.RoomJoiningComponent),
-       // canActivate: [authGuard]
+        canActivate: [authGuard]
     },
     {path: 'room/:id', loadComponent: () => 
         import('./features/home/home.component').then(component => component.HomeComponent),
-        //canActivate: [authGuard],
+        canActivate: [authGuard],
         resolve: {
            userRooms: userRoomsResolver,
            user: userResolver,
@@ -58,8 +58,8 @@ export const routes: Routes = [
         resolve: {
             roomUsersRoles: roomUsersResolver,
             room: roomResolver
-        }
-       // canActivate: [authGuard]
+        },
+        canActivate: [authGuard]
     },
     {path: '**', redirectTo: 'room', pathMatch: 'full'}
 ];
