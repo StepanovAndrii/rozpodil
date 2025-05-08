@@ -29,9 +29,11 @@ namespace Rozpodil.API.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpPost("refresh")]
         public async Task<ActionResult<object>> RefreshToken()
         {
+            Console.WriteLine("ватаілщвтшщ");
             if (Request.Cookies.TryGetValue("RefreshToken", out string? refreshToken))
             {
                 Console.WriteLine(refreshToken + "ТУТ");

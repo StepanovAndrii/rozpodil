@@ -31,7 +31,6 @@ export const routes: Routes = [
     {path: 'room', loadComponent: () =>
         import('./features/room/room-actions/room-actions.component').then(c => c.RoomActionsComponent),
         resolve: {
-            user: userResolver,
             room: userRoomResolver
         },
         canActivate: [authGuard]

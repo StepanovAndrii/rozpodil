@@ -11,15 +11,10 @@ export const userRoomResolver: ResolveFn<IRoom | null> = async (route, state) =>
   const dataService: DataService = inject(DataService);
 
   const userId: string | null = tokenService.getUserId();
-  console.log(userId + "userId")
 
   if (userId && isValidUuid(userId)) {
-    console.log(userId + "userId")
     const result = await dataService.getRoomsByUserId(userId as UUID, 1);
     return result[0];
-  }
-  else {
-    console.log("немає userId")
   }
 
   return null;

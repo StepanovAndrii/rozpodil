@@ -19,11 +19,13 @@ namespace Rozpodil.Persistence.Configurations
             builder
                 .HasOne(userRoom => userRoom.User)
                 .WithMany(user => user.RoomUsers)
-                .HasForeignKey(roomUser => roomUser.UserId);
+                .HasForeignKey(roomUser => roomUser.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
             builder
                 .HasOne(roomUser => roomUser.Room)
                 .WithMany(room => room.RoomUsers)
-                .HasForeignKey(roomUser => roomUser.RoomId);
+                .HasForeignKey(roomUser => roomUser.RoomId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

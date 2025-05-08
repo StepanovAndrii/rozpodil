@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { TokenService } from '../../services/authentication/token-service/token.service';
 import { catchError, Observable, switchMap, of, throwError, BehaviorSubject, filter, take } from 'rxjs';
 import { Router } from '@angular/router';
+import { SKIP_AUTH } from '../../http-context/skip-auth-context';
 
 let isRefreshing = false;
 let refreshSubject = new BehaviorSubject<boolean>(false);
@@ -10,7 +11,13 @@ let refreshSubject = new BehaviorSubject<boolean>(false);
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const service = inject(TokenService);
   const router = inject(Router);
-  
+  const excludedPaths = ['/.well-known/openid-configuration'];
+
+  if (excludedPaths.some(path => req.url.includes(path)))
+    return next(req);
+
+  skipAuthCheck(req, next);
+
   const accessToken = service.getAccessToken();
   const clonedRequest = accessToken 
     ? req.clone({
@@ -25,6 +32,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   );
 };
 
+function skipAuthCheck (req: HttpRequest<any>, next: HttpHandlerFn) {
+  if (req.context.get(SKIP_AUTH))
+    return next(req);
+
+  return null;
+}
 
 function handleAuthError(
   error: HttpErrorResponse,
@@ -42,23 +55,30 @@ function handleAuthError(
         switchMap(() => {
           isRefreshing = false;
           refreshSubject.next(true);
+          const accessToken = tokenService.getAccessToken();
+          console.log('Access token after refresh: ', accessToken);
+          if (!accessToken) {
+            console.error('No access token after refresh');
+          }
           const clonedRequest = req.clone({
             setHeaders: {
-              Authorization: `Bearer ${tokenService.getAccessToken()}`
-            }
+              Authorization: `Bearer ${accessToken}`
+            },
+            context: req.context.set(SKIP_AUTH, true)
           });
           return next(clonedRequest);
         }),
-        catchError(() => {
+        catchError((err) => {
           isRefreshing = false;
           refreshSubject.next(false);
           tokenService.revokeToken();
-          router.navigateByUrl('/');
+          router.navigateByUrl('/login');
+          console.error('Token refresh error: ', err);
           return throwError(() => new Error("Authentication Error: Redirected"));
         })
       );
+      
     } else {
-      // Чекаємо, поки токен буде оновлено
       return refreshSubject.pipe(
         filter(isRefreshed => isRefreshed),
         take(1),

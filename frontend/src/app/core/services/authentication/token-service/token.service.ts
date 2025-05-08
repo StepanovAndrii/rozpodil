@@ -98,16 +98,23 @@ export class TokenService {
   }  
 
   public refreshToken(): Observable<string> {
+    console.log('Attempting to refresh token...');
     return this._http.post<{accessToken: string }> (
       '/api/token/refresh', {}
     ).pipe(
       map(result => result.accessToken),
       tap((result) => {
+        console.log('New access token:', result);
         this.setAccessToken(result);
       }),
-      shareReplay(1)
+      shareReplay(1),
+      catchError((error) => {
+        console.error('Refresh token error:', error);
+        return throwError(() => error);
+      })
     );
   }
+  
 
   public async validateAccessToken(): Promise<boolean> {
     const token = this.getAccessToken();

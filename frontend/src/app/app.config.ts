@@ -23,8 +23,8 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([
         //toastInterceptor,
         //dateFormatInterceptor,
-        //authInterceptor,
-        //camelCaseInterceptor
+        authInterceptor,
+        camelCaseInterceptor
       ])
     ), 
     provideClientHydration(withEventReplay()),

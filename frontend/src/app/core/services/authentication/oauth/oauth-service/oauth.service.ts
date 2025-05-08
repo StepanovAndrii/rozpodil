@@ -43,6 +43,7 @@ export class OAuthService {
     );
     
     if (!discoveryDocument?.authorizationEndpoint) {
+    console.log(discoveryDocument)
       throw new Error('Кінцева точка авторизації недоступна');
     }
 
