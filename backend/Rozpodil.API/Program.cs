@@ -16,10 +16,18 @@ builder.Services
         {
             options.Filters.Add(new AuthorizeFilter());
         }
-    ).AddJsonOptions(options =>
+    ).AddNewtonsoftJson(options =>
     {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter
+        {
+            AllowIntegerValues = false,
+            NamingStrategy = null
+        });
     });
+//).AddJsonOptions(options =>
+//{
+//    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+//});
 //.AddJsonOptions(options =>
 //{
 //    options.JsonSerializerOptions.Converters.Add(

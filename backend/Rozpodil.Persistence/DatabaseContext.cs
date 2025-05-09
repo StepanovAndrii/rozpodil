@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rozpodil.Domain.Entities;
 using Rozpodil.Persistence.Configurations;
+using Rozpodil.Persistence.Converters;
 
 namespace Rozpodil.Persistence
 {
@@ -24,6 +25,12 @@ namespace Rozpodil.Persistence
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserCredentialsConfiguration).Assembly);
+            modelBuilder.Entity<Assignment>()
+                .Property(t => t.Status)
+                .HasConversion(new TaskStatusConvertor());
+            modelBuilder.Entity<RoomUser>()
+                .Property(t => t.Role)
+                .HasConversion(new RoomRoleConverter());
         }
     }
 }

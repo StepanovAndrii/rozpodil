@@ -30,10 +30,13 @@
         }
 
         &__option {
-            border: 1px solid #000000;
-            background-color: #ffffff;
+            border: 1px solid transparent;
+            color: #ffffff;
+            background-color: #000000;
             width: 200px;
-            padding: 5px 10px;
+            padding: 10px 10px;
+            display: flex;
+            justify-content: center;
         }
 
         &__open-button {
@@ -55,4 +58,16 @@
             }
         }
     }
+}
+
+.button {
+    background-color: #000000;
+    border: 0;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    border-radius: 5px;
+    aspect-ratio: 1/1;
 }

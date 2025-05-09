@@ -91,23 +91,5 @@ namespace Rozpodil.API.Controllers
 
             return NoContent();
         }
-
-        [HttpPatch("{assignmentId}/complete")]
-        public async Task<ActionResult> CompleteTask(Guid assignmentId, [FromBody] JsonPatchDocument<Assignment> patchDoc)
-        {
-            if (patchDoc == null)
-                return BadRequest();
-
-            var assignment = await _unitOfWork.AssignmentRepository.GetAssignmentByIdAsync(assignmentId);
-
-            if (assignment == null)
-                return NotFound();
-
-            patchDoc.ApplyTo(assignment);
-
-            await _unitOfWork.SaveChangesAsync();
-
-            return NoContent();
-        }
     }
 }

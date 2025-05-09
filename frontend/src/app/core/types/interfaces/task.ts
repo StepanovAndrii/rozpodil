@@ -1,5 +1,5 @@
 import { UUID } from "crypto";
-import { TaskStatus, taskStatusMap } from "../task-status-enum";
+import { TaskStatus } from "../task-status-enum";
 import { DateTime } from "luxon";
 
 export interface ITask {
@@ -38,9 +38,5 @@ export class Task implements ITask {
 
     toEnum(value: string): TaskStatus | undefined {
         return TaskStatus[value as keyof typeof TaskStatus];
-    }
-
-    getLocalizedStatus(): string {
-        return taskStatusMap[this.status];
     }
 }

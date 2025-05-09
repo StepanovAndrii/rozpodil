@@ -8,9 +8,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UUID } from 'crypto';
 import { error } from 'console';
 import { TaskCreationDialogComponent } from "../task-creation-dialog/task-creation-dialog.component";
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TaskStatus } from '../../types/task-status-enum';
 import { firstValueFrom } from 'rxjs';
+import { translateTaskStatus } from '../../utils/status-translation.util';
 
 @Component({
   selector: 'app-calendar',
@@ -38,6 +39,10 @@ export class CalendarComponent {
     this.resetWeek();
     this.roomId = this._route.snapshot.paramMap.get('id') as UUID;
    }
+
+   public formatTasksEnum(status: string) {
+    return translateTaskStatus(status);
+   }
   
   public formatDay(day: DateTime): string {
     return day.toFormat('ccc').replace(/^./, (match) => match.toUpperCase());
@@ -55,10 +60,16 @@ export class CalendarComponent {
 
   public async markTaskAsMade(task: Task) {
     try {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json-patch+json'
+      });
+
+      const patchData = [
+        { op: 'replace', path: '/status', value: 'completed' },
+      ]
+
       await firstValueFrom (
-        this._http.patch(`/api/rooms/${this.roomId}/tasks/${task.id}/complete`, {
-          status: TaskStatus.Completed
-        })
+        this._http.patch(`/api/rooms/${this.roomId}/tasks/${task.id}`, patchData, { headers })
       ) 
     } catch (error) {
       console.error(error);

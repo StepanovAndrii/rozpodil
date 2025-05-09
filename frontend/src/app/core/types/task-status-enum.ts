@@ -1,10 +1,5 @@
 export enum TaskStatus {
-    Pending = "Pending",
-    InProgress = "In progress",
-    Completed = "Completed"
+    Pending = "Створене",
+    InProgress = "В процесі",
+    Completed = "Виконане"
 }
-export const taskStatusMap: { [key in TaskStatus]: string } = {
-    [TaskStatus.Pending]: "Створено",
-    [TaskStatus.InProgress]: "В процесі",
-    [TaskStatus.Completed]: "Завершено"
-};

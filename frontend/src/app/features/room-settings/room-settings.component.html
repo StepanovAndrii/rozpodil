@@ -12,10 +12,10 @@
                 @for (userRole of usersRolesSubject | async; track userRole.id) {
                     <div class="room-setting__main-content">
                       <div class="room-setting__member-card">
-                        <img class="room-setting__member-logotype" [src]="userRole?.photoUrl" alt="Фото {{ userRole?.username }}">
+                        <!-- <img class="room-setting__member-logotype" [src]="userRole?.photoUrl" alt="Фото {{ userRole?.username }}"> -->
                         <div class="room-setting__member-text-info">
                           <p class="room-setting__member-username">{{ userRole?.username }}</p>
-                          <p class="room-setting__member-role">{{ userRole?.role }}</p>
+                          <p class="room-setting__member-role">{{ convertToRoles(userRole) }}</p>
                         </div>
                       </div>
                       <button type="button" (click)="deleteUserFromRoom(userRole)" *ngIf="userRole.id === user?.id" class="room-setting__negative_button">Вийти</button>

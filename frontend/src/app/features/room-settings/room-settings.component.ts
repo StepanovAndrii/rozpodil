@@ -9,6 +9,7 @@ import { TokenService } from '../../core/services/authentication/token-service/t
 import { IUser } from '../../core/types/interfaces/user-interface';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { translateTaskStatus, translatUserStatus } from '../../core/utils/status-translation.util';
 
 @Component({
   selector: 'app-room-settings',
@@ -26,7 +27,8 @@ export class RoomSettingsComponent implements OnInit{
   constructor(
     private _route: ActivatedRoute,
     public tokenService: TokenService,
-    private _http: HttpClient
+    private _http: HttpClient,
+    private _router: Router
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +39,10 @@ export class RoomSettingsComponent implements OnInit{
       }
     });
     this.user = this.getCurrentUser();
+  }
+
+  public convertToRoles(userRoles: IUsersRoles) {
+    return translatUserStatus(userRoles.role);
   }
 
   public deleteOwnerFromRoom(user: IUsersRoles) {
@@ -65,6 +71,8 @@ export class RoomSettingsComponent implements OnInit{
       );
       const updatedUsers = this.usersRolesSubject.value.filter((u) => u.id !== user.id);
       this.usersRolesSubject.next(updatedUsers);
+            if (this.user?.id == user.id)
+        this._router.navigate(['/login']);
     } catch (error) {
       console.error('Не вдалося видалити користувача з кімнати', error);
     }

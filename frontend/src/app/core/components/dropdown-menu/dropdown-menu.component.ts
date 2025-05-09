@@ -25,8 +25,8 @@ export class DropdownMenuComponent {
   }
 
   public selectOption(option: IRoom) {
+        this.toggleDropdown();
     this.selectedOption = option;
     this.selectedOptionChange.emit(option);
-    this.toggleDropdown();
   }
 }

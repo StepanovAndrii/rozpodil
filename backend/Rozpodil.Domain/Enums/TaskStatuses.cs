@@ -4,11 +4,11 @@ namespace Rozpodil.Domain.Enums
 {
     public enum TaskStatuses
     {
-        [EnumMember(Value = "Очікує")]
+        [EnumMember(Value = "Створене")]
         Pending,
         [EnumMember(Value = "В процесі")]
         InProgress,
-        [EnumMember(Value = "Виконано")]
+        [EnumMember(Value = "Виконане")]
         Completed
     }
 }
