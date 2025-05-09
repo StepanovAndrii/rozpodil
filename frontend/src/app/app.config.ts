@@ -22,7 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([
         //toastInterceptor,
-        dateFormatInterceptor,
+        //dateFormatInterceptor,
         authInterceptor,
         camelCaseInterceptor
       ])

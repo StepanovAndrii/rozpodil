@@ -1,4 +1,5 @@
 <div class="padding-container">
+    <app-left-sidebar [ifLeftSidebarCollapsed]="isLeftSidebarCollapsed()" (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"/>
     <nav class="navigation">
         <app-dropdown-menu
             class="navigation__dropdown-menu"
@@ -21,6 +22,5 @@
     </nav>
     <main class="main">
         <app-calendar [tasks]="tasks"/>
-     <!--<app-charts-menu />-->
     </main>
 </div>

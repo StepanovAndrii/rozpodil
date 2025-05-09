@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DropdownMenuComponent } from "../../core/components/dropdown-menu/dropdown-menu.component";
@@ -10,11 +10,11 @@ import { ITask } from '../../core/types/interfaces/task';
 import { ToastService } from '../../core/services/toast-service/toast.service';
 import { ToastType } from '../../core/services/toast-service/models/toast-types';
 import { DoughnutChartComponent } from "../../core/components/charts/doughnut-chart/doughnut-chart.component";
-import { ChartsMenuComponent } from "../../core/components/charts-menu/charts-menu.component";
+import { LeftSidebarComponent } from "../../core/components/left-sidebar/left-sidebar.component";
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, DropdownMenuComponent, SettingButtonComponent, CalendarComponent, DoughnutChartComponent, ChartsMenuComponent],
+  imports: [CommonModule, DropdownMenuComponent, SettingButtonComponent, CalendarComponent, DoughnutChartComponent, LeftSidebarComponent],
   standalone: true,
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -25,6 +25,8 @@ export class HomeComponent implements OnInit{
   public rooms: IRoom[] = [];
   public tasks: ITask[] = [];
   public selectedRoom: IRoom | null = null;
+
+  isLeftSidebarCollapsed = signal<boolean>(true);
 
   constructor(
     private _route: ActivatedRoute,
@@ -51,6 +53,10 @@ export class HomeComponent implements OnInit{
     else{
       this.rooms[0];
     }
+  }
+
+  changeIsLeftSidebarCollapsed(isLeftSidebarCollapse: boolean): void {
+    this.isLeftSidebarCollapsed.set(isLeftSidebarCollapse);
   }
 
   async copyCode(): Promise<void> {

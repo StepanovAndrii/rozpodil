@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Rozpodil.API.Dtos.Requests.Task;
 using Rozpodil.Application.Interfaces.Repositories;
 using Rozpodil.Domain.Entities;
 
@@ -31,8 +32,27 @@ namespace Rozpodil.API.Controllers
 
         // TODO: налаштуватир created відповідно до його обов'язкових параметрів
         [HttpPost]
-        public async Task<ActionResult> CreateAssignment(Assignment assignment)
+        public async Task<ActionResult> CreateAssignment(CreateTaskDto dto)
         {
+            var user = await _unitOfWork.UserRepository.GetUserByIdAsync(dto.UserId);
+            var room = await _unitOfWork.RoomRepository.GetRoomById(dto.RoomId);
+
+            if (user == null && room == null)
+            {
+                return BadRequest();
+            }
+
+            var assignment = new Assignment
+            {
+                Title = dto.Title,
+                Description = dto.Description,
+                dueTime = dto.Deadline,
+                createdAt = dto.CreatedAt,
+                User = user,
+                Room = room,
+                Status = Domain.Enums.TaskStatuses.Pending
+            };
+
             await _unitOfWork.AssignmentRepository.CreateAssignmentAsync(assignment);
             await _unitOfWork.SaveChangesAsync();
 

@@ -1,1 +1,13 @@
-<p>left-sidebar works!</p>
+<div class="left-bar" [ngClass]="ifLeftSidebarCollapsed() ? 'sidenav-collapsed' : ''">
+    <div
+        class="charts-menu">
+
+        @if (!ifLeftSidebarCollapsed()) {
+            <app-doughnut-chart />
+        }
+    </div>
+    <button
+    type="button"
+        class="open-close-button"
+        (click)="toggleCollapse()"></button>
+</div>

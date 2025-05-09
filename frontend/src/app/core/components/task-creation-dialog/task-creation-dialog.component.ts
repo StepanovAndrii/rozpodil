@@ -14,6 +14,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatDateFormats, MatNati
 import { DateTime } from 'luxon';
 import { AutoFormatDateDirective } from '../../directives/auto-format-date.directive';
 import { firstValueFrom } from 'rxjs';
+import { TokenService } from '../../services/authentication/token-service/token.service';
 
 registerLocaleData(localeUk, 'uk');
 
@@ -63,7 +64,8 @@ export class TaskCreationDialogComponent implements OnInit{
   constructor(
     private _formBuilder: FormBuilder,
     private _http: HttpClient,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private _token: TokenService
   ) { }
 
   ngOnInit(): void {
@@ -83,16 +85,19 @@ export class TaskCreationDialogComponent implements OnInit{
   }
 
   public async createTaskMethod() {
-    const selecterRoomId = this._route.snapshot.paramMap.get('id');
-   
+    const selectedRoomId = this._route.snapshot.paramMap.get('id');
+    
     if (this.taskCreationForm.valid) {
-      this.taskCreationForm.patchValue({
-        createdAt: DateTime.now().toISO()
-      });
-       
+      const taskDto = {
+        ...this.taskCreationForm.value,
+        createdAt: DateTime.now().toISO(),
+        roomId: selectedRoomId,
+        userId: this._token.getUserId()
+      }
+     
       try {
-        await firstValueFrom (
-          this._http.post(`/api/rooms/${selecterRoomId}/tasks`, this.taskCreationForm)
+        await firstValueFrom(
+          this._http.post(`/api/rooms/${selectedRoomId}/tasks`, this.taskCreationForm.value)
         );
       } catch (error) {
         console.error('Помилка створення завдання:', error);
@@ -100,7 +105,6 @@ export class TaskCreationDialogComponent implements OnInit{
     } else {
       console.error('Форма не валідна');
     }
-  }
-  
+  }  
 }
 

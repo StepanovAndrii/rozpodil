@@ -10,14 +10,6 @@
         grid-template-columns: 1fr 1fr 1fr;
         justify-items: center;
         align-items: center;
-
-        & > :first-child {
-            justify-self: start;
-        }
-
-        & > :last-child {
-            justify-self: end;
-        }
     
         &__room-code {
             display: flex;
