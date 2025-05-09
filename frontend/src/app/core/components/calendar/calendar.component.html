@@ -37,11 +37,11 @@
                 </div>
                 <div>
                     <p>Створене</p>
-                    <p>{{formatDay(task.dueTime)}}</p>
+                    <p>{{formatData(task.getCreatedAt())}}</p>
                 </div>
                 <div>
                     <p>Дедлайн</p>
-                    <p>{{formatDay(task.dueTime)}}</p>
+                    <p>{{formatData(task.getDueTime())}}</p>
                 </div>
             </div>
         }

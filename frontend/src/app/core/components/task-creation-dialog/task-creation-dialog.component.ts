@@ -90,15 +90,16 @@ export class TaskCreationDialogComponent implements OnInit{
     if (this.taskCreationForm.valid) {
       const taskDto = {
         ...this.taskCreationForm.value,
-        createdAt: DateTime.now().toISO(),
+        createdAt: DateTime.now().toUTC().toISO(),
         roomId: selectedRoomId,
         userId: this._token.getUserId()
       }
      
       try {
         await firstValueFrom(
-          this._http.post(`/api/rooms/${selectedRoomId}/tasks`, this.taskCreationForm.value)
+          this._http.post(`/api/rooms/${selectedRoomId}/tasks`, taskDto)
         );
+        this.close();
       } catch (error) {
         console.error('Помилка створення завдання:', error);
       }

@@ -7,7 +7,7 @@ import { UUID } from 'crypto';
 import { IUsersRoles } from '../../types/interfaces/users-roles';
 import { RoomRole } from '../../types/room-role-enum';
 import { DateTime } from 'luxon';
-import { ITask } from '../../types/interfaces/task';
+import { ITask, Task } from '../../types/interfaces/task';
 
 @Injectable({
   providedIn: 'root'
@@ -57,16 +57,17 @@ export class DataService {
   }
 
   // TODO: порозбиртись
-  public async getRoomTasks(roomId: UUID, from?: DateTime, to?: DateTime): Promise<ITask[]> {
+  public async getRoomTasks(roomId: UUID, from?: DateTime, to?: DateTime): Promise<Task[]> {
     const params = new HttpParams({
       fromObject: {
-        ...(from ? { from: from.toISO() ?? '' } : {}),
-        ...(to ? { to: to.toISO() ?? '' } : {})
+        ...(from ? { from: from.toUTC().toISO() ?? '' } : {}),
+        ...(to ? { to: to.toUTC().toISO() ?? '' } : {})
       }
     });
   
-    return await firstValueFrom(
+    var iTasks = await firstValueFrom(
       this.http.get<ITask[]>(`/api/rooms/${roomId}/tasks`, { params })
     );
+    return iTasks.map(data => new Task(data));
   }
 }

@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, Input, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { DateTime, Info, Interval } from 'luxon';
-import { ITask } from '../../types/interfaces/task';
+import { ITask, Task } from '../../types/interfaces/task';
 import { CommonModule } from '@angular/common';
 import { InfoPopUpComponent } from "../info-pop-up/info-pop-up.component";
 import { DataService } from '../../services/data-service/data.service';
@@ -19,7 +19,7 @@ import { TaskCreationDialogComponent } from "../task-creation-dialog/task-creati
 // TODO: розібрати до кінця
 // TODO: вивчити і використати завантаженнями чанками
 export class CalendarComponent {
-  @Input() tasks: ITask[] = [];
+  @Input() tasks: Task[] = [];
   public hoveredDay: DateTime | null = null;
   public currentDate = signal(DateTime.now().setLocale('uk'));
   public selectedDay: DateTime = DateTime.now().setLocale('uk');
@@ -41,9 +41,9 @@ export class CalendarComponent {
     return day.toFormat('dd.MM');
   }
 
-  public getTasksForDay(day: DateTime): ITask[] {
+  public getTasksForDay(day: string): ITask[] {
     return this.tasks.filter(task =>
-      task.dueTime.hasSame(day, 'day')
+      task.getDueTime().hasSame(DateTime.fromISO(day), 'day')
     );
   }
 
