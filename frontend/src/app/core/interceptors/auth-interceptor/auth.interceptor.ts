@@ -88,5 +88,6 @@ function handleAuthError(
     }
   }
 
+  router.navigateByUrl('/login');
   return throwError(() => error);
 }

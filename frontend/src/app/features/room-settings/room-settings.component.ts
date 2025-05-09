@@ -9,7 +9,6 @@ import { TokenService } from '../../core/services/authentication/token-service/t
 import { IUser } from '../../core/types/interfaces/user-interface';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
-import { translateTaskStatus, translatUserStatus } from '../../core/utils/status-translation.util';
 
 @Component({
   selector: 'app-room-settings',
@@ -42,7 +41,7 @@ export class RoomSettingsComponent implements OnInit{
   }
 
   public convertToRoles(userRoles: IUsersRoles) {
-    return translatUserStatus(userRoles.role);
+    return userRoles.role;
   }
 
   public deleteOwnerFromRoom(user: IUsersRoles) {

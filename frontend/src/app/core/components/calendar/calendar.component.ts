@@ -11,7 +11,6 @@ import { TaskCreationDialogComponent } from "../task-creation-dialog/task-creati
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TaskStatus } from '../../types/task-status-enum';
 import { firstValueFrom } from 'rxjs';
-import { translateTaskStatus } from '../../utils/status-translation.util';
 
 @Component({
   selector: 'app-calendar',
@@ -41,7 +40,7 @@ export class CalendarComponent {
    }
 
    public formatTasksEnum(status: string) {
-    return translateTaskStatus(status);
+    return status;
    }
   
   public formatDay(day: DateTime): string {
