@@ -29,9 +29,10 @@ namespace Rozpodil.Persistence.Repository
             return Task.CompletedTask;
         }
 
-        public async Task<IList<Assignment>> GetAssignmentsAsync (DateTime? startDate, DateTime? endDate)
+        public async Task<IList<Assignment>> GetAssignmentsByRoomAsync(Guid roomId, DateTime? startDate, DateTime? endDate)
         {
-            var query = _context.Assignments.AsQueryable();
+            var query = _context.Assignments
+                .Where(assignment => assignment.RoomId == roomId).AsQueryable();
 
             if (startDate.HasValue)
                 query = query.Where(assignment => assignment.dueTime >= startDate.Value);

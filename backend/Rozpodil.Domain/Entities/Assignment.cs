@@ -15,6 +15,7 @@ namespace Rozpodil.Domain.Entities
         public TaskStatuses Status { get; set; }
         public DateTime dueTime { get; set; }
         public DateTime createdAt { get; set; }
+        public User? AssignedTo { get; set; } 
 
         public Guid RoomId { get; set; }
         public required Room Room { get; set; }

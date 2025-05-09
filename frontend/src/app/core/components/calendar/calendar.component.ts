@@ -8,6 +8,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UUID } from 'crypto';
 import { error } from 'console';
 import { TaskCreationDialogComponent } from "../task-creation-dialog/task-creation-dialog.component";
+import { HttpClient } from '@angular/common/http';
+import { TaskStatus } from '../../types/task-status-enum';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-calendar',
@@ -25,12 +28,15 @@ export class CalendarComponent {
   public selectedDay: DateTime = DateTime.now().setLocale('uk');
   public selectedWeek: { start: DateTime, end: DateTime } | null = null;
   public createTask: WritableSignal<boolean> = signal(false);
+  roomId: UUID | null = null;
 
   constructor( 
     private _dataService: DataService,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private _http: HttpClient,
   ) {
     this.resetWeek();
+    this.roomId = this._route.snapshot.paramMap.get('id') as UUID;
    }
   
   public formatDay(day: DateTime): string {
@@ -45,6 +51,18 @@ export class CalendarComponent {
     return this.tasks.filter(task =>
       task.getDueTime().hasSame(DateTime.fromISO(day), 'day')
     );
+  }
+
+  public async markTaskAsMade(task: Task) {
+    try {
+      await firstValueFrom (
+        this._http.patch(`/api/rooms/${this.roomId}/tasks/${task.id}/complete`, {
+          status: TaskStatus.Completed
+        })
+      ) 
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   public isCurrentWeek(week: { start: DateTime, end: DateTime }): boolean {

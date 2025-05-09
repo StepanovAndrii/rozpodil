@@ -22,27 +22,29 @@
             <p class="no-tasks">Завдань немає</p>
         }
         @for (task of tasks; track $index) {
-            <div>
-                <div>
+            <div class="tasks">
+                <div class="task">
                     <p>Заголовок</p>
                     <p>{{task.title}}</p>
                 </div>
-                <div>
+                <!-- Можна оптимізувати, скоротити код -->
+                <div class="task">
                     <p>Опис</p>
                     <p>{{task.description ? task.description : 'Відсутній'}}</p>
                 </div>
-                <div>
+                <div class="task">
                     <p>Статус</p>
-                    <p>{{task.statuses}}</p>
+                    <p>{{task.getLocalizedStatus()}}</p>
                 </div>
-                <div>
+                <div class="task">
                     <p>Створене</p>
                     <p>{{formatData(task.getCreatedAt())}}</p>
                 </div>
-                <div>
+                <div class="task">
                     <p>Дедлайн</p>
                     <p>{{formatData(task.getDueTime())}}</p>
                 </div>
+                <button type="button" (click)="markTaskAsMade(task)">Виконати</button>
             </div>
         }
         <button class="create-button" (click)="openCreationDialog()">Створити</button>

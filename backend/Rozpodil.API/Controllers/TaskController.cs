@@ -20,12 +20,13 @@ namespace Rozpodil.API.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IList<Assignment>>> GetAssignments(
+                [FromRoute] Guid roomId,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? to
             ) {
 
             var tasks = await _unitOfWork.AssignmentRepository
-                .GetAssignmentsAsync(from, to);
+                .GetAssignmentsByRoomAsync(roomId, from, to);
 
             return Ok(tasks);
         }
@@ -75,6 +76,24 @@ namespace Rozpodil.API.Controllers
 
         [HttpPatch("{assignmentId}")]
         public async Task<ActionResult> PatchAssignment(Guid assignmentId, [FromBody] JsonPatchDocument<Assignment> patchDoc)
+        {
+            if (patchDoc == null)
+                return BadRequest();
+
+            var assignment = await _unitOfWork.AssignmentRepository.GetAssignmentByIdAsync(assignmentId);
+
+            if (assignment == null)
+                return NotFound();
+
+            patchDoc.ApplyTo(assignment);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpPatch("{assignmentId}/complete")]
+        public async Task<ActionResult> CompleteTask(Guid assignmentId, [FromBody] JsonPatchDocument<Assignment> patchDoc)
         {
             if (patchDoc == null)
                 return BadRequest();

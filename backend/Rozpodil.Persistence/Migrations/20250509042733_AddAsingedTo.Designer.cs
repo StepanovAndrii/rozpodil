@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Rozpodil.Persistence;
@@ -11,9 +12,11 @@ using Rozpodil.Persistence;
 namespace Rozpodil.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250509042733_AddAsingedTo")]
+    partial class AddAsingedTo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,7 +64,7 @@ namespace Rozpodil.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Assignments", (string)null);
+                    b.ToTable("Assignments");
                 });
 
             modelBuilder.Entity("Rozpodil.Domain.Entities.RefreshToken", b =>
@@ -78,7 +81,7 @@ namespace Rozpodil.Persistence.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Rozpodil.Domain.Entities.Room", b =>
@@ -97,7 +100,7 @@ namespace Rozpodil.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Rooms", (string)null);
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("Rozpodil.Domain.Entities.RoomUser", b =>
@@ -116,7 +119,7 @@ namespace Rozpodil.Persistence.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("RoomUsers", (string)null);
+                    b.ToTable("RoomUsers");
                 });
 
             modelBuilder.Entity("Rozpodil.Domain.Entities.TwoFactorCode", b =>
@@ -133,7 +136,7 @@ namespace Rozpodil.Persistence.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("TwoFactorCodes", (string)null);
+                    b.ToTable("TwoFactorCodes");
                 });
 
             modelBuilder.Entity("Rozpodil.Domain.Entities.User", b =>
@@ -154,7 +157,7 @@ namespace Rozpodil.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Rozpodil.Domain.Entities.UserCredentials", b =>
@@ -171,7 +174,7 @@ namespace Rozpodil.Persistence.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("UsersCredentials", (string)null);
+                    b.ToTable("UsersCredentials");
                 });
 
             modelBuilder.Entity("Rozpodil.Domain.Entities.Assignment", b =>

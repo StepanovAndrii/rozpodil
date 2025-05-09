@@ -12,7 +12,7 @@ namespace Rozpodil.Application.Interfaces.Repositories
     {
         Task<Assignment> CreateAssignmentAsync(Assignment assignment);
         Task DeleteAssignment(Assignment assignment);
-        Task<IList<Assignment>> GetAssignmentsAsync(DateTime? startDate, DateTime? endDate);
+        Task<IList<Assignment>> GetAssignmentsByRoomAsync(Guid roomId, DateTime? startDate, DateTime? endDate);
         Task<bool> UpdateAssignmentStatusAsync(Guid asignmentId, TaskStatuses newStatus);
         Task<Assignment?> GetAssignmentByIdAsync(Guid asignmentId);
     }
