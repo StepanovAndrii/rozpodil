@@ -1,20 +1,19 @@
-import { Component, computed, effect, inject, Input, OnInit, signal, Signal, WritableSignal } from '@angular/core';
-import { DateTime, Info, Interval } from 'luxon';
+import { Component, computed, Input, signal, WritableSignal } from '@angular/core';
+import { DateTime } from 'luxon';
 import { ITask, Task } from '../../types/interfaces/task';
 import { CommonModule } from '@angular/common';
 import { InfoPopUpComponent } from "../info-pop-up/info-pop-up.component";
 import { DataService } from '../../services/data-service/data.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { UUID } from 'crypto';
-import { error } from 'console';
 import { TaskCreationDialogComponent } from "../task-creation-dialog/task-creation-dialog.component";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TaskStatus } from '../../types/task-status-enum';
 import { firstValueFrom } from 'rxjs';
+import { SliderComponent } from "../slider/slider.component";
 
 @Component({
   selector: 'app-calendar',
-  imports: [CommonModule, InfoPopUpComponent, TaskCreationDialogComponent],
+  imports: [CommonModule, InfoPopUpComponent, TaskCreationDialogComponent, SliderComponent],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
@@ -22,7 +21,7 @@ import { firstValueFrom } from 'rxjs';
 // TODO: розібрати до кінця
 // TODO: вивчити і використати завантаженнями чанками
 export class CalendarComponent {
-  @Input() tasks: Task[] = [];
+  @Input() tasks = signal<Task[] | null>(null);
   public hoveredDay: DateTime | null = null;
   public currentDate = signal(DateTime.now().setLocale('uk'));
   public selectedDay: DateTime = DateTime.now().setLocale('uk');
@@ -51,18 +50,14 @@ export class CalendarComponent {
     return day.toFormat('dd.MM');
   }
 
-  public getTasksForDay(day: string): ITask[] {
-    return this.tasks.filter(task =>
-      task.getDueTime().hasSame(DateTime.fromISO(day), 'day')
-    );
-  }
+
 
   public async markTaskAsMade(task: Task) {
     try {
       const headers = new HttpHeaders({
         'Content-Type': 'application/json-patch+json'
       });
-
+ 
       const patchData = [
         { op: 'replace', path: '/status', value: 'completed' },
       ]
@@ -105,18 +100,7 @@ export class CalendarComponent {
     this.hoveredDay = day;
   }
 
-  public async onDateSelect(date: DateTime) {
-    this.selectedDay = date;
-    const selecterRoomId = this._route.snapshot.paramMap.get('id');
-    if (selecterRoomId) {
-      try {
-        this.tasks = await this._dataService.getRoomTasks(selecterRoomId as UUID, date, date);
-      }
-      catch(error){
-        console.error(error);
-      }      
-    }
-  }
+
 
   public nextWeek() {
     this.currentDate.update((date) => date.plus({ weeks: 1 }));

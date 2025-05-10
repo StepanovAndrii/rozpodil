@@ -24,16 +24,6 @@ builder.Services
             NamingStrategy = null
         });
     });
-//).AddJsonOptions(options =>
-//{
-//    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-//});
-//.AddJsonOptions(options =>
-//{
-//    options.JsonSerializerOptions.Converters.Add(
-//        new DynamicNamingConverterFactory()
-//    );
-//});
 
 builder.WebHost.ConfigureKestrel((context, options) =>
 {

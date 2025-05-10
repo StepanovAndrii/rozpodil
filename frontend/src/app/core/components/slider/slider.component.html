@@ -1,0 +1,25 @@
+<section id="tranding">
+    <div class="container">
+        <h3 class="text-center section-subheading">- popular Delivery -</h3>
+        <h1 class="text-cent section-heading">Trending food</h1>
+    </div>
+    <div class="container">
+        <div class="swiper tranding-slider">
+            <div class="swiper-wraper">
+                <!-- Slide-start -->
+                    @for (task of tasks(); track $index) {
+                    <div class="swiper-slide tranding-slide">
+                        <div class="tranding-slide-content">
+                            <h3 class="task-status">{{task.createdAt}} - {{task.dueTime}}</h3>
+                            <div class="tranding-slide-content-bottom">
+                                <h2 class="task-title">{{task.title}}</h2>
+                                <p>{{task.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                <!-- Slide-end -->
+            </div>
+        </div>
+    </div>
+</section>

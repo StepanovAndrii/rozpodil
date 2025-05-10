@@ -1,32 +1,30 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IRoom } from '../../types/interfaces/room-interface';
-import { NgClass } from '@angular/common';
+import { Component, Input, input, InputSignal, output, Signal } from '@angular/core';
+import { DropdownOption } from './types/dropdown-option';
 
 @Component({
   selector: 'app-dropdown-menu',
-  imports: [NgClass],
+  imports: [],
+  standalone: true,
   templateUrl: './dropdown-menu.component.html',
   styleUrl: './dropdown-menu.component.scss'
 })
 
-export class DropdownMenuComponent {
-  @Input() options: IRoom[] = [];
-  @Input() selectedOption: IRoom | null = null;
-  @Output() selectedOptionChange = new EventEmitter<IRoom>();
+export class DropdownMenuComponent<T extends DropdownOption> {
+  public options = input.required<T[]>()
+  @Input() public selectedOptionValue!: T | null;
+  public selectedOption = output<T>();
 
-  public isOpen: boolean = false; 
+  public isDropdownOpened: boolean = false; 
 
-  constructor(
-    
-  ) { }
+  constructor( ) { }
 
-  public toggleDropdown(): void {
-    this.isOpen = !this.isOpen;
+  public toggle(): void {
+    this.isDropdownOpened = !this.isDropdownOpened;
   }
 
-  public selectOption(option: IRoom) {
-        this.toggleDropdown();
-    this.selectedOption = option;
-    this.selectedOptionChange.emit(option);
+  public selectOption(option: T): void {
+    this.toggle();
+    this.selectedOption.emit(option);
+    this.selectedOptionValue = option;
   }
 }

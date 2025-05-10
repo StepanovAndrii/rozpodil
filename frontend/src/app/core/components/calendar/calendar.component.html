@@ -17,39 +17,7 @@
         <button class="calendar__next-button calendar__nav-buttons calendar__move-buttons" (click)="nextWeek()">Вперед</button>
     </div>
     <p>{{formatData(selectedDay)}}</p>
-    <div class="tasks-area">
-        @if (!tasks.length) {
-            <p class="no-tasks">Завдань немає</p>
-        }
-        @for (task of tasks; track $index) {
-            <div class="tasks">
-                <div class="task">
-                    <p>Заголовок</p>
-                    <p>{{task.title}}</p>
-                </div>
-                <!-- Можна оптимізувати, скоротити код -->
-                <div class="task">
-                    <p>Опис</p>
-                    <p>{{task.description ? task.description : 'Відсутній'}}</p>
-                </div>
-                <div class="task">
-                    <p>Статус</p>
-                    <p>{{formatTasksEnum(task.status)}}</p>
-                </div>
-                <div class="task">
-                    <p>Створене</p>
-                    <p>{{formatData(task.getCreatedAt())}}</p>
-                </div>
-                <div class="task">
-                    <p>Дедлайн</p>
-                    <p>{{formatData(task.getDueTime())}}</p>
-                </div>
-                <button type="button" (click)="markTaskAsMade(task)">Виконати</button>
-            </div>
-        }
-        <button class="create-button" (click)="openCreationDialog()">Створити</button>
-        <app-task-creation-dialog [createTask]="createTask" />
-    </div>
+    <ng-content></ng-content>
     <div class="calendar_days">
         @if (selectedWeek) {
             <div class="calendar__week-details">
@@ -61,7 +29,6 @@
                             <button
                                 (mouseenter)="onDayHover(day)"
                                 (mouseleave)="onDayHover(null)"
-                                (click)="onDateSelect(day)"
                                 class="calendar__day calendar__nav-buttons">
                                 {{formatDay(day)}}
                             </button>
