@@ -1,21 +1,52 @@
-<button
-    type="button"
-    class="dropdown"
-    (click)="toggle()">
-    
-    {{selectedOptionValue?.name}}
-</button>
-@if (isDropdownOpened) {
-    <ul class="dropdown__body">
-        @for (option of options(); track $index) {
-            <li
-                class="dropdown__option"
-                (click)="selectOption(option)">
+<div class="container">
+    <button
+        type="button"
+        class="dropdown"
+        (click)="toggle()">
+        
+        {{selectedOptionValue?.name || 'Обрати'}}
+    </button>
+    <div class="dropdown__body" [ngClass]="isDropdownOpened ? 'dropdown__body--visible' : ''">
+        <form
+            class="dropdown__join-form"
+            [formGroup]="roomGroup">
+            
+            <input
+                type="text"
+                placeholder="Назва / Код"
+                class="dropdown__room-code-input"
+                formControlName="name"
+                >
 
-                <a class="dropdown__option-button">
-                    {{option.name}}
-                </a>
-            </li>
-        }
-    </ul>
-}
+            <button 
+                type="button"
+                class="dropdown__join-room-submit-button"
+                (click)="processRoom('create')">
+                
+                +
+            </button>
+            <button
+                type="button"
+                class="dropdown__join-room-submit-button"
+                (click)="processRoom('join')">
+            
+                ⭢
+            </button>
+        </form>
+        <ul class="dropdown__options">
+            @for (option of options(); track $index) {
+                <li
+                    class="dropdown__option"
+                    (click)="selectOption(option)">
+
+                    <button
+                        class="dropdown__option-button"
+                        role="button">
+                        
+                        {{$index + 1}}. {{option.name}}
+                    </button>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

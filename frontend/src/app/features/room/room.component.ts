@@ -3,13 +3,15 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DropdownMenuComponent } from "../../core/components/dropdown-menu/dropdown-menu.component";
 import { IRoom } from '../../core/types/interfaces/room-interface';
+import { PaddingComponent } from "../../core/components/padding/padding.component";
 
 @Component({
   selector: 'app-room',
   imports: [
     CommonModule,
-    DropdownMenuComponent
-  ],
+    DropdownMenuComponent,
+    PaddingComponent
+],
   standalone: true,
   templateUrl: './room.component.html',
   styleUrl: './room.component.scss'
