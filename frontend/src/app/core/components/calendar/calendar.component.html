@@ -1,3 +1,5 @@
+<!-- Переробти, бо це капєц -->
+
 <div class="calendar">
     <div class="calendar__navigation">
         <button class="calendar__previous-button calendar__nav-buttons calendar__move-buttons" (click)="previousWeek()">Назад</button>
@@ -16,7 +18,7 @@
         }
         <button class="calendar__next-button calendar__nav-buttons calendar__move-buttons" (click)="nextWeek()">Вперед</button>
     </div>
-    <p>{{formatData(selectedDay)}}</p>
+    <p>{{formatData(selectedDayValue)}}</p>
     <ng-content></ng-content>
     <div class="calendar_days">
         @if (selectedWeek) {
@@ -29,6 +31,7 @@
                             <button
                                 (mouseenter)="onDayHover(day)"
                                 (mouseleave)="onDayHover(null)"
+                                (click)="selectDay(day)"
                                 class="calendar__day calendar__nav-buttons">
                                 {{formatDay(day)}}
                             </button>

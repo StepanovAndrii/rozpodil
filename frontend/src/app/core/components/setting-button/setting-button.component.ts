@@ -10,7 +10,7 @@ import { Component, Output, EventEmitter  } from '@angular/core';
 export class SettingButtonComponent {
   @Output() clickAction = new EventEmitter<void>();
 
-  public onCkick() {
+  public onClick() {
     this.clickAction.emit();
   }
 }

@@ -1,0 +1,16 @@
+.swiper-container {
+  width: 100%;
+  max-width: 800px; /* Встановіть максимальну ширину для Swiper */
+  height: 100vh;
+  overflow: hidden;
+  height: 100px;
+}
+
+.swiper-slide {
+  width: 100% !important;
+  max-width: 400px; /* Максимальна ширина для слайду */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}

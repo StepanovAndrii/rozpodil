@@ -1,14 +1,33 @@
 <app-padding
     [padding]="5"
-    class="room">
+    class="room-padding">
+    
+    <div class="room">
+        <div class="room__content">
+            <div class="room__room-selection room__room-section">
+                <p>Кімната:</p>
+                <app-dropdown-menu
+                    [options]="rooms"
+                    [selectedOptionValue]="selectedRoom"
+                    (selectedOption)="toggleRoom($event)">
+                
+                </app-dropdown-menu>
+            </div>
+            <div class="room__room-section room__room-settings room__room-info">
+                <p>Код кімнати: {{selectedRoom?.code}}</p>
+                <app-setting-button (clickAction)="openRoomSettings()"/>
+            </div>
+            <div class="room__room-section room__room-settings">
+                <p>{{user?.username}}</p>
+                <app-setting-button (clickAction)="openUserSettings()"/>
+            </div>
+        </div>
 
-    <div class="room__room-selection">
-        <p>Кімната:</p>
-        <app-dropdown-menu
-            [options]="rooms"
-            [selectedOptionValue]="selectedRoom"
-            (selectedOption)="toggleRoom($event)">
-        
-        </app-dropdown-menu>
+        <app-calendar (selectedDay)="loadTasks($event)"/>
+        <app-slider [tasks]="tasksForSelectedDate" />
+        <button
+            class="room__task-creation-button"
+            (click)="openTaskCreationDialog()"> Створити завдання </button>
+        <app-task-creation-dialog [createTask]="taskCreationDialogIsVisible"/>
     </div>
 </app-padding>

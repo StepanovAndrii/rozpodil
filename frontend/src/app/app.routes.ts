@@ -48,14 +48,16 @@ export const routes: Routes = [
         canActivate: [authGuard],
         resolve: {
             userRooms: userRoomsResolver,
-            room: roomResolver
+            room: roomResolver,
+            user: userResolver,
+            tasks: roomTasksResolver
         }
     },
     {path: 'room/:id/settings', loadComponent: () => 
         import('./features/room-settings/room-settings.component').then(component => component.RoomSettingsComponent),
         resolve: {
-            roomUsersRoles: roomUsersResolver,
-            room: roomResolver
+            room: roomResolver,
+            roomUsers: roomUsersResolver
         },
         canActivate: [authGuard]
     },
