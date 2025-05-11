@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DropdownMenuComponent } from "../../core/components/dropdown-menu/dropdown-menu.component";
 import { IRoom } from '../../core/types/interfaces/room-interface';
 import { PaddingComponent } from "../../core/components/padding/padding.component";
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-room',
@@ -22,7 +24,8 @@ export class RoomComponent implements OnInit {
   public selectedRoom: IRoom | null = null;
 
   constructor (
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private _router: Router
   ) { }
 
   public ngOnInit(): void {
@@ -32,5 +35,9 @@ export class RoomComponent implements OnInit {
         this.selectedRoom = data['room']
       }
     })
+  }
+
+  public async toggleRoom(room: IRoom) {
+    this._router.navigate([`/room/${room.id}`]);
   }
 }

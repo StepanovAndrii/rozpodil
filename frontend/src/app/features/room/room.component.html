@@ -6,7 +6,8 @@
         <p>Кімната:</p>
         <app-dropdown-menu
             [options]="rooms"
-            [selectedOptionValue]="selectedRoom">
+            [selectedOptionValue]="selectedRoom"
+            (selectedOption)="toggleRoom($event)">
         
         </app-dropdown-menu>
     </div>

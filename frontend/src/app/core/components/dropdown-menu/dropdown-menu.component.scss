@@ -38,36 +38,43 @@
 
         .dropdown__join-form {
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 5px;
             width: 100%;
             max-width: 100%;
 
-            .dropdown__room-code-input {
-                outline: none;
-                box-shadow: none;
-                width: 100%;
-                padding-left: 4px;
-                padding: 8px;
-
-                &::placeholder {
-                    color: #000000;
-                    text-indent: 4px;
-                }
-            }
-            
-            .dropdown__join-room-submit-button {
+            .dropdown__input-area {
                 display: flex;
-                align-items: center;
-                justify-content: center;
-                background-color: #000000;
-                margin: 0;
-                color: #ffffff;
-                cursor: pointer;
-                text-align: center;
+                gap: 7px;
+                
+                .dropdown__room-code-input {
+                    outline: none;
+                    box-shadow: none;
+                    width: 100%;
+                    padding-left: 4px;
+                    padding: 8px;
+
+                    &::placeholder {
+                        color: #000000;
+                        text-indent: 4px;
+                    }
+                }
+
+                .dropdown__join-room-submit-button {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: #000000;
+                    margin: 0;
+                    color: #ffffff;
+                    cursor: pointer;
+                    text-align: center;
+                    width: 50px;
+                }
             }
         }
 
+        // TODO: як зробити нормальний скрол і не хардкод розмір
         .dropdown__options {
             position: relative;
             display: flex;
@@ -75,6 +82,12 @@
             gap: 5px;
             padding: 0;
             margin: 0;
+            height: 120px;
+            overflow-y: scroll;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
 
             .dropdown__option {
                 list-style-type: none;
