@@ -3,7 +3,11 @@
     class="room-padding">
 
     <div class="room">
-        <app-charts></app-charts>
+        <app-charts
+            [areChartsVisible]="areChartsVisible()"
+            (handleAreChartsVisible)="changeAreChartsVisible($event)">
+        
+        </app-charts>
             
         <div class="room__content">
             <div class="room__room-selection room__room-section">

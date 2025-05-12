@@ -1,3 +1,9 @@
-<button (click)="openChartView()" class="charts">
-    <canvas #doughnutCanvas></canvas>
+<button
+    (click)="openChartView()"
+    class="charts"
+    [ngClass]="areChartsVisible() ? 'charts--visible' : ''">
+
+    @if (areChartsVisible()) {
+        <canvas #doughnutCanvas></canvas>
+    }
 </button>

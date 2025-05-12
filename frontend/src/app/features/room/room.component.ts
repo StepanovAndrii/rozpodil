@@ -37,7 +37,7 @@ export class RoomComponent implements OnInit {
   public selectedRoom: IRoom | null = null;
   public tasksForSelectedDate: Task[] = []
   public taskCreationDialogIsVisible = signal<boolean>(false);
-  public areChartsOpened = signal<boolean>(false);
+  public areChartsVisible = signal<boolean>(false);
 
   constructor (
     private _route: ActivatedRoute,
@@ -61,7 +61,7 @@ export class RoomComponent implements OnInit {
   }
 
   public changeAreChartsVisible(isVisible: boolean): void {
-    this.areChartsOpened.set(isVisible);
+    this.areChartsVisible.set(isVisible);
   }
 
   public async toggleRoom(room: IRoom) {
