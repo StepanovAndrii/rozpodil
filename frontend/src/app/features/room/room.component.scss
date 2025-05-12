@@ -1,13 +1,16 @@
 .room-padding {
     width: 100%;
 
+    //TODO: розібратись чому swiper не працює в flex. Прийшлось flex замінити на те що зараз нижче в .room
     .room {
         height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 5%;
         max-width: 100%;
+        text-align: center;
+        line-height: 100%;
+
+        > *:not(:nth-child(2)) { 
+            margin-top: 5%;
+        }
 
         .room__task-creation-button {
             background-color: #000000;

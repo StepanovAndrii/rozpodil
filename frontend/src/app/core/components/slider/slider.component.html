@@ -1,8 +1,40 @@
-<div>
-    <swiper-container class="swiper-container" loop="true" navigation="true">
+<div class="swiper-wrapper">
+    <swiper-container
+        class="swiper-container"
+        loop="true"
+        navigation="true"
+        effect="coverflow"
+        grabCursor="true"
+        centeredSlides="true"
+        slidesPerView="auto"
+        :coverflow-effect="{ 
+            rotate: 0, 
+            stretch: 0, 
+            depth: 100, 
+            modifier: 2.5 
+        }"
+        :pagination="{
+            el: '.swiper-pagination',
+            clickable: true
+        }"
+        :navigation="{
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+        }">
+
         @for (task of tasks(); track $index) {
-            <swiper-slide>
-                <p>{{task.title}}</p>
+            <swiper-slide class="swiper-slide">
+                <div class="tranding-slide-img">
+                    
+                </div>
+                <div class="tranding-slide-content">
+                    <p class="food-price">{{formatDate(task.createdAt)}}-{{formatDate(task.dueTime)}}</p>
+                    <div class="tranding-slide-content-bottom">
+                        <h2 class="food-name">
+                            {{task.title}}
+                        </h2>
+                    </div>
+                </div>
             </swiper-slide>
         }
     </swiper-container>
