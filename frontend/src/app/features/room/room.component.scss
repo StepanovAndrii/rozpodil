@@ -1,4 +1,5 @@
 .room-padding {
+    width: 100%;
 
     .room {
         height: 100%;
@@ -23,7 +24,6 @@
             align-items: center;
             text-align: center;
             width: 100%;
-      max-width: 800px;
 
             & > div:last-child {
                 justify-self: end;

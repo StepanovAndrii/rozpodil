@@ -1,5 +1,6 @@
 ﻿using Rozpodil.Domain.Entities;
 using Rozpodil.Domain.Enums;
+using Rozpodil.Domain.ValueObjects.TaskStatisticsComplete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,11 @@ namespace Rozpodil.Application.Interfaces.Repositories
         Task<IList<Assignment>> GetAssignmentsByRoomAsync(Guid roomId, DateTime? startDate, DateTime? endDate);
         Task<bool> UpdateAssignmentStatusAsync(Guid asignmentId, TaskStatuses newStatus);
         Task<Assignment?> GetAssignmentByIdAsync(Guid asignmentId);
+        Task<List<TaskStatisticsComplete>> GetTaskStatisticsCompleteAsync(
+                Guid roomId,
+                DateTime? startDate,
+                DateTime? endDate,
+                List<Guid>? excludedUserIds
+            );
     }
 }

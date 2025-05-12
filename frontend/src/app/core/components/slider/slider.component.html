@@ -1,7 +1,9 @@
-<div class="swiper-wrapper-container">
+<div>
     <swiper-container class="swiper-container" loop="true" navigation="true">
-        <swiper-slide class="swiper-slide" *ngFor="let task of tasks(); let i = index">
-            <p>{{ task.title }}</p>
-        </swiper-slide>
+        @for (task of tasks(); track $index) {
+            <swiper-slide>
+                <p>{{task.title}}</p>
+            </swiper-slide>
+        }
     </swiper-container>
 </div>

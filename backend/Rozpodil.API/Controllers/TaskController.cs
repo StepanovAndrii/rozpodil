@@ -1,21 +1,28 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Rozpodil.API.Dtos.Requests.Task;
+using Rozpodil.API.Dtos.Responses.TaskStatistics.TaskStatisticsComplete;
 using Rozpodil.Application.Interfaces.Repositories;
 using Rozpodil.Domain.Entities;
 
 namespace Rozpodil.API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/rooms/{roomId}/tasks")]
     [ApiController]
     public class TaskController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
         public TaskController(
-                IUnitOfWork unitOfWork
+                IUnitOfWork unitOfWork,
+                IMapper mapper
             )
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -75,7 +82,10 @@ namespace Rozpodil.API.Controllers
         }
 
         [HttpPatch("{assignmentId}")]
-        public async Task<ActionResult> PatchAssignment(Guid assignmentId, [FromBody] JsonPatchDocument<Assignment> patchDoc)
+        public async Task<ActionResult> PatchAssignment(
+                Guid assignmentId,
+                [FromBody] JsonPatchDocument<Assignment> patchDoc
+            )
         {
             if (patchDoc == null)
                 return BadRequest();
@@ -90,6 +100,20 @@ namespace Rozpodil.API.Controllers
             await _unitOfWork.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("statistics/completed")]
+        public async Task<TaskStatisticsCompleteDto> GetCompleteStatistics(
+                Guid roomId,
+                [FromQuery] DateTime? from,
+                [FromQuery] DateTime? to,
+                [FromQuery] List<Guid>? excludedUserIds
+            )
+        {
+            var statisticsValueObject = await _unitOfWork.AssignmentRepository
+                .GetTaskStatisticsCompleteAsync(roomId, from, to, excludedUserIds);
+
+            return _mapper.Map<TaskStatisticsCompleteDto>(statisticsValueObject);
         }
     }
 }

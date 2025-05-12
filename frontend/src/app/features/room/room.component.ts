@@ -7,12 +7,12 @@ import { PaddingComponent } from "../../core/components/padding/padding.componen
 import { SettingButtonComponent } from "../../core/components/setting-button/setting-button.component";
 import { IUser } from '../../core/types/interfaces/user-interface';
 import { CalendarComponent } from "../../core/components/calendar/calendar.component";
-import { SliderComponent } from "../../core/components/slider/slider.component";
 import { Task } from '../../core/types/interfaces/task';
 import { TaskCreationDialogComponent } from "../../core/components/task-creation-dialog/task-creation-dialog.component";
 import { DateTime } from 'luxon';
 import { DataService } from '../../core/services/data-service/data.service';
 import { UUID } from 'crypto';
+import { ChartsComponent } from "../../core/components/charts/charts.component";
 
 @Component({
   selector: 'app-room',
@@ -22,8 +22,8 @@ import { UUID } from 'crypto';
     PaddingComponent,
     SettingButtonComponent,
     CalendarComponent,
-    SliderComponent,
-    TaskCreationDialogComponent
+    TaskCreationDialogComponent,
+    ChartsComponent
 ],
   standalone: true,
   templateUrl: './room.component.html',
@@ -37,6 +37,7 @@ export class RoomComponent implements OnInit {
   public selectedRoom: IRoom | null = null;
   public tasksForSelectedDate: Task[] = []
   public taskCreationDialogIsVisible = signal<boolean>(false);
+  public areChartsOpened = signal<boolean>(false);
 
   constructor (
     private _route: ActivatedRoute,
@@ -57,6 +58,10 @@ export class RoomComponent implements OnInit {
 
   public async loadTasks(day: DateTime) {
     this.tasksForSelectedDate = await this._dataService.getRoomTasks(this.selectedRoom?.id as UUID, undefined, day)
+  }
+
+  public changeAreChartsVisible(isVisible: boolean): void {
+    this.areChartsOpened.set(isVisible);
   }
 
   public async toggleRoom(room: IRoom) {
