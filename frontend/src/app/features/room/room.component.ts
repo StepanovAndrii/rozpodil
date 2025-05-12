@@ -13,6 +13,7 @@ import { DateTime } from 'luxon';
 import { DataService } from '../../core/services/data-service/data.service';
 import { UUID } from 'crypto';
 import { ChartsComponent } from "../../core/components/charts/charts.component";
+import { SliderComponent } from "../../core/components/slider/slider.component";
 
 @Component({
   selector: 'app-room',
@@ -23,7 +24,8 @@ import { ChartsComponent } from "../../core/components/charts/charts.component";
     SettingButtonComponent,
     CalendarComponent,
     TaskCreationDialogComponent,
-    ChartsComponent
+    ChartsComponent,
+    SliderComponent
 ],
   standalone: true,
   templateUrl: './room.component.html',
@@ -57,7 +59,7 @@ export class RoomComponent implements OnInit {
   }
 
   public async loadTasks(day: DateTime) {
-    this.tasksForSelectedDate = await this._dataService.getRoomTasks(this.selectedRoom?.id as UUID, undefined, day)
+    this.tasksForSelectedDate = await this._dataService.getRoomTasks(this.selectedRoom?.id as UUID, day, day)
   }
 
   public changeAreChartsVisible(isVisible: boolean): void {

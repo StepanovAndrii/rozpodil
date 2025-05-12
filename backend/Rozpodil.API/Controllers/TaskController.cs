@@ -9,7 +9,6 @@ using Rozpodil.Domain.Entities;
 
 namespace Rozpodil.API.Controllers
 {
-    [AllowAnonymous]
     [Route("api/rooms/{roomId}/tasks")]
     [ApiController]
     public class TaskController : ControllerBase
@@ -103,7 +102,7 @@ namespace Rozpodil.API.Controllers
         }
 
         [HttpGet("statistics/completed")]
-        public async Task<TaskStatisticsCompleteDto> GetCompleteStatistics(
+        public async Task<List<TaskStatisticsCompleteDto>> GetCompleteStatistics(
                 Guid roomId,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? to,
@@ -113,7 +112,7 @@ namespace Rozpodil.API.Controllers
             var statisticsValueObject = await _unitOfWork.AssignmentRepository
                 .GetTaskStatisticsCompleteAsync(roomId, from, to, excludedUserIds);
 
-            return _mapper.Map<TaskStatisticsCompleteDto>(statisticsValueObject);
+            return _mapper.Map<List<TaskStatisticsCompleteDto>>(statisticsValueObject);
         }
     }
 }

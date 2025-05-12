@@ -30,10 +30,15 @@
         </div>
 
         <app-calendar (selectedDay)="loadTasks($event)"/>
-        <!-- <app-slider [tasks]="tasksForSelectedDate" /> -->
-        <!-- <button
+        @if (tasksForSelectedDate.length !== 0) {
+            <app-slider [tasks]="tasksForSelectedDate" />
+        }
+        @else { 
+            <p>Справи відсутні</p>
+        }
+        <button
             class="room__task-creation-button"
-            (click)="openTaskCreationDialog()"> Створити завдання </button> -->
+            (click)="openTaskCreationDialog()"> Створити завдання </button>
         <app-task-creation-dialog [createTask]="taskCreationDialogIsVisible"/>
     </div>
 </app-padding>

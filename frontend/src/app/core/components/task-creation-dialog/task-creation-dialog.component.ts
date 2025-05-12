@@ -50,6 +50,7 @@ export class AppDateAdapter extends NativeDateAdapter {
   templateUrl: './task-creation-dialog.component.html',
   styleUrl: './task-creation-dialog.component.scss',
   providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'uk' },
     {provide: DateAdapter, useClass: AppDateAdapter},
     {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS }
   ]

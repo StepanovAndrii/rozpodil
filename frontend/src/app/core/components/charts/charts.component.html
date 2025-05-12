@@ -1,9 +1,116 @@
-<button
-    (click)="openChartView()"
+<div
+    (click)="openChartView($event)"
     class="charts"
     [ngClass]="areChartsVisible() ? 'charts--visible' : ''">
 
     @if (areChartsVisible()) {
-        <canvas #doughnutCanvas></canvas>
+        <div class="charts__chart-buttons">
+            <div class="charts__chart-button">
+                <input
+                    class="charts__hidebx"
+                    type="radio"
+                    id="taskCompletion"
+                    name="chart"
+                    checked/>
+
+                <label
+                    for="taskCompletion"
+                    (click)="selectChart(_chartButton.TaskCompletion)"
+                    class="charts__input-label">
+                    
+                    <div>
+                        Виконання завдань
+                    </div>
+                </label>
+            </div>
+            <div class="charts__chart-button">
+                <input
+                    class="charts__hidebx"
+                    type="radio"
+                    id="dailyActivity"
+                    name="chart"/>
+
+                <label
+                    for="dailyActivity"
+                    (click)="selectChart(_chartButton.DailyActivity)"
+                    class="charts__input-label">
+                    
+                    <div>
+                        Щоденна активність
+                    </div>
+                </label>
+            </div>
+            <div class="charts__chart-button">
+                <input
+                    class="charts__hidebx"
+                    type="radio"
+                    id="taskStatus"
+                    name="chart"/>
+
+                <label
+                    for="taskStatus"
+                    (click)="selectChart(_chartButton.TaskStatus)"
+                    class="charts__input-label">
+                    
+                    <div>
+                        Статус завдань
+                    </div>
+                </label>
+            </div>
+            <div class="charts__chart-button">
+                <input
+                    class="charts__hidebx"
+                    type="radio"
+                    id="roomProgress"
+                    name="chart"/>
+
+                <label
+                    for="roomProgress"
+                    (click)="selectChart(_chartButton.RoomProgress)"
+                    class="charts__input-label">
+                    
+                    <div>
+                        Прогрес кімнати 
+                    </div>
+                </label>
+            </div>
+            <div class="charts__chart-button">
+                <input
+                    class="charts__hidebx"
+                    type="radio"
+                    id="timebasedActivity"
+                    name="chart"/>
+
+                <label
+                    for="timebasedActivity"
+                    (click)="selectChart(_chartButton.TimebasedActivity)"
+                    class="charts__input-label">
+                    
+                    <div>
+                        Активність за часом
+                    </div>
+                </label>    
+            </div>
+        </div>
+        
+        <div class="charts__chart-diagrams">
+            @switch (selectedChart) {
+                @case (_chartButton.TaskCompletion) {
+                    <canvas #taskCompletionChart></canvas>
+                }
+                @case (_chartButton.DailyActivity) {
+                    <canvas #dailyActivityChart></canvas>
+                }
+                @case (_chartButton.TaskStatus) {
+                    <canvas #taskStatusChart></canvas>
+                }
+                @case (_chartButton.RoomProgress) {
+                    <canvas #roomProgressChart></canvas>
+                }
+                @case (_chartButton.TimebasedActivity) {
+                    <canvas #timebasedActivityChart></canvas>
+                }
+            }
+        </div>
     }
-</button>
+</div>
