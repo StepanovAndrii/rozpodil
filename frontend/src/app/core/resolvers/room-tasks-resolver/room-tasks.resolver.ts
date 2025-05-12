@@ -10,10 +10,8 @@ export const roomTasksResolver: ResolveFn<ITask[]> = async (route, state) => {
 
   const roomId = route.paramMap.get('id');
 
-  const startOfWeek = DateTime.now()
-    .setLocale('uk')
-    .startOf('week');
-  const endOfWeek = startOfWeek.endOf('week');
+  const startOfWeek = DateTime.local().startOf('day');
+  const endOfWeek = DateTime.local().endOf('day'); 
 
   if (roomId) {
     var itasks = await dataService.getRoomTasks(roomId as UUID, startOfWeek, endOfWeek);
