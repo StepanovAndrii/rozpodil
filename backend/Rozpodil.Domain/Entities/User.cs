@@ -1,4 +1,6 @@
-﻿namespace Rozpodil.Domain.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Rozpodil.Domain.Entities
 {
     public class User
     {
@@ -9,6 +11,7 @@
 
         public required UserCredentials Credentials { get; set; }
         public ICollection<RoomUser> RoomUsers { get; set; } = new List<RoomUser>();
-        public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
+        //TODO: як зробити щоб це залишилось, але не було loop
+        //public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
     }
 }

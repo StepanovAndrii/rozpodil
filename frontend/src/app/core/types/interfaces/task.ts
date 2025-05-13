@@ -1,6 +1,7 @@
 import { UUID } from "crypto";
 import { TaskStatus } from "../task-status-enum";
 import { DateTime } from "luxon";
+import { IUser } from "./user-interface";
 
 export interface ITask {
     id: UUID,
@@ -8,7 +9,8 @@ export interface ITask {
     description?: string,
     status: TaskStatus,
     dueTime: string,
-    createdAt: string
+    createdAt: string,
+    assignedTo?: IUser
 }
 
 export class Task implements ITask {
@@ -18,6 +20,7 @@ export class Task implements ITask {
     status: TaskStatus;
     dueTime: string;
     createdAt: string;
+    assignedTo?: IUser;
 
     constructor(data: ITask) {
         this.id = data.id;
@@ -26,6 +29,7 @@ export class Task implements ITask {
         this.status = data.status;
         this.dueTime = data.dueTime;
         this.createdAt = data.createdAt;
+        this.assignedTo = data.assignedTo;
     }
 
     getDueTime(): DateTime {

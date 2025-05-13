@@ -1,41 +1,49 @@
 <div class="swiper-wrapper">
     <swiper-container
-        class="swiper-container"
-        loop="true"
-        navigation="true"
-        effect="coverflow"
-        grabCursor="true"
-        centeredSlides="true"
-        slidesPerView="auto"
-        :coverflow-effect="{ 
-            rotate: 0, 
-            stretch: 0, 
-            depth: 100, 
-            modifier: 2.5 
-        }"
-        :pagination="{
-            el: '.swiper-pagination',
-            clickable: true
-        }"
-        :navigation="{
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev'
-        }">
+        [slidesPerView]="4"
+        [centeredSlides]="true"
+        [spaceBetween]="30"
+        [grabCursor]="true"
+        [preventClicks]="false"
+        [preventClicksPropagation]="false">
 
         @for (task of tasks(); track $index) {
-            <swiper-slide class="swiper-slide">
-                <div class="tranding-slide-img">
-                    <div class="background-color">
+            <swiper-slide 
+                class="swiper-slide">
 
-                    </div>
-                </div>
-                <div class="tranding-slide-content">
+                @if (task.status === taskStatuses.Pending) {
+                    <button 
+                        class="blur-eye-button"
+                        type="button"
+                        (click)="markAsInProgress(task)">
+                    
+                    </button>
+                }
+
+                <div
+                    class="tranding-slide-content"
+                    [ngClass]="{ 
+                        'blurred': task.status === taskStatuses.Pending,
+                        'completed': task.status === taskStatuses.Completed
+                    }">
+
                     <p class="food-price">{{formatDate(task.createdAt)}}-{{formatDate(task.dueTime)}}</p>
                     <div class="tranding-slide-content-bottom">
                         <h2 class="food-name">
                             {{task.title}}
                         </h2>
+                        <p>{{task.description}}</p>
+                        <p>{{task?.assignedTo?.username}}</p>
                     </div>
+                    @if (task.status === taskStatuses.InProgress) {
+                        <button
+                            type="button"
+                            (click)="completeTask(task)"
+                            class="do-button">
+
+                            Виконати
+                        </button>
+                    }
                 </div>
             </swiper-slide>
         }

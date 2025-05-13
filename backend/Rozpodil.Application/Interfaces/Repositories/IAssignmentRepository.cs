@@ -16,6 +16,7 @@ namespace Rozpodil.Application.Interfaces.Repositories
         Task<IList<Assignment>> GetAssignmentsByRoomAsync(Guid roomId, DateTime? startDate, DateTime? endDate);
         Task<bool> UpdateAssignmentStatusAsync(Guid asignmentId, TaskStatuses newStatus);
         Task<Assignment?> GetAssignmentByIdAsync(Guid asignmentId);
+        Task AssignUserToTask(Guid assignmentId, User user);
         Task<List<TaskStatisticsComplete>> GetTaskStatisticsCompleteAsync(
                 Guid roomId,
                 DateTime? startDate,

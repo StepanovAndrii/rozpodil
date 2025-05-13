@@ -38,6 +38,12 @@
                 gap: 7px;
             }
 
+            .room__room-info {
+                .room__room-code {
+                    cursor: pointer;
+                }
+            }
+
             .room__room-settings {
                 justify-content: center;
             }

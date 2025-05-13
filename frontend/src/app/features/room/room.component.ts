@@ -14,6 +14,8 @@ import { DataService } from '../../core/services/data-service/data.service';
 import { UUID } from 'crypto';
 import { ChartsComponent } from "../../core/components/charts/charts.component";
 import { SliderComponent } from "../../core/components/slider/slider.component";
+import { ToastService } from '../../core/services/toast-service/toast.service';
+import { ToastType } from '../../core/services/toast-service/models/toast-types';
 
 @Component({
   selector: 'app-room',
@@ -44,7 +46,8 @@ export class RoomComponent implements OnInit {
   constructor (
     private _route: ActivatedRoute,
     private _router: Router,
-    private _dataService: DataService
+    private _dataService: DataService,
+    private _toastService: ToastService
   ) { }
 
   public ngOnInit(): void {
@@ -76,6 +79,12 @@ export class RoomComponent implements OnInit {
 
   public openRoomSettings() {
     this._router.navigate([`/room/${this.selectedRoom?.id}/settings`])
+  }
+
+  public copyRoomCode() {
+    navigator.clipboard.writeText(this.selectedRoom!.code).then(() =>
+      this._toastService.show(ToastType.Info, "Код кімнати було скопійовано")
+    );
   }
 
   public openUserSettings() {

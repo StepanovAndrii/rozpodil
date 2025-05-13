@@ -41,7 +41,9 @@ namespace Rozpodil.Persistence.Repository
             if (endDate.HasValue)
                 query = query.Where(assignment => assignment.dueTime <= endDate.Value);
 
-            return await query.ToListAsync();
+            return await query
+                .Include(assignment => assignment.AssignedTo)
+                .ToListAsync();
         }
 
         public async Task<bool> UpdateAssignmentStatusAsync (Guid asignmentId, TaskStatuses newStatus)
@@ -60,6 +62,18 @@ namespace Rozpodil.Persistence.Repository
                 .FindAsync(asignmentId);
         }
 
+        public async Task AssignUserToTask(Guid assignmentId, User user)
+        {
+            var assignment = await _context.Assignments
+                .FirstOrDefaultAsync(a => a.Id == assignmentId);
+
+            if (assignment == null)
+                throw new ArgumentException("Assignment not found.");
+
+            assignment.AssignedTo = user;
+
+            _context.Assignments.Update(assignment);
+        }
 
         // TODO: покращити, розібрати
         public async Task<List<TaskStatisticsComplete>> GetTaskStatisticsCompleteAsync(

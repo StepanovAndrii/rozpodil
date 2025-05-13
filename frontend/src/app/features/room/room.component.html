@@ -20,7 +20,14 @@
                 </app-dropdown-menu>
             </div>
             <div class="room__room-section room__room-settings room__room-info">
-                <p>Код кімнати: {{selectedRoom?.code}}</p>
+                <p>Код кімнати: 
+                    <span
+                        (click)="copyRoomCode()"
+                        class="room__room-code">
+                        
+                        {{selectedRoom?.code}}
+                    </span>
+                </p>
                 <app-setting-button (clickAction)="openRoomSettings()"/>
             </div>
             <div class="room__room-section room__room-settings">

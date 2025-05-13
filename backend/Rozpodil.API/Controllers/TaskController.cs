@@ -101,6 +101,27 @@ namespace Rozpodil.API.Controllers
             return NoContent();
         }
 
+        [HttpPatch("{assignmentId}/asign")]
+        public async Task<ActionResult> AsignUserToTask(Guid assignmentId)
+        {
+            var userId = User.FindFirst("sub")?.Value;
+
+            if (userId == null)
+                return Unauthorized();
+
+            if(!Guid.TryParse(userId, out var userIdResult))
+            {
+                return BadRequest();
+            }
+
+            var user = await _unitOfWork.UserRepository.GetUserByIdAsync(userIdResult);
+
+            await _unitOfWork.AssignmentRepository.AssignUserToTask(assignmentId, user);
+            await _unitOfWork.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         [HttpGet("statistics/completed")]
         public async Task<List<TaskStatisticsCompleteDto>> GetCompleteStatistics(
                 Guid roomId,
