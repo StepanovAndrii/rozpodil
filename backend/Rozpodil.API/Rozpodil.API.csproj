@@ -11,6 +11,7 @@
     <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="9.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
       <PrivateAssets>all</PrivateAssets>
@@ -24,6 +25,10 @@
     <ProjectReference Include="..\Rozpodil.Domain\Rozpodil.Domain.csproj" />
     <ProjectReference Include="..\Rozpodil.Infrastracture\Rozpodil.Infrastructure.csproj" />
     <ProjectReference Include="..\Rozpodil.Persistence\Rozpodil.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Hubs\" />
   </ItemGroup>
 
 </Project>

@@ -61,5 +61,11 @@ export const routes: Routes = [
         },
         canActivate: [authGuard]
     },
+    {path: 'users/:id/settings', loadComponent: () => 
+        import('./features/user-settings/user-settings.component').then(component => component.UserSettingsComponent),
+        resolve: {
+            user: userResolver
+        }
+    },
     {path: '**', redirectTo: 'room', pathMatch: 'full'}
 ];

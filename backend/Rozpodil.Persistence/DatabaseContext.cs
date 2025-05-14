@@ -14,6 +14,8 @@ namespace Rozpodil.Persistence
         public DbSet<UserCredentials> UsersCredentials { get; set; }
         public DbSet<RoomUser> RoomUsers { get; set; }
         public DbSet<Assignment> Assignments { get; set; }
+        public DbSet<Achievement> Achievements { get; set; }
+        public DbSet<UserAchievement> UserAchievements { get; set; }
 
         public DatabaseContext(
             DbContextOptions<DatabaseContext> options

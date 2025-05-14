@@ -6,7 +6,8 @@ using Rozpodil.Infrastructure.DependencyInjectionExtention;
 using Rozpodil.Persistence;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using System.Text.Json.Serialization;
+using Rozpodil.Domain.Events;
+using Rozpodil.Infrastructure.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,9 +40,14 @@ builder.Services.AddMappingProfiles();
 builder.Services.AddScopedServices();
 builder.Services.AddHostedServices();
 builder.Services.AddHttpClients();
+builder.Services.AddSignalR();
 builder.Services.AddFluentEmail(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddHasherServices(builder.Configuration);
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(AchievementUnlockedEvent).Assembly);
+});
 
 builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddOAuthOptions(builder.Configuration);
@@ -78,4 +84,5 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<AchievementsHub>("/hubs/achievements");
 app.Run();

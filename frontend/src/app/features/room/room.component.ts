@@ -16,6 +16,7 @@ import { ChartsComponent } from "../../core/components/charts/charts.component";
 import { SliderComponent } from "../../core/components/slider/slider.component";
 import { ToastService } from '../../core/services/toast-service/toast.service';
 import { ToastType } from '../../core/services/toast-service/models/toast-types';
+import { TokenService } from '../../core/services/authentication/token-service/token.service';
 
 @Component({
   selector: 'app-room',
@@ -47,7 +48,8 @@ export class RoomComponent implements OnInit {
     private _route: ActivatedRoute,
     private _router: Router,
     private _dataService: DataService,
-    private _toastService: ToastService
+    private _toastService: ToastService,
+    private _tokenService: TokenService
   ) { }
 
   public ngOnInit(): void {
@@ -88,6 +90,6 @@ export class RoomComponent implements OnInit {
   }
 
   public openUserSettings() {
-
+    this._router.navigate([`/users/${this._tokenService.getUserId()}/settings`])
   }
 }

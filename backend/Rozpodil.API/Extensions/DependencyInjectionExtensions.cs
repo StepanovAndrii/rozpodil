@@ -40,6 +40,7 @@ namespace Rozpodil.API.Extensions
             services.AddScoped<ITokenManager, TokenManager>();
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IEmailValidationService, EmailValidationService>();
+            services.AddScoped<IAchievementService, AchievementService>();
 
             return services;
         }

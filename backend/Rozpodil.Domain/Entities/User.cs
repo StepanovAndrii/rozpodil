@@ -11,6 +11,7 @@ namespace Rozpodil.Domain.Entities
 
         public required UserCredentials Credentials { get; set; }
         public ICollection<RoomUser> RoomUsers { get; set; } = new List<RoomUser>();
+        public ICollection<UserAchievement> UserAchievements { get; set; } = new List<UserAchievement>();
         //TODO: як зробити щоб це залишилось, але не було loop
         //public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
     }
