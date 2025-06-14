@@ -1,0 +1,15 @@
+<!--Винести padding-container, бо він є всюди. Да і в цілому зробити рефактор-->
+<div class="padding-container">
+    <form (ngSubmit)="sendRoomCodeAndJoinAsync()" autocomplete="off" class="join-room-form" [formGroup]="roomJoiningForm">
+        <h1 class="join-room-form__header">Увійти в кімнату</h1>
+        <app-input-field
+            class="join-room-form__code-field"
+            formControlName="code">
+        
+            Код кімнати
+        </app-input-field>
+
+        <button type="submit" class="join-room-form__button">Увійти</button>
+        <a (click)="changeToCreate()" class="join-room-form__change-to-create-link">Створити нову кімнату</a>
+    </form>
+</div>

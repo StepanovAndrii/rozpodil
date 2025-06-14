@@ -1,0 +1,52 @@
+.room-padding {
+    width: 100%;
+
+    //TODO: розібратись чому swiper не працює в flex. Прийшлось flex замінити на те що зараз нижче в .room
+    .room {
+        height: 100%;
+        max-width: 100%;
+        text-align: center;
+        line-height: 100%;
+
+        > *:not(:nth-child(2)) { 
+            margin-top: 5%;
+        }
+
+        .room__task-creation-button {
+            background-color: #000000;
+            max-width: 220px;
+            padding: 10px 20px;
+            color: #ffffff;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .room__content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            align-items: center;
+            text-align: center;
+            width: 100%;
+
+            & > div:last-child {
+                justify-self: end;
+            }
+
+            .room__room-section {
+                display: flex;
+                align-items: center;
+                gap: 7px;
+            }
+
+            .room__room-info {
+                .room__room-code {
+                    cursor: pointer;
+                }
+            }
+
+            .room__room-settings {
+                justify-content: center;
+            }
+        }
+    }
+}

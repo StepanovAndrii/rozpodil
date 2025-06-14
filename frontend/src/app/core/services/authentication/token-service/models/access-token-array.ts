@@ -1,0 +1,1 @@
+export type AccessTokenArray = [string, string, string];

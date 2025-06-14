@@ -1,0 +1,51 @@
+<div class="swiper-wrapper">
+    <swiper-container
+        [slidesPerView]="4"
+        [centeredSlides]="true"
+        [spaceBetween]="30"
+        [grabCursor]="true"
+        [preventClicks]="false"
+        [preventClicksPropagation]="false">
+
+        @for (task of tasks(); track $index) {
+            <swiper-slide 
+                class="swiper-slide">
+
+                @if (task.status === taskStatuses.Pending) {
+                    <button 
+                        class="blur-eye-button"
+                        type="button"
+                        (click)="markAsInProgress(task)">
+                    
+                    </button>
+                }
+
+                <div
+                    class="tranding-slide-content"
+                    [ngClass]="{ 
+                        'blurred': task.status === taskStatuses.Pending,
+                        'completed': task.status === taskStatuses.Completed
+                    }">
+
+                    <p class="food-price">{{formatDate(task.createdAt)}}-{{formatDate(task.dueTime)}}</p>
+                    <div class="tranding-slide-content-bottom">
+                        <h2 class="food-name">
+                            {{task.title}}
+                        </h2>
+                        <p>{{task.description}}</p>
+                        <p>{{task?.assignedTo?.username}}</p>
+                    </div>
+                    @if (task.status === taskStatuses.InProgress) {
+                        <button
+                            type="button"
+                            (click)="completeTask(task)"
+                            class="do-button">
+
+                            Виконати
+                        </button>
+                    }
+                </div>
+            </swiper-slide>
+        }
+    </swiper-container>
+</div>

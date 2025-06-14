@@ -1,0 +1,74 @@
+@use 'sass:map';
+@use '../../core/partials/colors' as *;
+@use '../../core/partials/media' as media;
+
+@include media.screen-size(xs) {
+    .padding-container {
+        height: 100%;
+        padding: 1rem;
+
+        .login-form {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .login-form__content {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+
+                .login-form__main-header {
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    text-align: center;
+                }
+
+                .login-form__password-container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: .3rem;
+
+                    .login-form__forgot-password-link {
+                        text-align: right;
+                        color: map.get($colors, primary-color);
+                        text-decoration: underline;
+                        text-decoration-thickness: 6%;
+                        text-underline-offset: 15%;
+                        text-decoration-skip-ink: all;
+                    }
+                }
+
+                .login-form__buttons-container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+
+                    .login-form__submit-button {
+                        padding: 1.2rem 0;
+                        border: none;
+                        background-color: map.get($colors, primary-color);
+                        color: map.get($colors, secondary-color);
+                    }
+                }
+            }
+        }
+    }
+}
+
+@include media.screen-size(sm) {
+    
+}
+
+@include media.screen-size(md) {
+    
+}
+
+@include media.screen-size(lg) {
+    
+}
+
+@include media.screen-size(xl) {
+    
+}

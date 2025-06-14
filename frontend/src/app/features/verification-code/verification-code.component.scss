@@ -1,0 +1,53 @@
+@use 'sass:map';
+@use '../../core/partials/colors' as *;
+@use '../../core/partials/media' as media;
+
+.padding-container {
+    height: 100%;
+    padding: 1rem;
+
+    .verification-code-form {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .verification-code-form__content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+
+            .verification-code-form__main-header {
+                font-size: 1.5rem;
+                font-weight: 600;
+                text-align: center;
+            }
+
+            .verification-code-form__description {
+                text-align: center;
+            }
+
+            .verification-code-form__input-container {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                width: 100%;
+
+                .verification-code-form__input-hints-container {
+                    position: relative;
+                }
+            }
+
+            .verification-code-form__submit-button {
+                padding: 1.2rem 0;
+                border: none;
+                background-color: map.get($colors, primary-color);
+                color: map.get($colors, secondary-color);
+                cursor: pointer;
+                width: 100%;
+            }
+        }
+    }
+}

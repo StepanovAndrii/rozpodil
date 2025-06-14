@@ -1,0 +1,24 @@
+@use '../partials/variables' as toggle-eye-variables;
+
+@mixin toggle-button(
+    $background-url,
+    $background-size: toggle-eye-variables.$toggle-button-size
+) {
+    // positioning
+    position: absolute;
+    top: calc(50% - $background-size / 2);
+    right: 1.2rem;
+
+    // size
+    width: $background-size;
+    height: $background-size;
+
+    // stylization
+    border: none;
+    background: 
+        url($background-url)
+        no-repeat
+        center / $background-size;
+
+    cursor: pointer;
+}

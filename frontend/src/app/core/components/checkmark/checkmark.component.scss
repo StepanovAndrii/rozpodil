@@ -1,0 +1,26 @@
+.checkmark {
+    position: absolute;
+    left: -3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    .checkmark__indicator {
+        width: 0.9rem;
+        aspect-ratio: 1/1;
+        background: url('/optimised-icons/criss-cross.svg') no-repeat center;
+        transition: transform 0.3s ease-out;
+
+        &--untoched {
+            display: none;
+        }
+
+        &--valid {
+            transform: rotate(45deg);
+        }
+
+        &--invalid {
+            transform: rotate(0deg);
+        }
+    }
+}

@@ -44,3 +44,7 @@ Thumbs.db
 # Ignore enviroment files
 src/environments/environment.ts
 src/environments/environment.development.ts
+
+#SSL
+*.crt
+*.key

@@ -1,0 +1,57 @@
+<div class="padding-container">
+    <form
+        class="login-form"
+        [formGroup]="loginForm"
+        autocomplete="off"
+        (ngSubmit)="loginWithForm()">
+        
+        <div class="login-form__content">
+            <h1 class="login-form__main-header">Логін</h1>
+            <app-input-field
+                class="login-form__input-field"
+                inputFieldId="login"
+                inputType="email"
+                formControlName="email">
+                
+                Е-пошта
+            </app-input-field>
+            <div class="login-form__password-container">
+                <app-password-field
+                    class="login-form__password-field"
+                    inputFieldId="password"
+                    formControlName="password">
+                    
+                    Пароль
+                </app-password-field>
+                <a
+                    class="login-form__forgot-password-link"
+                    routerLink="{{forgotPasswordUrl}}">
+                    
+                    Забули пароль?
+                </a>
+            </div>
+            <div class="login-form__buttons-container">
+                <button
+                    type="submit"
+                    class="login-form__submit-button">
+                    
+                    Увійти
+                </button>
+                <div class="login-form__providers-submit-buttons">
+                    <app-google-auth-action-button />
+                </div>
+            </div>
+        </div>
+        <p class="login-form__additional-information">
+            Ще не маєте акаунта?
+            <a 
+                class="login-form__register-link"
+                routerLink="{{registerUrl}}"
+                replaceUrl="true">
+                
+                Зареєструйтесь
+            </a>
+        </p>
+        
+    </form>
+</div>

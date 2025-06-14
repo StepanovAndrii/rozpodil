@@ -1,0 +1,85 @@
+.closed {
+    display: none;
+}
+
+.activated {
+    display: block;
+    position: relative;
+}
+
+.padding-container {
+    width: 80%;
+    max-width: 600px;
+    height: auto;
+    max-height: 90%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff;
+    z-index: 10;
+    overflow: auto;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.3s;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.overlay.visible {
+    background: rgba(0, 0, 0, 0.5);
+    pointer-events: auto;
+}
+
+.close-button-area {
+    display: flex;
+    justify-content: end;
+}
+
+.close-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000000;
+    color: #ffffff;
+    cursor: pointer;
+    height: 30px;  
+    width: 30px;  
+    border: none; 
+    border-radius: 50%; 
+  }
+  
+.create-pop-up {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button-submit {
+    background: #000000;
+    color: #ffffff;
+    padding: 20px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+::ng-deep .mat-datepicker-popup, 
+::ng-deep .mat-calendar {
+  background-color: #ffffff !important;
+  color: #000000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+::ng-deep .mat-calendar-body-disabled {
+  color: rgba(0, 0, 0, 0.5) !important;
+}

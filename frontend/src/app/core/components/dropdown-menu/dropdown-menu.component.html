@@ -1,0 +1,66 @@
+<!-- TODO: зробити так щоб у кнопки не були розміри зроблені хардкодом -->
+<!-- TODO: як прибраи лишнє поле (зробити одне спільне) -->
+<div class="container">
+    <button
+        type="button"
+        class="dropdown"
+        (click)="toggle()">
+        
+        {{selectedOptionValue?.name || 'Обрати'}}
+    </button>
+    <div class="dropdown__body" [ngClass]="isDropdownOpened() ? 'dropdown__body--visible' : ''">
+        <form
+            class="dropdown__join-form"
+            [formGroup]="roomGroup">
+            
+            <div class="dropdown__input-area">
+                <input
+                    type="text"
+                    placeholder="Назва"
+                    class="dropdown__room-code-input"
+                    formControlName="name"
+                    id="name"
+                    >
+
+                <button 
+                    type="button"
+                    class="dropdown__join-room-submit-button"
+                    (click)="processRoom('create')">
+                    
+                    +
+                </button>
+            </div>
+            <div class="dropdown__input-area">
+                <input
+                type="text"
+                placeholder="Код"
+                class="dropdown__room-code-input"
+                formControlName="code"
+                id="code"
+                >
+                <button
+                    type="button"
+                    class="dropdown__join-room-submit-button"
+                    (click)="processRoom('join')">
+                
+                    ⭢
+                </button>
+            </div>
+        </form>
+        <ul class="dropdown__options">
+            @for (option of options(); track $index) {
+                <li
+                    class="dropdown__option"
+                    (click)="selectOption(option)">
+
+                    <button
+                        class="dropdown__option-button"
+                        role="button">
+                        
+                        {{$index + 1}}. {{option.name}}
+                    </button>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

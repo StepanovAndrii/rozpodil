@@ -1,0 +1,60 @@
+.charts {
+    background: #ffffff;
+    width: 3%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 100;
+    border: none;
+    cursor: pointer;
+    box-shadow:
+        5px 0 8px rgba(0, 0, 0, 0.08), 
+        3px 0 5px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    padding: 7px;
+    gap: 7px;
+
+    &--visible {
+        width: 50%;
+        cursor: default;
+    }
+
+    &__chart-diagrams {
+        flex-grow: 1;
+    }
+
+    &__chart-buttons {
+        display: flex;
+        text-align: center;
+        gap: 7px;
+        max-width: 100%;
+        flex-wrap: wrap;
+
+        .charts__chart-button {
+            flex-grow: 1;
+
+            .charts__input-label {
+                cursor: pointer;
+            }
+
+            input[type=radio] + .charts__input-label {
+                display: block;
+                height: 100%;
+                background-color: #000000;
+                padding: 10px;
+                border-radius: 5px;
+                color: #ffffff;
+            }
+
+            input[type=radio]:checked + .charts__input-label {
+                background-color: rgb(39, 48, 90);
+            }
+
+            .charts__hidebx {
+                display: none ;
+            }
+        }
+    }
+}

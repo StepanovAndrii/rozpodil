@@ -1,0 +1,16 @@
+.resend-code {
+    display: flex;
+    justify-content: end;
+
+    .resend-code__button {
+        background: none;
+        border: none;
+        text-decoration: underline;
+        cursor: pointer;
+    
+        &:disabled {
+            text-decoration: none;
+            cursor: default;
+        }
+    }
+}

@@ -1,0 +1,44 @@
+<!-- Переробти, бо це капєц -->
+
+<div class="calendar">
+    <div class="calendar__navigation">
+        <button class="calendar__previous-button calendar__nav-buttons calendar__move-buttons" (click)="previousWeek()">Назад</button>
+        @for (week of weeks(); track week.start.toISO()) {
+            <button
+                class="calendar__week-button calendar__nav-buttons"
+                type="button"
+                (click)="selectWeek(week)"
+                [ngClass]="{
+                    'calendar__nav-button--current-week': isCurrentWeek(week),
+                    'calendar__nav-button--selected-week': isSelectedWeek(week)
+                    }">
+
+                {{week.start.toFormat('dd MMM yyyy')}} - {{week.end.toFormat('dd MMM yyyy')}}
+            </button>
+        }
+        <button class="calendar__next-button calendar__nav-buttons calendar__move-buttons" (click)="nextWeek()">Вперед</button>
+    </div>
+    <p>{{formatData(selectedDayValue)}}</p>
+    <ng-content></ng-content>
+    <div class="calendar_days">
+        @if (selectedWeek) {
+            <div class="calendar__week-details">
+                    @for (day of getDaysOfWeek(selectedWeek); track $index) {
+                        <div class="calendar__day-button">
+                            @if (hoveredDay && hoveredDay.hasSame(day, 'day')) {
+                                <app-info-pop-up [data]="formatData(day)"/>
+                            }
+                            <button
+                                (mouseenter)="onDayHover(day)"
+                                (mouseleave)="onDayHover(null)"
+                                (click)="selectDay(day)"
+                                class="calendar__day calendar__nav-buttons">
+                                {{formatDay(day)}}
+                            </button>
+                        </div>
+                    }
+            </div>
+        }
+        
+    </div>
+</div>

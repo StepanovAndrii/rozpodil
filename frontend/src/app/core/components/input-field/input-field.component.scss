@@ -1,0 +1,59 @@
+@use 'sass:map';
+@use "../../partials/colors" as *;
+@use '../../partials/media' as media;
+
+@include media.screen-size(xs) {
+    .input-field {
+        width: 100%;
+        position: relative;
+    
+       &__input {
+            width: 100%;
+            padding: 1.2rem;
+            font-size: 1rem;
+            border: 1px solid map.get($colors, primary-color);
+            outline: none;
+    
+            &:-webkit-autofill {
+                box-shadow: 0 0 0 1000px map.get($colors, secondary-color) inset !important;
+                -webkit-text-fill-color: map.get($colors, primary-color) !important;
+            }
+    
+            &:focus + .input-field__label,
+            &:not(:placeholder-shown) + .input-field__label {
+                transform: none;
+                top: -0.6rem;
+                color: map.get($colors, primary-color);
+                background-color: map.get($colors, secondary-color);
+            }
+        }
+    
+        .input-field__label {
+            transform: translateY(-50%);
+            position: absolute;
+            top: 50%;
+            left: 0.7rem;
+            padding: 0rem 0.3rem;
+            font-size: 1rem;
+            color: map.get($colors, gray-color);
+            transition: 0.3s;
+            pointer-events: none;
+        }
+    }
+}
+
+@include media.screen-size(sm) {
+   
+}
+
+@include media.screen-size(md) {
+    
+}
+
+@include media.screen-size(lg) {
+    
+}
+
+@include media.screen-size(xl) {
+    
+}

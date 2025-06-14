@@ -1,0 +1,51 @@
+<app-padding
+    [padding]="5"
+    class="room-padding">
+
+    <div class="room">
+        <app-charts
+            [areChartsVisible]="areChartsVisible()"
+            (handleAreChartsVisible)="changeAreChartsVisible($event)">
+        
+        </app-charts>
+            
+        <div class="room__content">
+            <div class="room__room-selection room__room-section">
+                <p>Кімната:</p>
+                <app-dropdown-menu
+                    [options]="rooms"
+                    [selectedOptionValue]="selectedRoom"
+                    (selectedOption)="toggleRoom($event)">
+                
+                </app-dropdown-menu>
+            </div>
+            <div class="room__room-section room__room-settings room__room-info">
+                <p>Код кімнати: 
+                    <span
+                        (click)="copyRoomCode()"
+                        class="room__room-code">
+                        
+                        {{selectedRoom?.code}}
+                    </span>
+                </p>
+                <app-setting-button (clickAction)="openRoomSettings()"/>
+            </div>
+            <div class="room__room-section room__room-settings">
+                <p>{{user?.username}}</p>
+                <app-setting-button (clickAction)="openUserSettings()"/>
+            </div>
+        </div>
+
+        <app-calendar (selectedDay)="loadTasks($event)"/>
+        @if (tasksForSelectedDate.length !== 0) {
+            <app-slider [tasks]="tasksForSelectedDate" />
+        }
+        @else { 
+            <p>Справи відсутні</p>
+        }
+        <button
+            class="room__task-creation-button"
+            (click)="openTaskCreationDialog()"> Створити завдання </button>
+        <app-task-creation-dialog [createTask]="taskCreationDialogIsVisible"/>
+    </div>
+</app-padding>

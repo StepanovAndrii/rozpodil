@@ -1,0 +1,9 @@
+@use 'partials/mixins' as mixins;
+
+.toggle-eye--opened-eye {
+    @include mixins.toggle-button("/optimised-icons/opened-eye.svg");
+}
+
+.toggle-eye--closed-eye {
+    @include mixins.toggle-button("/optimised-icons/closed-eye.svg");
+}

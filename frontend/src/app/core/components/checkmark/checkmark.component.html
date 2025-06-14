@@ -1,0 +1,17 @@
+<div class="checkmark">
+    <div
+        class="checkmark__indicator"
+        [ngClass]="{
+            'checkmark__indicator--untoched' : 
+                !this.isControlToched,
+            'checkmark__indicator--valid': 
+                !this.isControlMissing &&
+                this.isControlValid,
+            'checkmark__indicator--invalid':
+                !this.isControlMissing &&
+                !this.isControlValid,
+        }"
+        aria-hidden="true">
+
+    </div>
+</div>

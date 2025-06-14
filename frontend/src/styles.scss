@@ -1,12 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+@import '../node_modules/modern-normalize/modern-normalize.css';
 
-* {
-    font-family: "Manrope", sans-serif;
-    box-sizing: border-box;
-    margin: 0;
+@font-face {
+    font-family: 'Inter';
+    font-display: swap;
+    src: url('/uploads/inter-regular.woff2') format('woff2'),
+         url('/uploads/inter-regular.woff') format('woff');
 }
 
-html,
+html {
+    height: 100vh;
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
+}
+
 body {
     height: 100%;
 }

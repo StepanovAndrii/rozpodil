@@ -1,0 +1,46 @@
+.swiper-slide {
+    height: 100%;
+}
+
+.tranding-slide-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    height: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.blur-eye-button {
+    background: url("/optimised-icons/opened-eye.svg") no-repeat center / 30px;
+    position: absolute;
+    width: 30px;
+    aspect-ratio: 1/1;
+    cursor: pointer;
+    top: 50%;
+    left: 50%;
+    transform: translateX(50%);
+    transform: translateY(-50%);
+    border: none;
+    z-index: 3;
+}
+
+.blurred {
+    filter: blur(10px);
+    transition: filter 0.3s;
+}
+
+.completed {
+    background-color: rgba(120, 255, 108, 0.5);
+}
+
+.do-button {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 10px 5px;
+    cursor: pointer;
+}

@@ -1,0 +1,48 @@
+div.padding-container { 
+    padding: 30px;
+    height: 100%;
+ }
+ div.padding-container div.room-setting { 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 5px;
+  }
+  .room-setting__list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  div.padding-container div.room-setting div.room-setting_members-list { 
+    width: 60%;
+   }
+  // TODO
+  .room-setting__main-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+   div.padding-container div.room-setting div.room-setting_members-list p.room-setting__members-list-title { 
+    display: flex;
+    justify-content: start;
+    }
+   div.padding-container div.room-setting div.room-setting_members-list div.room-setting__member-card { 
+    width: 80%;
+    display: flex;
+    gap: 30px;
+    }
+    .room-setting__member-logotype { 
+      border-radius: 50%;
+     }
+     
+    .room-setting__negative_button { 
+      background-color: #000000;
+      color: #ffffff;
+      border: none;
+      height: 40px;
+      width: 130px;
+      cursor: pointer;
+      
+     }

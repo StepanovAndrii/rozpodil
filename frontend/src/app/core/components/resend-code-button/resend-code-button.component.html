@@ -1,0 +1,11 @@
+<div class="resend-code">
+    <button
+        class="resend-code__button"
+        [disabled]="isCooldownActive()"
+        (click)="resendCode()">
+    
+        {{ isCooldownActive() ?
+        `Повторити через ${secondsLeft()}с` :
+        'Надіслати повторно' }}
+    </button>
+</div>
